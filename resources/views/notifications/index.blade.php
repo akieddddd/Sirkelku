@@ -1,55 +1,53 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="space-y-6 max-w-2xl mx-auto">
+<div class="space-y-5 max-w-2xl mx-auto">
 
-    <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200/80 space-y-4">
-        <div class="flex items-center justify-between">
+    <div class="bg-white rounded-xl p-5 sm:p-6 shadow-sm border border-zinc-200 space-y-4">
+        <div class="flex items-center justify-between border-b border-zinc-100 pb-3">
             <div>
-                <span class="px-3 py-1 rounded-full bg-pink-50 text-pink-600 text-[11px] font-extrabold uppercase tracking-wider">
-                    Aktivitas Akun
-                </span>
-                <h1 class="text-xl sm:text-2xl font-black text-slate-900 mt-2">
+                <h1 class="text-lg sm:text-xl font-bold text-zinc-950">
                     Pusat Notifikasi
                 </h1>
+                <p class="text-xs text-zinc-500">Aktivitas dan pemberitahuan terkait akunmu</p>
             </div>
 
             <form action="{{ route('notifications.markRead') }}" method="POST">
                 @csrf
-                <button type="submit" class="text-xs font-bold text-indigo-600 hover:text-indigo-800 hover:underline">
+                <button type="submit" class="text-xs font-semibold text-zinc-600 hover:text-zinc-950 transition-colors">
                     Tandai Semua Dibaca
                 </button>
             </form>
         </div>
 
         <!-- Notifications List -->
-        <div class="space-y-2 pt-2">
+        <div class="space-y-2">
             @forelse($notifications as $notif)
-                <a href="{{ $notif->link_url ?? '#' }}" class="block p-4 rounded-2xl transition-all border {{ $notif->is_read ? 'bg-slate-50 border-slate-100' : 'bg-indigo-50/50 border-indigo-100 shadow-sm' }} hover:border-slate-300">
+                <a href="{{ $notif->link_url ?? '#' }}" class="block p-3.5 rounded-lg transition-colors border {{ $notif->is_read ? 'bg-white border-zinc-200' : 'bg-zinc-50 border-zinc-300 shadow-2xs' }} hover:bg-zinc-50">
                     <div class="flex items-start gap-3">
                         @if($notif->actor)
-                            <img src="{{ $notif->actor->avatar_url }}" alt="{{ $notif->actor->name }}" class="w-10 h-10 rounded-xl object-cover shrink-0 mt-0.5 ring-1 ring-slate-200">
+                            <img src="{{ $notif->actor->avatar_url }}" alt="{{ $notif->actor->name }}" class="w-9 h-9 rounded-full object-cover shrink-0 mt-0.5 ring-1 ring-zinc-200">
                         @else
-                            <div class="w-10 h-10 rounded-xl bg-indigo-100 text-indigo-600 flex items-center justify-center font-black shrink-0">
-                                🔔
+                            <div class="w-9 h-9 rounded-full bg-zinc-100 text-zinc-600 flex items-center justify-center text-xs font-bold shrink-0 border border-zinc-200">
+                                Info
                             </div>
                         @endif
 
                         <div class="flex-1 min-w-0">
                             <div class="flex items-center justify-between gap-2">
-                                <h4 class="text-xs sm:text-sm font-bold text-slate-900 truncate">
+                                <h4 class="text-xs sm:text-sm font-semibold text-zinc-950 truncate">
                                     {{ $notif->title }}
                                 </h4>
-                                <span class="text-[10px] text-slate-400 shrink-0">{{ $notif->created_at->diffForHumans() }}</span>
+                                <span class="text-[10px] text-zinc-400 shrink-0">{{ $notif->created_at->diffForHumans() }}</span>
                             </div>
-                            <p class="text-xs text-slate-600 mt-0.5 leading-relaxed">
+                            <p class="text-xs text-zinc-600 mt-0.5 leading-relaxed">
                                 {{ $notif->message }}
                             </p>
                         </div>
                     </div>
                 </a>
             @empty
-                <div class="p-12 text-center text-slate-400 text-xs">
+                <div class="p-10 text-center text-zinc-400 text-xs">
                     Belum ada notifikasi baru untukmu.
                 </div>
             @endforelse
