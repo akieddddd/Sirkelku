@@ -121,12 +121,18 @@
                             </div>
                         </div>
 
-                        <!-- Bio -->
-                        @if($userItem->bio)
-                            <p class="text-xs text-zinc-600 line-clamp-2 leading-relaxed bg-zinc-50 p-2 rounded-lg border border-zinc-100">
-                                "{{ $userItem->bio }}"
-                            </p>
-                        @endif
+                        <!-- Bio (Uniform Height) -->
+                        <div class="min-h-[2.75rem] flex flex-col justify-center">
+                            @if($userItem->bio)
+                                <p class="text-xs text-zinc-600 line-clamp-2 leading-relaxed bg-zinc-50 p-2 rounded-lg border border-zinc-100">
+                                    "{{ $userItem->bio }}"
+                                </p>
+                            @else
+                                <p class="text-xs text-zinc-400 italic leading-relaxed bg-zinc-50/60 p-2 rounded-lg border border-dashed border-zinc-200/70">
+                                    Belum menambahkan bio perkenalan.
+                                </p>
+                            @endif
+                        </div>
 
                         <!-- Hobbies list -->
                         <div class="flex flex-wrap gap-1.5 pt-0.5">

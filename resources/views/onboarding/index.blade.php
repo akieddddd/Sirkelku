@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Onboarding Profil Pelajar - Sirkelku</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}">
+    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -16,10 +20,8 @@
     <div class="max-w-2xl mx-auto space-y-6" x-data="{ schoolType: 'existing' }">
         
         <!-- Header -->
-        <div class="text-center space-y-1.5">
-            <div class="inline-flex items-center justify-center w-11 h-11 rounded-lg bg-zinc-900 text-white font-black text-xl shadow-xs">
-                S
-            </div>
+        <div class="text-center space-y-2">
+            <img src="{{ asset('images/logo.png') }}" alt="Sirkelku Logo" class="w-14 h-14 object-contain mx-auto transition-transform hover:scale-105 duration-200 drop-shadow-xs">
             <h1 class="text-xl sm:text-2xl font-bold text-zinc-950 tracking-tight">Selamat Datang, {{ Auth::user()->name }}!</h1>
             <p class="text-xs text-zinc-500 max-w-md mx-auto">Lengkapi data sekolah & hobimu agar kami bisa menghubungkanmu dengan teman dan sirkel yang sefrekuensi.</p>
         </div>

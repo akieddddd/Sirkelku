@@ -6,6 +6,10 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ $title ?? 'Sirkelku - Platform Komunitas & Teman Sefrekuensi Pelajar' }}</title>
     
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}">
+    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
+
     <!-- Google Fonts: Plus Jakarta Sans -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -32,11 +36,9 @@
             <!-- Brand Logo -->
             <div class="flex items-center gap-3">
                 <a href="{{ route('feed.index') }}" class="flex items-center gap-2.5 group">
-                    <div class="w-9 h-9 rounded-lg bg-zinc-900 flex items-center justify-center text-white font-black text-lg group-hover:bg-zinc-800 transition-colors">
-                        S
-                    </div>
+                    <img src="{{ asset('images/logo.png') }}" alt="Sirkelku Logo" class="w-9 h-9 object-contain drop-shadow-xs group-hover:scale-105 transition-transform duration-200">
                     <div class="flex items-center gap-1.5">
-                        <span class="text-lg font-bold tracking-tight text-zinc-950">Sirkelku</span>
+                        <span class="text-lg font-bold tracking-tight text-zinc-950 group-hover:text-zinc-800 transition-colors">Sirkelku</span>
                         <span class="hidden sm:inline-block text-[11px] font-semibold text-zinc-600 bg-zinc-100 border border-zinc-200 px-2 py-0.5 rounded-full">Pelajar</span>
                     </div>
                 </a>
@@ -165,7 +167,7 @@
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
             
             <!-- Left Sidebar (Desktop Navigation) -->
-            <aside class="hidden lg:block lg:col-span-3 sticky top-24 space-y-4">
+            <aside class="hidden lg:block lg:col-span-3 sticky top-20 max-h-[calc(100vh-5.5rem)] overflow-y-auto space-y-4 no-scrollbar pb-6">
                 <div class="bg-white rounded-xl p-3 shadow-sm border border-zinc-200 space-y-1">
                     <div class="px-3 py-1.5 mb-1">
                         <span class="text-[11px] font-semibold text-zinc-400 uppercase tracking-wider">Menu Navigasi</span>
@@ -235,7 +237,7 @@
             </main>
 
             <!-- Right Sidebar (Widgets Rail) -->
-            <aside class="hidden lg:block lg:col-span-3 sticky top-24 space-y-4">
+            <aside class="hidden lg:block lg:col-span-3 sticky top-20 max-h-[calc(100vh-5.5rem)] overflow-y-auto space-y-4 no-scrollbar pb-6">
                 
                 <!-- Widget 1: Rekomendasi Teman Main -->
                 <div class="bg-white rounded-xl p-4 shadow-sm border border-zinc-200 space-y-3">

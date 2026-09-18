@@ -81,13 +81,13 @@
     <!-- Community Grid -->
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
         @forelse($communities as $comm)
-            <div class="bg-white rounded-xl overflow-hidden border border-zinc-200 shadow-sm hover:border-zinc-300 transition-all flex flex-col group">
+            <div class="bg-white rounded-xl overflow-hidden border border-zinc-200 shadow-xs hover:border-zinc-300 hover:shadow-sm transition-all duration-200 flex flex-col justify-between group h-full">
                 <!-- Banner Image -->
                 <div class="h-28 w-full bg-zinc-100 relative overflow-hidden">
-                    <img src="{{ $comm->banner_url }}" alt="{{ $comm->name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200">
+                    <img src="{{ $comm->banner_url }}" alt="{{ $comm->name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
                     
                     @if($comm->hobby)
-                        <span class="absolute top-2.5 right-2.5 px-2.5 py-0.5 rounded-full bg-zinc-900/80 backdrop-blur-xs text-[10px] font-medium text-white">
+                        <span class="absolute top-2.5 right-2.5 px-2.5 py-0.5 rounded-full bg-zinc-900/80 backdrop-blur-xs text-[10px] font-medium text-white shadow-xs">
                             #{{ $comm->hobby->name }}
                         </span>
                     @endif
@@ -97,28 +97,28 @@
                 <div class="p-4 flex-1 flex flex-col justify-between space-y-3 relative">
                     <!-- Avatar overlapping -->
                     <div class="-mt-9 flex items-end justify-between">
-                        <img src="{{ $comm->avatar_url }}" alt="{{ $comm->name }}" class="w-12 h-12 rounded-lg object-cover ring-2 ring-white shadow-xs bg-white">
-                        <span class="text-xs font-medium text-zinc-500 bg-zinc-50 border border-zinc-200 px-2 py-0.5 rounded-full">
+                        <img src="{{ $comm->avatar_url }}" alt="{{ $comm->name }}" class="w-12 h-12 rounded-xl object-cover ring-2 ring-white shadow-xs bg-white">
+                        <span class="text-[11px] font-semibold text-zinc-600 bg-zinc-50 border border-zinc-200/80 px-2 py-0.5 rounded-full">
                             {{ $comm->members_count }} Anggota
                         </span>
                     </div>
 
-                    <div class="space-y-1">
-                        <a href="{{ route('communities.show', $comm->slug) }}" class="font-semibold text-sm text-zinc-950 group-hover:text-blue-600 transition-colors line-clamp-1">
+                    <div class="space-y-1.5 flex-1">
+                        <a href="{{ route('communities.show', $comm->slug) }}" class="font-bold text-sm text-zinc-950 group-hover:text-blue-600 transition-colors line-clamp-1">
                             {{ $comm->name }}
                         </a>
-                        <p class="text-xs text-zinc-600 line-clamp-2 leading-relaxed">
+                        <p class="text-xs text-zinc-600 line-clamp-2 leading-relaxed min-h-[2.5rem]">
                             {{ $comm->description }}
                         </p>
                     </div>
 
                     <!-- Metadata -->
-                    <div class="pt-2 border-t border-zinc-100 flex items-center justify-between text-xs text-zinc-500">
-                        <span class="truncate">
+                    <div class="pt-2.5 border-t border-zinc-100 flex items-center justify-between text-xs text-zinc-500">
+                        <span class="truncate text-[11px] text-zinc-500">
                             {{ $comm->school ? $comm->school->school_name : 'Komunitas Terbuka' }}
                         </span>
-                        <a href="{{ route('communities.show', $comm->slug) }}" class="font-semibold text-zinc-900 hover:text-blue-600 shrink-0">
-                            Lihat &rarr;
+                        <a href="{{ route('communities.show', $comm->slug) }}" class="font-semibold text-xs text-zinc-900 hover:text-blue-600 shrink-0">
+                            Lihat Sirkel &rarr;
                         </a>
                     </div>
                 </div>

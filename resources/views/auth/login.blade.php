@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Masuk ke Sirkelku - Ruang Komunitas & Teman Sefrekuensi Pelajar</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}">
+    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -15,10 +19,10 @@
     <div class="max-w-md w-full space-y-5 my-8">
         
         <!-- Brand Header -->
-        <div class="text-center space-y-1.5">
-            <div class="inline-flex items-center justify-center w-11 h-11 rounded-lg bg-zinc-900 text-white font-black text-xl shadow-xs">
-                S
-            </div>
+        <div class="text-center space-y-2">
+            <a href="{{ url('/') }}" class="inline-block group">
+                <img src="{{ asset('images/logo.png') }}" alt="Sirkelku Logo" class="w-14 h-14 object-contain mx-auto transition-transform group-hover:scale-105 duration-200 drop-shadow-xs">
+            </a>
             <h1 class="text-xl sm:text-2xl font-bold text-zinc-950 tracking-tight">Masuk ke Sirkelku</h1>
             <p class="text-xs text-zinc-500">Temukan teman mabar, sirkel hobi, dan tongkrongan pelajar</p>
         </div>
