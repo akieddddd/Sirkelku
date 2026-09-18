@@ -7,7 +7,7 @@
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-zinc-200 pb-4">
         <div class="space-y-1">
             <h1 class="text-xl sm:text-2xl font-bold text-zinc-950 tracking-tight">
-                Direktori Komunitas (Satu Sirkel)
+                Direktori Satu Sirkel
             </h1>
             <p class="text-xs sm:text-sm text-zinc-500">
                 Temukan sirkel hobi, komunitas sekolah, dan tongkrongan pelajar lintas daerah.
