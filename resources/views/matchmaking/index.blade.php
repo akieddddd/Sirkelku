@@ -3,33 +3,36 @@
 @section('content')
 <div class="space-y-5">
 
-    <!-- Clean Minimalist Header (Flat Style) -->
-    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-zinc-200 pb-4">
-        <div class="space-y-1">
-            <h1 class="text-xl sm:text-2xl font-bold text-zinc-950 tracking-tight">
-                Teman Main (Mabar & Sparing)
-            </h1>
-            <p class="text-xs sm:text-sm text-zinc-500">
-                Cari partner mabar game, jamming musik, rekan belajar, atau sparing olahraga sefrekuensi.
-            </p>
+    <!-- Page Header -->
+    <div class="sk-card">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div class="space-y-1">
+                <div class="flex items-center gap-2">
+                    <span class="sk-badge-orange">⚡ Sefrekuensi</span>
+                    <h1 class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
+                        Teman Main (Mabar & Sparing)
+                    </h1>
+                </div>
+                <p class="text-xs sm:text-sm text-slate-600">
+                    Cari partner mabar game, jamming musik, rekan belajar, atau sparing olahraga sefrekuensi dari berbagai sekolah.
+                </p>
+            </div>
         </div>
-    </div>
 
-    <!-- Navigation Tabs (Jelajah Teman, Ajakan Masuk, Ajakan Terkirim, Teman Mabar) -->
-    <div class="bg-white rounded-xl p-1.5 shadow-sm border border-zinc-200 flex items-center justify-between gap-1 overflow-x-auto">
-        <div class="flex items-center gap-1">
+        <!-- Navigation Tabs -->
+        <div class="flex items-center gap-1.5 pt-4 mt-4 border-t border-amber-100 overflow-x-auto">
             <!-- Discover Tab -->
             <a href="{{ route('matchmaking.index', ['tab' => 'discover']) }}"
-                class="px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-colors shrink-0 {{ $tab === 'discover' ? 'bg-zinc-900 text-white' : 'text-zinc-600 hover:bg-zinc-100' }}">
-                Jelajah Teman
+                class="px-4 py-2 rounded-xl text-xs font-bold transition-all shrink-0 {{ $tab === 'discover' ? 'bg-orange-500 text-white shadow-sm' : 'text-slate-600 hover:bg-orange-50 hover:text-orange-600' }}">
+                🔍 Jelajah Teman
             </a>
 
             <!-- Incoming Tab -->
             <a href="{{ route('matchmaking.index', ['tab' => 'incoming']) }}"
-                class="px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-colors shrink-0 flex items-center gap-1.5 {{ $tab === 'incoming' ? 'bg-zinc-900 text-white' : 'text-zinc-600 hover:bg-zinc-100' }}">
-                <span>Ajakan Masuk</span>
+                class="px-4 py-2 rounded-xl text-xs font-bold transition-all shrink-0 flex items-center gap-2 {{ $tab === 'incoming' ? 'bg-orange-500 text-white shadow-sm' : 'text-slate-600 hover:bg-orange-50 hover:text-orange-600' }}">
+                <span>📩 Ajakan Masuk</span>
                 @if($incomingRequests->isNotEmpty())
-                    <span class="px-1.5 py-0.2 rounded-full text-[10px] font-bold {{ $tab === 'incoming' ? 'bg-white text-zinc-900' : 'bg-zinc-900 text-white' }}">
+                    <span class="px-2 py-0.5 rounded-full text-[10px] font-black {{ $tab === 'incoming' ? 'bg-white text-orange-600' : 'bg-orange-500 text-white' }}">
                         {{ $incomingRequests->count() }}
                     </span>
                 @endif
@@ -37,14 +40,14 @@
 
             <!-- Outgoing Tab -->
             <a href="{{ route('matchmaking.index', ['tab' => 'outgoing']) }}"
-                class="px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-colors shrink-0 {{ $tab === 'outgoing' ? 'bg-zinc-900 text-white' : 'text-zinc-600 hover:bg-zinc-100' }}">
-                Ajakan Terkirim
+                class="px-4 py-2 rounded-xl text-xs font-bold transition-all shrink-0 {{ $tab === 'outgoing' ? 'bg-orange-500 text-white shadow-sm' : 'text-slate-600 hover:bg-orange-50 hover:text-orange-600' }}">
+                📤 Ajakan Terkirim
             </a>
 
             <!-- Friends Tab -->
             <a href="{{ route('matchmaking.index', ['tab' => 'friends']) }}"
-                class="px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-colors shrink-0 {{ $tab === 'friends' ? 'bg-zinc-900 text-white' : 'text-zinc-600 hover:bg-zinc-100' }}">
-                Teman Terhubung ({{ $connectedFriends->count() }})
+                class="px-4 py-2 rounded-xl text-xs font-bold transition-all shrink-0 {{ $tab === 'friends' ? 'bg-orange-500 text-white shadow-sm' : 'text-slate-600 hover:bg-orange-50 hover:text-orange-600' }}">
+                🤝 Teman Terhubung ({{ $connectedFriends->count() }})
             </a>
         </div>
     </div>
@@ -52,12 +55,12 @@
     <!-- TAB 1: JELAJAH TEMAN (DISCOVER) -->
     @if($tab === 'discover')
         <!-- Filter Bar -->
-        <div class="bg-white rounded-xl p-3.5 shadow-sm border border-zinc-200">
-            <form action="{{ route('matchmaking.index') }}" method="GET" class="space-y-2.5">
+        <div class="sk-card-compact">
+            <form action="{{ route('matchmaking.index') }}" method="GET" class="space-y-3">
                 <input type="hidden" name="tab" value="discover">
                 
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
-                    <select name="hobby" class="w-full px-3 py-2 bg-zinc-50 text-xs font-medium rounded-lg border border-zinc-200 focus:outline-none focus:border-zinc-400 text-zinc-700">
+                    <select name="hobby" class="sk-select text-xs">
                         <option value="">Semua Kesamaan Hobi</option>
                         @foreach($hobbies as $hobby)
                             <option value="{{ $hobby->id }}" {{ request('hobby') == $hobby->id ? 'selected' : '' }}>
@@ -66,7 +69,7 @@
                         @endforeach
                     </select>
 
-                    <select name="school" class="w-full px-3 py-2 bg-zinc-50 text-xs font-medium rounded-lg border border-zinc-200 focus:outline-none focus:border-zinc-400 text-zinc-700">
+                    <select name="school" class="sk-select text-xs">
                         <option value="">Semua Asal Sekolah</option>
                         @foreach($schools as $school)
                             <option value="{{ $school->id }}" {{ request('school') == $school->id ? 'selected' : '' }}>
@@ -75,7 +78,7 @@
                         @endforeach
                     </select>
 
-                    <select name="city" class="w-full px-3 py-2 bg-zinc-50 text-xs font-medium rounded-lg border border-zinc-200 focus:outline-none focus:border-zinc-400 text-zinc-700">
+                    <select name="city" class="sk-select text-xs">
                         <option value="">Semua Kota</option>
                         @foreach($cities as $city)
                             <option value="{{ $city }}" {{ request('city') == $city ? 'selected' : '' }}>
@@ -86,12 +89,12 @@
                 </div>
 
                 <div class="flex items-center justify-between pt-1">
-                    <span class="text-xs text-zinc-400">Menampilkan pelajar sefrekuensi</span>
+                    <span class="text-xs text-slate-500 font-medium">✨ Menampilkan pelajar sefrekuensi</span>
                     <div class="flex items-center gap-2">
                         @if(request()->anyFilled(['hobby', 'school', 'city']))
-                            <a href="{{ route('matchmaking.index', ['tab' => 'discover']) }}" class="text-xs text-zinc-500 hover:text-zinc-900 border border-zinc-200 px-3 py-1.5 rounded-lg transition-colors">Reset</a>
+                            <a href="{{ route('matchmaking.index', ['tab' => 'discover']) }}" class="sk-btn-outline text-xs px-3 py-1.5">Reset</a>
                         @endif
-                        <button type="submit" class="px-4 py-1.5 bg-zinc-900 hover:bg-zinc-800 text-white font-semibold text-xs rounded-lg transition-colors">
+                        <button type="submit" class="sk-btn-primary text-xs px-4 py-1.5">
                             Cari Partner
                         </button>
                     </div>
@@ -102,33 +105,33 @@
         <!-- Friends Grid -->
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             @forelse($users as $userItem)
-                <div class="bg-white rounded-xl p-4 border border-zinc-200 shadow-sm hover:border-zinc-300 transition-all flex flex-col justify-between space-y-3.5"
+                <div class="sk-card flex flex-col justify-between space-y-3.5 hover:border-orange-300 hover:shadow-md transition-all"
                     x-data="{ showMatchModal: false }">
                     
-                    <div class="space-y-2.5">
+                    <div class="space-y-3">
                         <div class="flex items-start gap-3">
-                            <a href="{{ route('profile.show', $userItem->username) }}">
-                                <img src="{{ $userItem->avatar_url }}" alt="{{ $userItem->name }}" class="w-12 h-12 rounded-full object-cover ring-1 ring-zinc-200">
+                            <a href="{{ route('profile.show', $userItem->username) }}" class="relative group">
+                                <img src="{{ $userItem->avatar_url }}" alt="{{ $userItem->name }}" class="w-12 h-12 rounded-full object-cover ring-2 ring-orange-200 group-hover:ring-orange-400 transition-all">
                             </a>
                             <div class="min-w-0 flex-1">
-                                <a href="{{ route('profile.show', $userItem->username) }}" class="font-semibold text-sm text-zinc-950 hover:text-blue-600 truncate block">
+                                <a href="{{ route('profile.show', $userItem->username) }}" class="font-bold text-sm text-slate-900 hover:text-orange-600 truncate block transition-colors">
                                     {{ $userItem->name }}
                                 </a>
-                                <p class="text-[11px] text-zinc-400">@<span>{{ $userItem->username }}</span></p>
-                                <span class="inline-block mt-0.5 px-2 py-0.5 rounded-md bg-zinc-100 text-zinc-600 text-[11px] font-medium border border-zinc-200 truncate max-w-full">
-                                    {{ $userItem->school ? $userItem->school->school_name : 'Pelajar' }}
+                                <p class="text-[11px] text-slate-400 font-medium">@<span>{{ $userItem->username }}</span></p>
+                                <span class="inline-block mt-1 px-2.5 py-0.5 rounded-full bg-amber-50 text-amber-800 text-[11px] font-semibold border border-amber-200/80 truncate max-w-full">
+                                    🏫 {{ $userItem->school ? $userItem->school->school_name : 'Pelajar' }}
                                 </span>
                             </div>
                         </div>
 
-                        <!-- Bio (Uniform Height) -->
+                        <!-- Bio -->
                         <div class="min-h-[2.75rem] flex flex-col justify-center">
                             @if($userItem->bio)
-                                <p class="text-xs text-zinc-600 line-clamp-2 leading-relaxed bg-zinc-50 p-2 rounded-lg border border-zinc-100">
+                                <p class="text-xs text-slate-600 line-clamp-2 leading-relaxed bg-amber-50/40 p-2.5 rounded-xl border border-amber-100">
                                     "{{ $userItem->bio }}"
                                 </p>
                             @else
-                                <p class="text-xs text-zinc-400 italic leading-relaxed bg-zinc-50/60 p-2 rounded-lg border border-dashed border-zinc-200/70">
+                                <p class="text-xs text-slate-400 italic leading-relaxed bg-slate-50 p-2.5 rounded-xl border border-dashed border-slate-200">
                                     Belum menambahkan bio perkenalan.
                                 </p>
                             @endif
@@ -137,46 +140,46 @@
                         <!-- Hobbies list -->
                         <div class="flex flex-wrap gap-1.5 pt-0.5">
                             @foreach($userItem->hobbies->take(3) as $hobby)
-                                <span class="px-2 py-0.5 rounded-full text-[11px] font-medium bg-zinc-100 text-zinc-700 border border-zinc-200">
+                                <span class="sk-pill text-[11px]">
                                     #{{ $hobby->name }}
                                 </span>
                             @endforeach
                             @if($userItem->hobbies->count() > 3)
-                                <span class="text-[11px] text-zinc-400 font-medium self-center">+{{ $userItem->hobbies->count() - 3 }}</span>
+                                <span class="text-[11px] text-slate-400 font-bold self-center">+{{ $userItem->hobbies->count() - 3 }}</span>
                             @endif
                         </div>
                     </div>
 
                     <!-- Action Button -->
-                    <div class="pt-2.5 border-t border-zinc-100 flex items-center justify-between">
-                        <a href="{{ route('profile.show', $userItem->username) }}" class="text-xs font-medium text-zinc-500 hover:text-zinc-950">
+                    <div class="pt-3 border-t border-amber-100 flex items-center justify-between">
+                        <a href="{{ route('profile.show', $userItem->username) }}" class="text-xs font-semibold text-slate-500 hover:text-orange-600 transition-colors">
                             Lihat Profil
                         </a>
 
                         <button type="button" @click="showMatchModal = true" 
-                            class="px-3.5 py-1.5 rounded-lg bg-zinc-900 hover:bg-zinc-800 text-white font-semibold text-xs transition-colors shadow-xs">
-                            Ajak Main
+                            class="sk-btn-primary text-xs px-3.5 py-1.5">
+                            🤝 Ajak Main
                         </button>
                     </div>
 
                     <!-- Modal Send Request -->
-                    <div x-show="showMatchModal" x-cloak class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-950/50 backdrop-blur-xs">
-                        <div @click.away="showMatchModal = false" class="bg-white rounded-xl p-5 max-w-md w-full shadow-lg space-y-4 border border-zinc-200">
-                            <div class="flex items-center gap-3">
-                                <img src="{{ $userItem->avatar_url }}" class="w-10 h-10 rounded-full object-cover">
+                    <div x-show="showMatchModal" x-cloak class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs">
+                        <div @click.away="showMatchModal = false" class="sk-card max-w-md w-full shadow-2xl space-y-4 border-2 border-orange-200">
+                            <div class="flex items-center gap-3 border-b border-amber-100 pb-3">
+                                <img src="{{ $userItem->avatar_url }}" class="w-11 h-11 rounded-full object-cover ring-2 ring-orange-200">
                                 <div>
-                                    <h3 class="text-sm font-bold text-zinc-950">Kirim Ajakan Main</h3>
-                                    <p class="text-xs text-zinc-500">Kepada: <strong>{{ $userItem->name }}</strong></p>
+                                    <h3 class="text-base font-bold text-slate-900">Kirim Ajakan Main</h3>
+                                    <p class="text-xs text-slate-500">Kepada: <strong class="text-orange-600">{{ $userItem->name }}</strong></p>
                                 </div>
                             </div>
 
-                            <form action="{{ route('matchmaking.request') }}" method="POST" class="space-y-3">
+                            <form action="{{ route('matchmaking.request') }}" method="POST" class="space-y-3.5">
                                 @csrf
                                 <input type="hidden" name="receiver_id" value="{{ $userItem->id }}">
 
                                 <div>
-                                    <label class="block text-xs font-semibold text-zinc-700 mb-1">Pilih Hobi / Agenda:</label>
-                                    <select name="hobby_id" class="w-full p-2 bg-zinc-50 text-xs rounded-lg border border-zinc-200 focus:outline-none focus:border-zinc-400">
+                                    <label class="block text-xs font-bold text-slate-700 mb-1">Pilih Hobi / Agenda:</label>
+                                    <select name="hobby_id" class="sk-select text-xs">
                                         <option value="">-- Bebas / Nongkrong Santai --</option>
                                         @foreach($userItem->hobbies as $h)
                                             <option value="{{ $h->id }}">{{ $h->name }} ({{ $h->category }})</option>
@@ -185,15 +188,15 @@
                                 </div>
 
                                 <div>
-                                    <label class="block text-xs font-semibold text-zinc-700 mb-1">Catatan / Pesan (Opsional):</label>
+                                    <label class="block text-xs font-bold text-slate-700 mb-1">Catatan / Pesan (Opsional):</label>
                                     <textarea name="note" rows="3" placeholder="Yuk mabar akhir pekan ini atau diskusi bareng..."
-                                        class="w-full p-2.5 bg-zinc-50 text-xs rounded-lg border border-zinc-200 focus:outline-none focus:border-zinc-400"></textarea>
+                                        class="sk-input text-xs"></textarea>
                                 </div>
 
-                                <div class="flex justify-end gap-2 pt-2">
-                                    <button type="button" @click="showMatchModal = false" class="px-3 py-1.5 text-xs font-semibold text-zinc-500 hover:bg-zinc-100 rounded-lg">Batal</button>
-                                    <button type="submit" class="px-4 py-1.5 bg-zinc-900 hover:bg-zinc-800 text-white rounded-lg text-xs font-semibold transition-colors">
-                                        Kirim Ajakan
+                                <div class="flex justify-end gap-2 pt-2 border-t border-amber-100">
+                                    <button type="button" @click="showMatchModal = false" class="sk-btn-ghost text-xs px-3 py-1.5">Batal</button>
+                                    <button type="submit" class="sk-btn-primary text-xs px-4 py-1.5">
+                                        🚀 Kirim Ajakan
                                     </button>
                                 </div>
                             </form>
@@ -202,7 +205,7 @@
 
                 </div>
             @empty
-                <div class="col-span-full bg-white rounded-xl p-10 text-center border border-zinc-200 shadow-sm text-zinc-400 text-xs">
+                <div class="col-span-full sk-card p-10 text-center text-slate-400 text-xs">
                     Tidak ada teman ditemukan dengan filter saat ini.
                 </div>
             @endforelse
@@ -213,19 +216,19 @@
     @elseif($tab === 'incoming')
         <div class="space-y-3">
             @forelse($incomingRequests as $req)
-                <div class="bg-white rounded-xl p-4 border border-zinc-200 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                <div class="sk-card flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
                     <div class="flex items-center gap-3">
-                        <img src="{{ $req->sender->avatar_url }}" alt="{{ $req->sender->name }}" class="w-10 h-10 rounded-full object-cover ring-1 ring-zinc-200">
+                        <img src="{{ $req->sender->avatar_url }}" alt="{{ $req->sender->name }}" class="w-11 h-11 rounded-full object-cover ring-2 ring-orange-200">
                         <div>
-                            <h4 class="text-sm font-semibold text-zinc-950">{{ $req->sender->name }}</h4>
-                            <p class="text-xs text-zinc-500">
-                                {{ $req->sender->school ? $req->sender->school->school_name : 'Pelajar' }}
+                            <h4 class="text-sm font-bold text-slate-900">{{ $req->sender->name }}</h4>
+                            <p class="text-xs text-slate-500">
+                                🏫 {{ $req->sender->school ? $req->sender->school->school_name : 'Pelajar' }}
                                 @if($req->hobby)
-                                    • Hobi: <strong class="text-zinc-800">#{{ $req->hobby->name }}</strong>
+                                    • Hobi: <strong class="text-orange-600">#{{ $req->hobby->name }}</strong>
                                 @endif
                             </p>
                             @if($req->note)
-                                <p class="text-xs text-zinc-700 italic mt-1 bg-zinc-50 px-2 py-1 rounded-md border border-zinc-100">"{{ $req->note }}"</p>
+                                <p class="text-xs text-slate-700 italic mt-1.5 bg-orange-50/50 px-3 py-1.5 rounded-xl border border-orange-100">"{{ $req->note }}"</p>
                             @endif
                         </div>
                     </div>
@@ -234,7 +237,7 @@
                         <form action="{{ route('matchmaking.respond', $req->id) }}" method="POST">
                             @csrf
                             <input type="hidden" name="action" value="reject">
-                            <button type="submit" class="px-3 py-1.5 rounded-lg text-xs font-semibold text-zinc-500 hover:text-rose-600 hover:bg-rose-50 border border-zinc-200 transition-colors">
+                            <button type="submit" class="px-3.5 py-1.5 rounded-xl text-xs font-bold text-slate-500 hover:text-rose-600 hover:bg-rose-50 border border-slate-200 transition-all">
                                 Tolak
                             </button>
                         </form>
@@ -242,14 +245,14 @@
                         <form action="{{ route('matchmaking.respond', $req->id) }}" method="POST">
                             @csrf
                             <input type="hidden" name="action" value="accept">
-                            <button type="submit" class="px-3.5 py-1.5 rounded-lg bg-zinc-900 hover:bg-zinc-800 text-white font-semibold text-xs transition-colors">
+                            <button type="submit" class="sk-btn-primary text-xs px-4 py-1.5">
                                 Terima Ajakan
                             </button>
                         </form>
                     </div>
                 </div>
             @empty
-                <div class="bg-white rounded-xl p-10 text-center text-zinc-400 text-xs border border-zinc-200">
+                <div class="sk-card p-10 text-center text-slate-400 text-xs">
                     Tidak ada ajakan main yang masuk saat ini.
                 </div>
             @endforelse
@@ -259,13 +262,13 @@
     @elseif($tab === 'outgoing')
         <div class="space-y-3">
             @forelse($outgoingRequests as $req)
-                <div class="bg-white rounded-xl p-4 border border-zinc-200 shadow-sm flex items-center justify-between gap-3">
+                <div class="sk-card flex items-center justify-between gap-3">
                     <div class="flex items-center gap-3">
-                        <img src="{{ $req->receiver->avatar_url }}" alt="{{ $req->receiver->name }}" class="w-10 h-10 rounded-full object-cover ring-1 ring-zinc-200">
+                        <img src="{{ $req->receiver->avatar_url }}" alt="{{ $req->receiver->name }}" class="w-11 h-11 rounded-full object-cover ring-2 ring-orange-200">
                         <div>
-                            <h4 class="text-sm font-semibold text-zinc-950">{{ $req->receiver->name }}</h4>
-                            <p class="text-xs text-zinc-500">
-                                {{ $req->receiver->school ? $req->receiver->school->school_name : 'Pelajar' }}
+                            <h4 class="text-sm font-bold text-slate-900">{{ $req->receiver->name }}</h4>
+                            <p class="text-xs text-slate-500">
+                                🏫 {{ $req->receiver->school ? $req->receiver->school->school_name : 'Pelajar' }}
                                 @if($req->hobby)
                                     • Target: #{{ $req->hobby->name }}
                                 @endif
@@ -275,16 +278,16 @@
 
                     <div>
                         @if($req->status === 'accepted')
-                            <span class="px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 text-xs font-semibold border border-emerald-200">Diterima</span>
+                            <span class="sk-badge-teal text-xs">Diterima 🎉</span>
                         @elseif($req->status === 'rejected')
-                            <span class="px-2.5 py-1 rounded-full bg-rose-50 text-rose-700 text-xs font-semibold border border-rose-200">Ditolak</span>
+                            <span class="px-3 py-1 rounded-full bg-rose-50 text-rose-700 text-xs font-bold border border-rose-200">Ditolak</span>
                         @else
-                            <span class="px-2.5 py-1 rounded-full bg-zinc-100 text-zinc-700 text-xs font-semibold border border-zinc-200">Menunggu</span>
+                            <span class="sk-badge-orange text-xs">Menunggu ⏳</span>
                         @endif
                     </div>
                 </div>
             @empty
-                <div class="bg-white rounded-xl p-10 text-center text-zinc-400 text-xs border border-zinc-200">
+                <div class="sk-card p-10 text-center text-slate-400 text-xs">
                     Kamu belum mengirim ajakan main ke siapa pun. Cari partner di tab Jelajah Teman!
                 </div>
             @endforelse
@@ -294,28 +297,28 @@
     @elseif($tab === 'friends')
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             @forelse($connectedFriends as $friend)
-                <div class="bg-white rounded-xl p-4 border border-zinc-200 shadow-sm flex items-center justify-between gap-3">
+                <div class="sk-card flex items-center justify-between gap-3">
                     <div class="flex items-center gap-3 min-w-0">
                         <a href="{{ route('profile.show', $friend->username) }}">
-                            <img src="{{ $friend->avatar_url }}" alt="{{ $friend->name }}" class="w-10 h-10 rounded-full object-cover ring-1 ring-zinc-200">
+                            <img src="{{ $friend->avatar_url }}" alt="{{ $friend->name }}" class="w-11 h-11 rounded-full object-cover ring-2 ring-teal-200">
                         </a>
                         <div class="min-w-0">
-                            <a href="{{ route('profile.show', $friend->username) }}" class="text-sm font-semibold text-zinc-950 hover:text-blue-600 truncate block">
+                            <a href="{{ route('profile.show', $friend->username) }}" class="text-sm font-bold text-slate-900 hover:text-teal-600 truncate block transition-colors">
                                 {{ $friend->name }}
                             </a>
-                            <p class="text-[11px] text-zinc-400 truncate">{{ $friend->school ? $friend->school->school_name : 'Pelajar' }}</p>
-                            <span class="inline-block mt-0.5 px-2 py-0.2 rounded-md bg-zinc-100 text-zinc-700 text-[10px] font-medium border border-zinc-200">
-                                Teman Terhubung
+                            <p class="text-[11px] text-slate-400 truncate font-medium">🏫 {{ $friend->school ? $friend->school->school_name : 'Pelajar' }}</p>
+                            <span class="sk-badge-teal text-[10px] mt-1">
+                                🤝 Teman Terhubung
                             </span>
                         </div>
                     </div>
 
-                    <a href="{{ route('profile.show', $friend->username) }}" class="px-3 py-1.5 rounded-lg border border-zinc-200 hover:bg-zinc-50 text-zinc-700 font-medium text-xs transition-colors shrink-0">
+                    <a href="{{ route('profile.show', $friend->username) }}" class="sk-btn-outline text-xs px-3 py-1.5 shrink-0">
                         Profil
                     </a>
                 </div>
             @empty
-                <div class="col-span-full bg-white rounded-xl p-10 text-center text-zinc-400 text-xs border border-zinc-200">
+                <div class="col-span-full sk-card p-10 text-center text-slate-400 text-xs">
                     Belum ada koneksi pertemanan yang terbentuk. Kirim ajakan main ke teman-teman sefrekuensi!
                 </div>
             @endforelse
@@ -324,3 +327,4 @@
 
 </div>
 @endsection
+
