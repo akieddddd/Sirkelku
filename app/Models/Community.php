@@ -76,4 +76,16 @@ class Community extends Model
         }
         return 'https://api.dicebear.com/7.x/identicon/svg?seed=' . urlencode($this->slug);
     }
+
+    public function isAdmin($user): bool
+    {
+        if (!$user) {
+            return false;
+        }
+        
+        return $this->members()
+            ->where('users.id', $user->id)
+            ->wherePivot('role', 'admin')
+            ->exists();
+    }
 }

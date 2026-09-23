@@ -75,5 +75,10 @@ Route::middleware('auth')->group(function () {
         // Modul 6: Pusat Notifikasi
         Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
         Route::post('/notifications/mark-read', [NotificationController::class, 'markAllRead'])->name('notifications.markRead');
+
+        // Modul 7: Direct Messages
+        Route::get('/messages', [\App\Http\Controllers\MessageController::class, 'index'])->name('messages.index');
+        Route::get('/messages/{user:username}', [\App\Http\Controllers\MessageController::class, 'show'])->name('messages.show');
+        Route::post('/messages/{user}', [\App\Http\Controllers\MessageController::class, 'store'])->name('messages.store');
     });
 });

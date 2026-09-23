@@ -24,12 +24,15 @@
             </div>
 
             <!-- Profile Action Button -->
-            <div>
+            <div class="flex gap-2">
                 @if($isOwnProfile)
                     <a href="{{ route('profile.edit') }}" class="sk-btn-outline text-xs px-4 py-2">
                         ⚙️ Edit Profil & Hobi
                     </a>
                 @else
+                    <a href="{{ route('messages.show', $user->username) }}" class="sk-btn-outline text-xs px-4 py-2 bg-white text-orange-600 border-orange-200 hover:bg-orange-50 hover:border-orange-300">
+                        💬 Kirim Pesan
+                    </a>
                     <a href="{{ route('matchmaking.index', ['tab' => 'discover', 'q' => $user->username]) }}" class="sk-btn-primary text-xs px-4 py-2">
                         🤝 Ajak Main
                     </a>

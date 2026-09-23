@@ -116,4 +116,14 @@ class User extends Authenticatable
         }
         return 'https://api.dicebear.com/7.x/bottts/svg?seed=' . urlencode($this->username ?? $this->name ?? 'user');
     }
+
+    public function sentMessages()
+    {
+        return $this->hasMany(Message::class, 'sender_id');
+    }
+
+    public function receivedMessages()
+    {
+        return $this->hasMany(Message::class, 'receiver_id');
+    }
 }
