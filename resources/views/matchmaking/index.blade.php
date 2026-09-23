@@ -8,8 +8,8 @@
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div class="space-y-1">
                 <div class="flex items-center gap-2">
-                    <span class="sk-badge-orange">⚡ Sefrekuensi</span>
-                    <h1 class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
+                    <span class="sk-badge-sage">Sefrekuensi</span>
+                    <h1 class="text-xl sm:text-2xl font-black text-slate-800 tracking-tight">
                         Teman Main (Mabar & Sparing)
                     </h1>
                 </div>
@@ -20,19 +20,19 @@
         </div>
 
         <!-- Navigation Tabs -->
-        <div class="flex items-center gap-1.5 pt-4 mt-4 border-t border-amber-100 overflow-x-auto">
+        <div class="flex items-center gap-1.5 pt-4 mt-4 border-t border-slate-100 overflow-x-auto">
             <!-- Discover Tab -->
             <a href="{{ route('matchmaking.index', ['tab' => 'discover']) }}"
-                class="px-4 py-2 rounded-xl text-xs font-bold transition-all shrink-0 {{ $tab === 'discover' ? 'bg-orange-500 text-white shadow-sm' : 'text-slate-600 hover:bg-orange-50 hover:text-orange-600' }}">
-                🔍 Jelajah Teman
+                class="px-4 py-2 rounded-xl text-xs font-bold transition-all shrink-0 {{ $tab === 'discover' ? 'bg-[#588157] text-white shadow-xs' : 'text-slate-600 hover:bg-slate-50 hover:text-[#588157]' }}">
+                Jelajah Teman
             </a>
 
             <!-- Incoming Tab -->
             <a href="{{ route('matchmaking.index', ['tab' => 'incoming']) }}"
-                class="px-4 py-2 rounded-xl text-xs font-bold transition-all shrink-0 flex items-center gap-2 {{ $tab === 'incoming' ? 'bg-orange-500 text-white shadow-sm' : 'text-slate-600 hover:bg-orange-50 hover:text-orange-600' }}">
-                <span>📩 Ajakan Masuk</span>
+                class="px-4 py-2 rounded-xl text-xs font-bold transition-all shrink-0 flex items-center gap-2 {{ $tab === 'incoming' ? 'bg-[#588157] text-white shadow-xs' : 'text-slate-600 hover:bg-slate-50 hover:text-[#588157]' }}">
+                <span>Ajakan Masuk</span>
                 @if($incomingRequests->isNotEmpty())
-                    <span class="px-2 py-0.5 rounded-full text-[10px] font-black {{ $tab === 'incoming' ? 'bg-white text-orange-600' : 'bg-orange-500 text-white' }}">
+                    <span class="px-2 py-0.5 rounded-full text-[10px] font-black {{ $tab === 'incoming' ? 'bg-white text-[#2D472C]' : 'bg-[#588157] text-white' }}">
                         {{ $incomingRequests->count() }}
                     </span>
                 @endif
@@ -40,14 +40,14 @@
 
             <!-- Outgoing Tab -->
             <a href="{{ route('matchmaking.index', ['tab' => 'outgoing']) }}"
-                class="px-4 py-2 rounded-xl text-xs font-bold transition-all shrink-0 {{ $tab === 'outgoing' ? 'bg-orange-500 text-white shadow-sm' : 'text-slate-600 hover:bg-orange-50 hover:text-orange-600' }}">
-                📤 Ajakan Terkirim
+                class="px-4 py-2 rounded-xl text-xs font-bold transition-all shrink-0 {{ $tab === 'outgoing' ? 'bg-[#588157] text-white shadow-xs' : 'text-slate-600 hover:bg-slate-50 hover:text-[#588157]' }}">
+                Ajakan Terkirim
             </a>
 
             <!-- Friends Tab -->
             <a href="{{ route('matchmaking.index', ['tab' => 'friends']) }}"
-                class="px-4 py-2 rounded-xl text-xs font-bold transition-all shrink-0 {{ $tab === 'friends' ? 'bg-orange-500 text-white shadow-sm' : 'text-slate-600 hover:bg-orange-50 hover:text-orange-600' }}">
-                🤝 Teman Terhubung ({{ $connectedFriends->count() }})
+                class="px-4 py-2 rounded-xl text-xs font-bold transition-all shrink-0 {{ $tab === 'friends' ? 'bg-[#588157] text-white shadow-xs' : 'text-slate-600 hover:bg-slate-50 hover:text-[#588157]' }}">
+                Teman Terhubung ({{ $connectedFriends->count() }})
             </a>
         </div>
     </div>
@@ -89,7 +89,7 @@
                 </div>
 
                 <div class="flex items-center justify-between pt-1">
-                    <span class="text-xs text-slate-500 font-medium">✨ Menampilkan pelajar sefrekuensi</span>
+                    <span class="text-xs text-slate-500 font-medium">Menampilkan pelajar sefrekuensi</span>
                     <div class="flex items-center gap-2">
                         @if(request()->anyFilled(['hobby', 'school', 'city']))
                             <a href="{{ route('matchmaking.index', ['tab' => 'discover']) }}" class="sk-btn-outline text-xs px-3 py-1.5">Reset</a>
@@ -105,21 +105,21 @@
         <!-- Friends Grid -->
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             @forelse($users as $userItem)
-                <div class="sk-card flex flex-col justify-between space-y-3.5 hover:border-orange-300 hover:shadow-md transition-all"
+                <div class="sk-card flex flex-col justify-between space-y-3.5 hover:border-slate-300 transition-all"
                     x-data="{ showMatchModal: false }">
                     
                     <div class="space-y-3">
                         <div class="flex items-start gap-3">
                             <a href="{{ route('profile.show', $userItem->username) }}" class="relative group">
-                                <img src="{{ $userItem->avatar_url }}" alt="{{ $userItem->name }}" class="w-12 h-12 rounded-full object-cover ring-2 ring-orange-200 group-hover:ring-orange-400 transition-all">
+                                <img src="{{ $userItem->avatar_url }}" alt="{{ $userItem->name }}" class="w-12 h-12 rounded-full object-cover ring-2 ring-slate-200 group-hover:ring-[#588157] transition-all">
                             </a>
                             <div class="min-w-0 flex-1">
-                                <a href="{{ route('profile.show', $userItem->username) }}" class="font-bold text-sm text-slate-900 hover:text-orange-600 truncate block transition-colors">
+                                <a href="{{ route('profile.show', $userItem->username) }}" class="font-bold text-sm text-slate-800 hover:text-[#588157] truncate block transition-colors">
                                     {{ $userItem->name }}
                                 </a>
                                 <p class="text-[11px] text-slate-400 font-medium">@<span>{{ $userItem->username }}</span></p>
-                                <span class="inline-block mt-1 px-2.5 py-0.5 rounded-full bg-amber-50 text-amber-800 text-[11px] font-semibold border border-amber-200/80 truncate max-w-full">
-                                    🏫 {{ $userItem->school ? $userItem->school->school_name : 'Pelajar' }}
+                                <span class="inline-block mt-1 px-2.5 py-0.5 rounded-full bg-[#EAF0EA] text-[#2D472C] text-[11px] font-semibold border border-[#CDE0CD] truncate max-w-full">
+                                    {{ $userItem->school ? $userItem->school->school_name : 'Pelajar' }}
                                 </span>
                             </div>
                         </div>
@@ -127,7 +127,7 @@
                         <!-- Bio -->
                         <div class="min-h-[2.75rem] flex flex-col justify-center">
                             @if($userItem->bio)
-                                <p class="text-xs text-slate-600 line-clamp-2 leading-relaxed bg-amber-50/40 p-2.5 rounded-xl border border-amber-100">
+                                <p class="text-xs text-slate-600 line-clamp-2 leading-relaxed bg-[#F8FAFC] p-2.5 rounded-xl border border-slate-200">
                                     "{{ $userItem->bio }}"
                                 </p>
                             @else
@@ -151,25 +151,26 @@
                     </div>
 
                     <!-- Action Button -->
-                    <div class="pt-3 border-t border-amber-100 flex items-center justify-between">
-                        <a href="{{ route('profile.show', $userItem->username) }}" class="text-xs font-semibold text-slate-500 hover:text-orange-600 transition-colors">
+                    <div class="pt-3 border-t border-slate-100 flex items-center justify-between">
+                        <a href="{{ route('profile.show', $userItem->username) }}" class="text-xs font-semibold text-slate-500 hover:text-[#588157] transition-colors">
                             Lihat Profil
                         </a>
 
                         <button type="button" @click="showMatchModal = true" 
-                            class="sk-btn-primary text-xs px-3.5 py-1.5">
-                            🤝 Ajak Main
+                            class="sk-btn-primary text-xs px-3.5 py-1.5 flex items-center gap-1.5">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>
+                            <span>Ajak Main</span>
                         </button>
                     </div>
 
                     <!-- Modal Send Request -->
                     <div x-show="showMatchModal" x-cloak class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs">
-                        <div @click.away="showMatchModal = false" class="sk-card max-w-md w-full shadow-2xl space-y-4 border-2 border-orange-200">
-                            <div class="flex items-center gap-3 border-b border-amber-100 pb-3">
-                                <img src="{{ $userItem->avatar_url }}" class="w-11 h-11 rounded-full object-cover ring-2 ring-orange-200">
+                        <div @click.away="showMatchModal = false" class="sk-card max-w-md w-full shadow-2xl space-y-4 border border-slate-200">
+                            <div class="flex items-center gap-3 border-b border-slate-100 pb-3">
+                                <img src="{{ $userItem->avatar_url }}" class="w-11 h-11 rounded-full object-cover ring-2 ring-slate-200">
                                 <div>
-                                    <h3 class="text-base font-bold text-slate-900">Kirim Ajakan Main</h3>
-                                    <p class="text-xs text-slate-500">Kepada: <strong class="text-orange-600">{{ $userItem->name }}</strong></p>
+                                    <h3 class="text-base font-bold text-slate-800">Kirim Ajakan Main</h3>
+                                    <p class="text-xs text-slate-500">Kepada: <strong class="text-[#588157]">{{ $userItem->name }}</strong></p>
                                 </div>
                             </div>
 
@@ -182,7 +183,7 @@
                                     <select name="hobby_id" class="sk-select text-xs">
                                         <option value="">-- Bebas / Nongkrong Santai --</option>
                                         @foreach($userItem->hobbies as $h)
-                                            <option value="{{ $h->id }}">{{ $h->name }} ({{ $h->category }})</option>
+                                             <option value="{{ $h->id }}">{{ $h->name }} ({{ $h->category }})</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -193,10 +194,10 @@
                                         class="sk-input text-xs"></textarea>
                                 </div>
 
-                                <div class="flex justify-end gap-2 pt-2 border-t border-amber-100">
+                                <div class="flex justify-end gap-2 pt-2 border-t border-slate-100">
                                     <button type="button" @click="showMatchModal = false" class="sk-btn-ghost text-xs px-3 py-1.5">Batal</button>
                                     <button type="submit" class="sk-btn-primary text-xs px-4 py-1.5">
-                                        🚀 Kirim Ajakan
+                                        Kirim Ajakan
                                     </button>
                                 </div>
                             </form>
@@ -218,17 +219,17 @@
             @forelse($incomingRequests as $req)
                 <div class="sk-card flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
                     <div class="flex items-center gap-3">
-                        <img src="{{ $req->sender->avatar_url }}" alt="{{ $req->sender->name }}" class="w-11 h-11 rounded-full object-cover ring-2 ring-orange-200">
+                        <img src="{{ $req->sender->avatar_url }}" alt="{{ $req->sender->name }}" class="w-11 h-11 rounded-full object-cover ring-2 ring-slate-200">
                         <div>
-                            <h4 class="text-sm font-bold text-slate-900">{{ $req->sender->name }}</h4>
+                            <h4 class="text-sm font-bold text-slate-800">{{ $req->sender->name }}</h4>
                             <p class="text-xs text-slate-500">
-                                🏫 {{ $req->sender->school ? $req->sender->school->school_name : 'Pelajar' }}
+                                {{ $req->sender->school ? $req->sender->school->school_name : 'Pelajar' }}
                                 @if($req->hobby)
-                                    • Hobi: <strong class="text-orange-600">#{{ $req->hobby->name }}</strong>
+                                    • Hobi: <strong class="text-[#588157]">#{{ $req->hobby->name }}</strong>
                                 @endif
                             </p>
                             @if($req->note)
-                                <p class="text-xs text-slate-700 italic mt-1.5 bg-orange-50/50 px-3 py-1.5 rounded-xl border border-orange-100">"{{ $req->note }}"</p>
+                                <p class="text-xs text-slate-700 italic mt-1.5 bg-[#F8FAFC] px-3 py-1.5 rounded-xl border border-slate-200">"{{ $req->note }}"</p>
                             @endif
                         </div>
                     </div>
@@ -264,11 +265,11 @@
             @forelse($outgoingRequests as $req)
                 <div class="sk-card flex items-center justify-between gap-3">
                     <div class="flex items-center gap-3">
-                        <img src="{{ $req->receiver->avatar_url }}" alt="{{ $req->receiver->name }}" class="w-11 h-11 rounded-full object-cover ring-2 ring-orange-200">
+                        <img src="{{ $req->receiver->avatar_url }}" alt="{{ $req->receiver->name }}" class="w-11 h-11 rounded-full object-cover ring-2 ring-slate-200">
                         <div>
-                            <h4 class="text-sm font-bold text-slate-900">{{ $req->receiver->name }}</h4>
+                            <h4 class="text-sm font-bold text-slate-800">{{ $req->receiver->name }}</h4>
                             <p class="text-xs text-slate-500">
-                                🏫 {{ $req->receiver->school ? $req->receiver->school->school_name : 'Pelajar' }}
+                                {{ $req->receiver->school ? $req->receiver->school->school_name : 'Pelajar' }}
                                 @if($req->hobby)
                                     • Target: #{{ $req->hobby->name }}
                                 @endif
@@ -278,11 +279,11 @@
 
                     <div>
                         @if($req->status === 'accepted')
-                            <span class="sk-badge-teal text-xs">Diterima 🎉</span>
+                            <span class="sk-badge-sage text-xs">Diterima</span>
                         @elseif($req->status === 'rejected')
                             <span class="px-3 py-1 rounded-full bg-rose-50 text-rose-700 text-xs font-bold border border-rose-200">Ditolak</span>
                         @else
-                            <span class="sk-badge-orange text-xs">Menunggu ⏳</span>
+                            <span class="sk-badge-muted text-xs">Menunggu</span>
                         @endif
                     </div>
                 </div>
@@ -300,15 +301,15 @@
                 <div class="sk-card flex items-center justify-between gap-3">
                     <div class="flex items-center gap-3 min-w-0">
                         <a href="{{ route('profile.show', $friend->username) }}">
-                            <img src="{{ $friend->avatar_url }}" alt="{{ $friend->name }}" class="w-11 h-11 rounded-full object-cover ring-2 ring-teal-200">
+                            <img src="{{ $friend->avatar_url }}" alt="{{ $friend->name }}" class="w-11 h-11 rounded-full object-cover ring-2 ring-slate-200">
                         </a>
                         <div class="min-w-0">
-                            <a href="{{ route('profile.show', $friend->username) }}" class="text-sm font-bold text-slate-900 hover:text-teal-600 truncate block transition-colors">
+                            <a href="{{ route('profile.show', $friend->username) }}" class="text-sm font-bold text-slate-800 hover:text-[#588157] truncate block transition-colors">
                                 {{ $friend->name }}
                             </a>
-                            <p class="text-[11px] text-slate-400 truncate font-medium">🏫 {{ $friend->school ? $friend->school->school_name : 'Pelajar' }}</p>
-                            <span class="sk-badge-teal text-[10px] mt-1">
-                                🤝 Teman Terhubung
+                            <p class="text-[11px] text-slate-400 truncate font-medium">{{ $friend->school ? $friend->school->school_name : 'Pelajar' }}</p>
+                            <span class="sk-badge-sage text-[10px] mt-1">
+                                Teman Terhubung
                             </span>
                         </div>
                     </div>
@@ -327,4 +328,3 @@
 
 </div>
 @endsection
-

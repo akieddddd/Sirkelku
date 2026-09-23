@@ -46,13 +46,15 @@ class FeedController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'content' => ['required', 'string', 'max:1000'],
-            'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
+            'content' => ['nullable', 'required_without:image', 'string', 'max:1000'],
+            'image' => ['nullable', 'file', 'image', 'mimes:jpg,jpeg,png,webp,gif', 'max:10240'],
             'hobby_id' => ['nullable', 'exists:hobbies,id'],
             'community_id' => ['nullable', 'exists:communities,id'],
         ], [
-            'content.required' => 'Ceritain apa yang lagi kamu pikirin atau kerjain!',
-            'image.max' => 'Foto atau gambar maksimal 2 MB.',
+            'content.required_without' => 'Tulis sesuatu atau unggah foto untuk dibagikan!',
+            'image.image' => 'File yang diunggah harus berupa gambar yang valid.',
+            'image.mimes' => 'Format foto harus berupa JPG, JPEG, PNG, WEBP, atau GIF.',
+            'image.max' => 'Ukuran foto maksimal 10 MB.',
         ]);
 
         $imagePath = null;
@@ -64,7 +66,7 @@ class FeedController extends Controller
             'user_id' => Auth::id(),
             'community_id' => $validated['community_id'] ?? null,
             'hobby_id' => $validated['hobby_id'] ?? null,
-            'content' => $validated['content'],
+            'content' => $validated['content'] ?? '',
             'image_path' => $imagePath,
         ]);
 

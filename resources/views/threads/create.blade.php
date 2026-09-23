@@ -4,15 +4,15 @@
 <div class="space-y-5 max-w-2xl mx-auto">
     
     <div class="flex items-center gap-2 text-xs font-bold text-slate-500">
-        <a href="{{ route('threads.index') }}" class="hover:text-orange-600 flex items-center gap-1 transition-colors">
+        <a href="{{ route('threads.index') }}" class="hover:text-[#588157] flex items-center gap-1 transition-colors">
             &larr; Kembali ke Forum
         </a>
     </div>
 
     <div class="sk-card p-5 sm:p-6 space-y-5">
-        <div class="border-b border-orange-100 pb-3.5">
+        <div class="border-b border-slate-200 pb-3.5">
             <h1 class="text-xl font-extrabold text-slate-900">
-                Buat Utas di Tongkrongan.id 💬
+                Buat Utas di Tongkrongan.id
             </h1>
             <p class="text-xs text-slate-500 font-medium mt-0.5">
                 Tulis pertanyaan, bagikan pengalaman, atau diskusikan topik hobi secara santai.

@@ -12,6 +12,42 @@ use Tests\TestCase;
 
 class SirkelkuTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+        if (User::count() === 0) {
+            $this->seed(\Database\Seeders\SirkelkuSeeder::class);
+        }
+    }
+
+    public static function tearDownAfterClass(): void
+    {
+        parent::tearDownAfterClass();
+        try {
+            $host = env('DB_HOST', '127.0.0.1');
+            $port = env('DB_PORT', '3306');
+            $db   = env('DB_DATABASE', 'sirkelku');
+            $user = env('DB_USERNAME', 'root');
+            $pass = env('DB_PASSWORD', '');
+            $pdo  = new \PDO("mysql:host={$host};port={$port};dbname={$db}", $user, $pass);
+            $pdo->exec('SET FOREIGN_KEY_CHECKS = 0;');
+            $tables = [
+                'app_notifications', 'messages', 'match_requests',
+                'thread_comments', 'threads', 'post_comments',
+                'post_likes', 'posts', 'community_members',
+                'communities', 'user_hobbies', 'users'
+            ];
+            foreach ($tables as $table) {
+                $pdo->exec("TRUNCATE TABLE `{$table}`;");
+            }
+            $pdo->exec('DELETE FROM `hobbies` WHERE `id` > 19;');
+            $pdo->exec('DELETE FROM `schools` WHERE `id` > 10;');
+            $pdo->exec('SET FOREIGN_KEY_CHECKS = 1;');
+        } catch (\Throwable $e) {
+            // Silently ignore if connection cannot be made statically
+        }
+    }
+
     public function test_guest_is_redirected_to_login(): void
     {
         $response = $this->get('/');
@@ -23,6 +59,9 @@ class SirkelkuTest extends TestCase
         $response = $this->get('/login');
         $response->assertStatus(200);
         $response->assertSee('Sirkelku');
+        $response->assertSee('togglePasswordBtn');
+        $response->assertSee('eyeOpenIcon');
+        $response->assertSee('eyeClosedIcon');
     }
 
     public function test_user_can_login_and_access_feed(): void
@@ -81,7 +120,7 @@ class SirkelkuTest extends TestCase
         $user = User::where('username', 'dika_gaming')->first();
         $response = $this->actingAs($user)->get('/profile/dika_gaming');
         $response->assertStatus(200);
-        $response->assertSee('Andhika Pratama');
+        $response->assertSee($user->name);
     }
 
     public function test_user_can_create_post_like_and_comment(): void
@@ -89,12 +128,13 @@ class SirkelkuTest extends TestCase
         $user = User::where('username', 'dika_gaming')->first();
 
         // 1. Create Post
+        $content = 'Halo kawan-kawan Sirkelku, ini postingan uji coba ' . uniqid() . '!';
         $response = $this->actingAs($user)->post('/posts', [
-            'content' => 'Halo kawan-kawan Sirkelku, ini postingan uji coba!',
+            'content' => $content,
         ]);
         $response->assertSessionHas('success');
 
-        $post = \App\Models\Post::where('content', 'Halo kawan-kawan Sirkelku, ini postingan uji coba!')->first();
+        $post = \App\Models\Post::where('content', $content)->latest('id')->first();
         $this->assertNotNull($post);
 
         // 2. Like Post
@@ -111,6 +151,35 @@ class SirkelkuTest extends TestCase
             'post_id' => $post->id,
             'comment_text' => 'Komentar pengujian interaktif!',
         ]);
+    }
+
+    public function test_user_can_create_post_with_image(): void
+    {
+        \Illuminate\Support\Facades\Storage::fake('public');
+        $user = User::where('username', 'dika_gaming')->first();
+
+        $file = \Illuminate\Http\UploadedFile::fake()->image('gambar_mabar.jpg', 800, 600);
+
+        $response = $this->actingAs($user)->post('/posts', [
+            'content' => 'Mabar santai sore dengan screenshot game!',
+            'image' => $file,
+        ]);
+
+        $response->assertSessionHas('success');
+
+        $post = \App\Models\Post::where('content', 'Mabar santai sore dengan screenshot game!')->latest('id')->first();
+        $this->assertNotNull($post);
+        $this->assertNotNull($post->image_path);
+
+        \Illuminate\Support\Facades\Storage::disk('public')->assertExists($post->image_path);
+        $this->assertNotNull($post->image_url);
+
+        // Also test posting photo without caption
+        $file2 = \Illuminate\Http\UploadedFile::fake()->image('foto_saja.jpg', 600, 600);
+        $response2 = $this->actingAs($user)->post('/posts', [
+            'image' => $file2,
+        ]);
+        $response2->assertSessionHas('success');
     }
 
     public function test_user_can_create_thread_and_nested_reply(): void
@@ -155,6 +224,11 @@ class SirkelkuTest extends TestCase
         $sender = User::where('username', 'clara_melodi')->first();
         $receiver = User::where('username', 'keiko_art')->first();
 
+        // Clear prior state
+        \App\Models\MatchRequest::where('sender_id', $sender->id)
+            ->where('receiver_id', $receiver->id)
+            ->delete();
+
         // 1. Send Request
         $response = $this->actingAs($sender)->post('/teman-main/request', [
             'receiver_id' => $receiver->id,
@@ -187,4 +261,51 @@ class SirkelkuTest extends TestCase
         $response = $this->actingAs($user)->post('/notifications/mark-read');
         $response->assertSessionHas('success');
     }
+
+    public function test_realtime_chat_messaging_notifications_and_sync(): void
+    {
+        $sender = User::where('username', 'dika_gaming')->first();
+        $receiver = User::where('username', 'clara_melodi')->first();
+
+        // 1. Send chat message via JSON/AJAX
+        $response = $this->actingAs($sender)->postJson('/messages/' . $receiver->username, [
+            'content' => 'Halo Clara, ayo mabar Valorant nanti malam!',
+        ]);
+        $response->assertStatus(200);
+        $response->assertJsonStructure([
+            'status',
+            'id',
+            'content',
+            'sender_id',
+            'created_at_iso',
+        ]);
+
+        $messageId = $response->json('id');
+
+        // Verify AppNotification was automatically created for Clara
+        $this->assertDatabaseHas('app_notifications', [
+            'user_id' => $receiver->id,
+            'actor_id' => $sender->id,
+            'type' => 'message',
+            'is_read' => false,
+        ]);
+
+        // 2. Clara receives incoming message in checkIncoming poller
+        $checkResponse = $this->actingAs($receiver)->getJson('/messages/check-incoming');
+        $checkResponse->assertStatus(200);
+        $this->assertTrue($checkResponse->json('unread_messages_count') >= 1);
+        $this->assertTrue($checkResponse->json('unread_notifications_count') >= 1);
+
+        // 3. Clara opens or syncs the chat room
+        $syncResponse = $this->actingAs($receiver)->getJson('/messages/' . $sender->username . '/sync?after_id=0');
+        $syncResponse->assertStatus(200);
+        $syncResponse->assertJsonFragment([
+            'id' => $messageId,
+            'content' => 'Halo Clara, ayo mabar Valorant nanti malam!',
+        ]);
+
+        // Verify message is now marked as read
+        $this->assertNotNull(\App\Models\Message::find($messageId)->read_at);
+    }
 }
+

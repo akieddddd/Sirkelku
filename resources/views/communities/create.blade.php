@@ -5,15 +5,15 @@
     
     <!-- Breadcrumb / Back button -->
     <div class="flex items-center gap-2 text-xs font-bold text-slate-500">
-        <a href="{{ route('communities.index') }}" class="hover:text-orange-600 flex items-center gap-1 transition-colors">
+        <a href="{{ route('communities.index') }}" class="hover:text-[#588157] flex items-center gap-1 transition-colors">
             &larr; Kembali ke Direktori
         </a>
     </div>
 
     <div class="sk-card p-5 sm:p-6 space-y-5">
-        <div class="border-b border-orange-100 pb-4">
-            <h1 class="text-xl font-extrabold text-slate-900">
-                Bikin Sirkel Komunitas 🚀
+        <div class="border-b border-slate-200 pb-4">
+            <h1 class="text-xl font-extrabold text-slate-800">
+                Bikin Sirkel Komunitas
             </h1>
             <p class="text-xs text-slate-500 font-medium mt-0.5">
                 Kumpulkan teman-teman sefrekuensi dari sekolahmu atau gabungkan pelajar lintas sekolah.
@@ -86,7 +86,7 @@
                         Banner Sampul Sirkel
                     </label>
                     <input type="file" name="banner" id="banner" accept="image/*"
-                        class="block w-full text-xs text-slate-500 file:mr-2.5 file:py-2 file:px-3.5 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-orange-50 file:text-orange-700 hover:file:bg-orange-100 cursor-pointer">
+                        class="block w-full text-xs text-slate-500 file:mr-2.5 file:py-2 file:px-3.5 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-[#EAF0EA] file:text-[#2D472C] hover:file:bg-[#DFEADF] cursor-pointer">
                 </div>
 
                 <div>
@@ -94,7 +94,7 @@
                         Logo / Avatar Sirkel
                     </label>
                     <input type="file" name="avatar" id="avatar" accept="image/*"
-                        class="block w-full text-xs text-slate-500 file:mr-2.5 file:py-2 file:px-3.5 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-orange-50 file:text-orange-700 hover:file:bg-orange-100 cursor-pointer">
+                        class="block w-full text-xs text-slate-500 file:mr-2.5 file:py-2 file:px-3.5 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-[#EAF0EA] file:text-[#2D472C] hover:file:bg-[#DFEADF] cursor-pointer">
                 </div>
             </div>
 

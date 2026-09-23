@@ -88,6 +88,11 @@ class User extends Authenticatable
         return $this->notifications()->where('is_read', false)->count();
     }
 
+    public function unreadMessagesCount(): int
+    {
+        return $this->receivedMessages()->whereNull('read_at')->count();
+    }
+
     public function isOnboarded(): bool
     {
         return !is_null($this->school_id) && $this->hobbies()->exists();

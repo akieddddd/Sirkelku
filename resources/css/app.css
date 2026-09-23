@@ -8,10 +8,14 @@
 
 @theme {
     --font-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    --color-orange-primary: #F97316;
-    --color-orange-dark: #EA580C;
-    --color-amber-accent: #F59E0B;
-    --color-teal-accent: #14B8A6;
+    --color-primary-sage: #588157;
+    --color-primary-sage-hover: #476A46;
+    --color-primary-sage-light: #EAF0EA;
+    --color-dark-charcoal: #1E293B;
+    --color-charcoal-muted: #64748B;
+    --color-surface-card: #FFFFFF;
+    --color-border-card: #E2E8F0;
+    --color-bg-main: #F8FAFC;
 }
 
 /* Smooth scrolling behavior */

@@ -71,12 +71,14 @@ class AppServiceProvider extends ServiceProvider
             }
 
             $unreadCount = $user ? $user->unreadNotificationsCount() : 0;
+            $unreadMessagesCount = $user ? $user->unreadMessagesCount() : 0;
 
             $view->with([
                 'trendingCommunities' => $trendingCommunities,
                 'hotThreads' => $hotThreads,
                 'suggestedFriends' => $suggestedFriends,
                 'unreadCount' => $unreadCount,
+                'unreadMessagesCount' => $unreadMessagesCount,
             ]);
         });
     }

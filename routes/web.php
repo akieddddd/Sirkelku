@@ -78,7 +78,9 @@ Route::middleware('auth')->group(function () {
 
         // Modul 7: Direct Messages
         Route::get('/messages', [\App\Http\Controllers\MessageController::class, 'index'])->name('messages.index');
+        Route::get('/messages/check-incoming', [\App\Http\Controllers\MessageController::class, 'checkIncoming'])->name('messages.checkIncoming');
+        Route::get('/messages/{user:username}/sync', [\App\Http\Controllers\MessageController::class, 'sync'])->name('messages.sync');
         Route::get('/messages/{user:username}', [\App\Http\Controllers\MessageController::class, 'show'])->name('messages.show');
-        Route::post('/messages/{user}', [\App\Http\Controllers\MessageController::class, 'store'])->name('messages.store');
+        Route::post('/messages/{user:username}', [\App\Http\Controllers\MessageController::class, 'store'])->name('messages.store');
     });
 });
