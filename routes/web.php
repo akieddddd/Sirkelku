@@ -11,12 +11,9 @@ use App\Http\Controllers\ThreadController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-// Redirect root to feed or login
+// Show Landing Page for all visitors
 Route::get('/', function () {
-    if (Auth::check()) {
-        return redirect()->route('feed.index');
-    }
-    return redirect()->route('login');
+    return view('landing');
 });
 
 // Guest Authentication Routes
