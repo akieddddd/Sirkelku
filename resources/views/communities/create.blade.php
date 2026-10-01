@@ -5,7 +5,7 @@
     
     <!-- Breadcrumb / Back button -->
     <div class="flex items-center gap-2 text-xs font-bold text-slate-500">
-        <a href="{{ route('communities.index') }}" class="hover:text-[#588157] flex items-center gap-1 transition-colors">
+        <a href="{{ route('communities.index') }}" class="hover:text-[#FF4500] flex items-center gap-1 transition-colors">
             &larr; Kembali ke Direktori
         </a>
     </div>
@@ -86,7 +86,7 @@
                         Banner Sampul Sirkel
                     </label>
                     <input type="file" name="banner" id="banner" accept="image/*"
-                        class="block w-full text-xs text-slate-500 file:mr-2.5 file:py-2 file:px-3.5 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-[#EAF0EA] file:text-[#2D472C] hover:file:bg-[#DFEADF] cursor-pointer">
+                        class="block w-full text-xs text-slate-500 file:mr-2.5 file:py-2 file:px-3.5 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-[#FFF0E6] file:text-[#2D472C] hover:file:bg-[#DFEADF] cursor-pointer">
                 </div>
 
                 <div>
@@ -94,7 +94,7 @@
                         Logo / Avatar Sirkel
                     </label>
                     <input type="file" name="avatar" id="avatar" accept="image/*"
-                        class="block w-full text-xs text-slate-500 file:mr-2.5 file:py-2 file:px-3.5 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-[#EAF0EA] file:text-[#2D472C] hover:file:bg-[#DFEADF] cursor-pointer">
+                        class="block w-full text-xs text-slate-500 file:mr-2.5 file:py-2 file:px-3.5 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-[#FFF0E6] file:text-[#2D472C] hover:file:bg-[#DFEADF] cursor-pointer">
                 </div>
             </div>
 

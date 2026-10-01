@@ -28,7 +28,7 @@
                             @endif
                         </div>
                         <p class="text-xs text-slate-500 font-medium flex items-center gap-2">
-                            <span class="font-bold text-[#588157]">{{ $community->members_count }} Anggota</span>
+                            <span class="font-bold text-[#FF4500]">{{ $community->members_count }} Anggota</span>
                             <span>•</span>
                             <span>Oleh <strong class="text-slate-800 font-bold">{{ $community->creator->name }}</strong></span>
                         </p>
@@ -89,15 +89,15 @@
             <!-- Navigation Tabs -->
             <div class="flex items-center gap-2 pt-4 mt-4 border-t border-slate-100 overflow-x-auto">
                 <a href="{{ route('communities.show', ['slug' => $community->slug, 'tab' => 'feed']) }}"
-                    class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all {{ $activeTab === 'feed' ? 'bg-[#588157] text-white shadow-xs' : 'text-slate-600 hover:bg-slate-50 hover:text-[#588157]' }}">
+                    class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all {{ $activeTab === 'feed' ? 'bg-[#FF4500] text-white shadow-xs' : 'text-slate-600 hover:bg-slate-50 hover:text-[#FF4500]' }}">
                     Linimasa Sirkel
                 </a>
                 <a href="{{ route('communities.show', ['slug' => $community->slug, 'tab' => 'forum']) }}"
-                    class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all {{ $activeTab === 'forum' ? 'bg-[#588157] text-white shadow-xs' : 'text-slate-600 hover:bg-slate-50 hover:text-[#588157]' }}">
+                    class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all {{ $activeTab === 'forum' ? 'bg-[#FF4500] text-white shadow-xs' : 'text-slate-600 hover:bg-slate-50 hover:text-[#FF4500]' }}">
                     Forum Diskusi
                 </a>
                 <a href="{{ route('communities.show', ['slug' => $community->slug, 'tab' => 'members']) }}"
-                    class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all {{ $activeTab === 'members' ? 'bg-[#588157] text-white shadow-xs' : 'text-slate-600 hover:bg-slate-50 hover:text-[#588157]' }}">
+                    class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all {{ $activeTab === 'members' ? 'bg-[#FF4500] text-white shadow-xs' : 'text-slate-600 hover:bg-slate-50 hover:text-[#FF4500]' }}">
                     Anggota ({{ $community->members_count }})
                 </a>
             </div>
@@ -119,8 +119,8 @@
                         <textarea name="content" rows="2.5" placeholder="Bagikan kabar atau info kegiatan khusus anggota {{ $community->name }}..."
                             class="sk-input text-xs sm:text-sm p-3"></textarea>
                         <div class="flex items-center justify-between">
-                            <label class="cursor-pointer text-xs font-bold text-[#588157] hover:text-[#476A46] flex items-center gap-1.5">
-                                <svg class="w-4 h-4 text-[#588157]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                            <label class="cursor-pointer text-xs font-bold text-[#FF4500] hover:text-[#E03E00] flex items-center gap-1.5">
+                                <svg class="w-4 h-4 text-[#FF4500]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
                                 <span>Lampirkan Foto</span>
                                 <input type="file" name="image" accept="image/*" class="sr-only">
                             </label>
@@ -185,7 +185,7 @@
                             <span class="sk-badge-sage">#{{ $thread->hobby ? $thread->hobby->name : 'Diskusi' }}</span>
                             <span class="text-[11px] text-slate-400 font-semibold">{{ $thread->comments_count }} tanggapan</span>
                         </div>
-                        <h4 class="font-bold text-sm text-slate-800 group-hover:text-[#588157] transition-colors">{{ $thread->title }}</h4>
+                        <h4 class="font-bold text-sm text-slate-800 group-hover:text-[#FF4500] transition-colors">{{ $thread->title }}</h4>
                         <p class="text-xs text-slate-500 line-clamp-2 mt-1 font-medium">{{ Str::limit($thread->body, 120) }}</p>
                     </a>
                 @empty
@@ -208,7 +208,7 @@
                         <a href="{{ route('profile.show', $member->username) }}" class="flex items-center gap-2.5 min-w-0">
                             <img src="{{ $member->avatar_url }}" alt="{{ $member->name }}" class="w-8 h-8 rounded-full object-cover ring-2 ring-slate-200">
                             <div class="min-w-0">
-                                <p class="text-xs font-bold text-slate-800 truncate hover:text-[#588157] transition-colors">{{ $member->name }}</p>
+                                <p class="text-xs font-bold text-slate-800 truncate hover:text-[#FF4500] transition-colors">{{ $member->name }}</p>
                                 <p class="text-[11px] text-slate-400 font-medium truncate">{{ $member->school ? $member->school->school_name : 'Pelajar' }}</p>
                             </div>
                         </a>

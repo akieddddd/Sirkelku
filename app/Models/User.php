@@ -21,6 +21,7 @@ class User extends Authenticatable
         'school_id',
         'bio',
         'avatar_path',
+        'last_seen_at',
     ];
 
     protected $hidden = [
@@ -33,7 +34,13 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'last_seen_at' => 'datetime',
         ];
+    }
+
+    public function isOnline(): bool
+    {
+        return $this->last_seen_at && $this->last_seen_at->diffInMinutes(now()) <= 5;
     }
 
     public function school(): BelongsTo

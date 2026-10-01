@@ -4,7 +4,7 @@
 <div class="space-y-5 max-w-2xl mx-auto">
     
     <div class="flex items-center gap-2 text-xs font-bold text-slate-500">
-        <a href="{{ route('threads.index') }}" class="hover:text-[#588157] flex items-center gap-1 transition-colors">
+        <a href="{{ route('threads.index') }}" class="hover:text-[#FF4500] flex items-center gap-1 transition-colors">
             &larr; Kembali ke Forum
         </a>
     </div>

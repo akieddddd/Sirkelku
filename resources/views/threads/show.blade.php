@@ -5,7 +5,7 @@
 
     <!-- Back to Forum -->
     <div class="flex items-center justify-between">
-        <a href="{{ route('threads.index') }}" class="text-xs font-bold text-slate-500 hover:text-[#588157] flex items-center gap-1 transition-colors">
+        <a href="{{ route('threads.index') }}" class="text-xs font-bold text-slate-500 hover:text-[#FF4500] flex items-center gap-1 transition-colors">
             &larr; Kembali ke Forum Tongkrongan
         </a>
 
@@ -22,7 +22,7 @@
     </div>
 
     <!-- Main Thread Card -->
-    <div class="sk-card p-5 sm:p-6 space-y-4 {{ $thread->is_pinned ? 'border-[#588157]/40 bg-[#EAF0EA]/30' : '' }}">
+    <div class="sk-card p-5 sm:p-6 space-y-4 {{ $thread->is_pinned ? 'border-[#FF4500]/40 bg-[#FFF0E6]/30' : '' }}">
         <!-- Badges & Author -->
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div class="flex items-center gap-3">
@@ -31,10 +31,10 @@
                 </a>
                 <div>
                     <div class="flex items-center gap-1.5">
-                        <a href="{{ route('profile.show', $thread->user->username) }}" class="text-sm font-bold text-slate-800 hover:text-[#588157] transition-colors">
+                        <a href="{{ route('profile.show', $thread->user->username) }}" class="text-sm font-bold text-slate-800 hover:text-[#FF4500] transition-colors">
                             {{ $thread->user->name }}
                         </a>
-                        <span class="text-xs text-[#588157] font-semibold">@<span>{{ $thread->user->username }}</span></span>
+                        <span class="text-xs text-[#FF4500] font-semibold">@<span>{{ $thread->user->username }}</span></span>
                     </div>
                     <p class="text-xs text-slate-400 font-medium">
                         {{ $thread->user->school ? $thread->user->school->school_name : 'Pelajar' }} • {{ $thread->created_at->diffForHumans() }}
@@ -73,7 +73,7 @@
         <!-- Meta bar -->
         <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 font-semibold">
             <span>{{ $thread->comments_count }} Balasan Diskusi</span>
-            <button type="button" onclick="copyToClipboard(window.location.href, 'Tautan utas berhasil disalin!')" class="hover:text-[#588157] flex items-center gap-1 font-bold">
+            <button type="button" onclick="copyToClipboard(window.location.href, 'Tautan utas berhasil disalin!')" class="hover:text-[#FF4500] flex items-center gap-1 font-bold">
                 Salin Tautan
             </button>
         </div>
@@ -113,7 +113,7 @@
                         </a>
                         <div>
                             <div class="flex items-center gap-2">
-                                <a href="{{ route('profile.show', $comment->user->username) }}" class="text-xs font-bold text-slate-800 hover:text-[#588157] transition-colors">
+                                <a href="{{ route('profile.show', $comment->user->username) }}" class="text-xs font-bold text-slate-800 hover:text-[#FF4500] transition-colors">
                                     {{ $comment->user->name }}
                                 </a>
                                 @if($comment->user_id === $thread->user_id)
@@ -127,7 +127,7 @@
                     </div>
 
                     <!-- Reply Trigger Button -->
-                    <button @click="replyOpen = !replyOpen" class="text-xs font-bold text-[#588157] hover:text-[#476A46] transition-colors">
+                    <button @click="replyOpen = !replyOpen" class="text-xs font-bold text-[#FF4500] hover:text-[#E03E00] transition-colors">
                         Balas
                     </button>
                 </div>
@@ -153,7 +153,7 @@
 
                 <!-- Nested Replies (Child Comments) -->
                 @if($comment->replies->isNotEmpty())
-                    <div class="pl-6 sm:pl-10 space-y-2.5 pt-2 border-l-2 border-[#588157]/30 ml-4">
+                    <div class="pl-6 sm:pl-10 space-y-2.5 pt-2 border-l-2 border-[#FF4500]/30 ml-4">
                         @foreach($comment->replies as $reply)
                             <div id="comment-{{ $reply->id }}" class="bg-[#F8FAFC] p-3 rounded-xl border border-slate-200 space-y-1.5" x-data="{ subReplyOpen: false }">
                                 <div class="flex items-center justify-between">
@@ -162,7 +162,7 @@
                                             <img src="{{ $reply->user->avatar_url }}" alt="{{ $reply->user->name }}" class="w-6 h-6 rounded-full object-cover ring-1 ring-slate-200">
                                         </a>
                                         <div class="flex items-center gap-1.5">
-                                            <a href="{{ route('profile.show', $reply->user->username) }}" class="text-xs font-bold text-slate-800 hover:text-[#588157] transition-colors">
+                                            <a href="{{ route('profile.show', $reply->user->username) }}" class="text-xs font-bold text-slate-800 hover:text-[#FF4500] transition-colors">
                                                 {{ $reply->user->name }}
                                             </a>
                                             @if($reply->user_id === $thread->user_id)
@@ -171,7 +171,7 @@
                                             <span class="text-[10px] text-slate-400 font-medium">• {{ $reply->created_at->diffForHumans() }}</span>
                                         </div>
                                     </div>
-                                    <button @click="subReplyOpen = !subReplyOpen" class="text-xs font-bold text-[#588157] hover:text-[#476A46]">
+                                    <button @click="subReplyOpen = !subReplyOpen" class="text-xs font-bold text-[#FF4500] hover:text-[#E03E00]">
                                         Balas
                                     </button>
                                 </div>

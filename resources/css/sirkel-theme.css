@@ -13,13 +13,13 @@
   --sk-text-muted: #64748B;
   --sk-text-light: #94A3B8;
 
-  /* Warna Aksen & CTA (Primary Accent): Muted Sage (#588157) */
-  --sk-primary: #588157;
-  --sk-primary-hover: #476A46;
-  --sk-primary-dark: #3A5A39;
-  --sk-primary-light: #EAF0EA;
-  --sk-primary-border: #CDE0CD;
-  --sk-primary-text: #2D472C;
+  /* Warna Aksen & CTA (Primary Accent): Vibrant Orange (#FF4500) */
+  --sk-primary: #FF4500;
+  --sk-primary-hover: #E03E00;
+  --sk-primary-dark: #B33000;
+  --sk-primary-light: #FFF0E6;
+  --sk-primary-border: #F0D5C6;
+  --sk-primary-text: #B33000;
 
   /* Charcoal structure & dark accents */
   --sk-charcoal: #1E293B;

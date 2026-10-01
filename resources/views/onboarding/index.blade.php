@@ -14,7 +14,7 @@
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.8/dist/cdn.min.js"></script>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="min-h-full bg-[#F8FAFC] text-slate-800 py-10 px-4 antialiased selection:bg-[#588157] selection:text-white">
+<body class="min-h-full bg-[#F8FAFC] text-slate-800 py-10 px-4 antialiased selection:bg-[#FF4500] selection:text-white">
     
     <div class="max-w-2xl mx-auto space-y-6" x-data="{ schoolType: 'existing' }">
         
@@ -39,18 +39,18 @@
                 <!-- Section 1: Asal Sekolah -->
                 <div class="space-y-3.5">
                     <div class="flex items-center gap-2.5">
-                        <span class="w-6 h-6 rounded-lg bg-[#588157] text-white font-extrabold text-xs flex items-center justify-center">1</span>
+                        <span class="w-6 h-6 rounded-lg bg-[#FF4500] text-white font-extrabold text-xs flex items-center justify-center">1</span>
                         <h2 class="text-sm font-extrabold text-slate-900">Asal Sekolah <span class="text-rose-500">*</span></h2>
                     </div>
 
                     <div class="grid grid-cols-2 gap-2.5">
                         <button type="button" @click="schoolType = 'existing'" 
-                            :class="schoolType === 'existing' ? 'bg-[#588157] text-white shadow-xs font-bold' : 'bg-slate-100 border border-slate-200 text-slate-700 hover:bg-emerald-50 hover:text-[#588157] font-semibold'"
+                            :class="schoolType === 'existing' ? 'bg-[#FF4500] text-white shadow-xs font-bold' : 'bg-slate-100 border border-slate-200 text-slate-700 hover:bg-emerald-50 hover:text-[#FF4500] font-semibold'"
                             class="p-2.5 rounded-xl text-xs transition-all text-center">
                             Pilih Sekolah Terdaftar
                         </button>
                         <button type="button" @click="schoolType = 'custom'" 
-                            :class="schoolType === 'custom' ? 'bg-[#588157] text-white shadow-xs font-bold' : 'bg-slate-100 border border-slate-200 text-slate-700 hover:bg-emerald-50 hover:text-[#588157] font-semibold'"
+                            :class="schoolType === 'custom' ? 'bg-[#FF4500] text-white shadow-xs font-bold' : 'bg-slate-100 border border-slate-200 text-slate-700 hover:bg-emerald-50 hover:text-[#FF4500] font-semibold'"
                             class="p-2.5 rounded-xl text-xs transition-all text-center">
                             Tambah Sekolah Baru
                         </button>
@@ -92,7 +92,7 @@
                 <div class="space-y-3.5">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center gap-2.5">
-                            <span class="w-6 h-6 rounded-lg bg-[#588157] text-white font-extrabold text-xs flex items-center justify-center">2</span>
+                            <span class="w-6 h-6 rounded-lg bg-[#FF4500] text-white font-extrabold text-xs flex items-center justify-center">2</span>
                             <h2 class="text-sm font-extrabold text-slate-900">Hobi & Minat Utama <span class="text-rose-500">*</span></h2>
                         </div>
                         <span class="text-xs text-slate-400 font-semibold">Pilih minimal 1 hobi</span>
@@ -101,7 +101,7 @@
                     <div class="space-y-3.5">
                         @foreach($hobbiesByCategory as $category => $hobbies)
                             <div>
-                                <h3 class="text-[11px] font-bold uppercase tracking-wider text-[#588157] mb-1.5">
+                                <h3 class="text-[11px] font-bold uppercase tracking-wider text-[#FF4500] mb-1.5">
                                     {{ $category }}
                                 </h3>
                                 <div class="flex flex-wrap gap-2">
@@ -109,7 +109,7 @@
                                         <label class="cursor-pointer select-none">
                                             <input type="checkbox" name="hobby_ids[]" value="{{ $hobby->id }}" class="peer sr-only"
                                                 {{ (is_array(old('hobby_ids')) && in_array($hobby->id, old('hobby_ids'))) ? 'checked' : '' }}>
-                                            <div class="px-3.5 py-1.5 rounded-xl text-xs font-bold border border-slate-200 bg-slate-50 text-slate-700 transition-all peer-checked:bg-[#588157] peer-checked:border-[#588157] peer-checked:text-white peer-checked:shadow-xs hover:bg-emerald-50/60">
+                                            <div class="px-3.5 py-1.5 rounded-xl text-xs font-bold border border-slate-200 bg-slate-50 text-slate-700 transition-all peer-checked:bg-[#FF4500] peer-checked:border-[#FF4500] peer-checked:text-white peer-checked:shadow-xs hover:bg-emerald-50/60">
                                                 {{ $hobby->name }}
                                             </div>
                                         </label>
@@ -125,7 +125,7 @@
                 <!-- Section 3: Bio & Foto Profil (Opsional) -->
                 <div class="space-y-3.5">
                     <div class="flex items-center gap-2.5">
-                        <span class="w-6 h-6 rounded-lg bg-[#588157] text-white font-extrabold text-xs flex items-center justify-center">3</span>
+                        <span class="w-6 h-6 rounded-lg bg-[#FF4500] text-white font-extrabold text-xs flex items-center justify-center">3</span>
                         <h2 class="text-sm font-extrabold text-slate-900">Bio & Foto Profil <span class="text-xs font-normal text-slate-400">(Opsional)</span></h2>
                     </div>
 
@@ -138,7 +138,7 @@
                     <div>
                         <label for="avatar" class="block text-xs font-semibold text-slate-500 mb-1">Foto Avatar</label>
                         <input type="file" name="avatar" id="avatar" accept="image/*"
-                            class="block w-full text-xs text-slate-500 file:mr-2.5 file:py-2 file:px-3.5 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-emerald-50 file:text-[#588157] hover:file:bg-emerald-100 cursor-pointer">
+                            class="block w-full text-xs text-slate-500 file:mr-2.5 file:py-2 file:px-3.5 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-emerald-50 file:text-[#FF4500] hover:file:bg-emerald-100 cursor-pointer">
                     </div>
                 </div>
 

@@ -27,7 +27,7 @@
         border-radius: 9999px;
     }
     #chat-container::-webkit-scrollbar-thumb:hover {
-        background: #588157;
+        background: #FF4500;
     }
 </style>
 
@@ -37,21 +37,21 @@
         <!-- Header -->
         <div class="p-3.5 sm:p-4 border-b border-slate-200 bg-white flex items-center justify-between gap-3 shrink-0">
             <div class="flex items-center gap-3 min-w-0">
-                <a href="{{ route('messages.index') }}" class="p-2 -ml-1 hover:bg-slate-100 rounded-full text-slate-500 hover:text-[#588157] transition-colors shrink-0" title="Kembali">
+                <a href="{{ route('messages.index') }}" class="p-2 -ml-1 hover:bg-slate-100 rounded-full text-slate-500 hover:text-[#FF4500] transition-colors shrink-0" title="Kembali">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
                 </a>
                 
                 <a href="{{ route('profile.show', $user->username) }}" class="flex items-center gap-3 group min-w-0">
                     <div class="relative shrink-0">
                         <img src="{{ $user->avatar_url }}" alt="{{ $user->name }}" class="w-10 h-10 sm:w-11 sm:h-11 rounded-full ring-2 ring-slate-200 object-cover group-hover:scale-105 transition-transform duration-200">
-                        <span class="absolute bottom-0 right-0 w-3 h-3 rounded-full bg-[#588157] ring-2 ring-white"></span>
+                        <span class="absolute bottom-0 right-0 w-3 h-3 rounded-full bg-[#FF4500] ring-2 ring-white"></span>
                     </div>
                     <div class="min-w-0">
-                        <h2 class="text-sm sm:text-base font-extrabold text-slate-800 group-hover:text-[#588157] transition-colors truncate">{{ $user->name }}</h2>
+                        <h2 class="text-sm sm:text-base font-extrabold text-slate-800 group-hover:text-[#FF4500] transition-colors truncate">{{ $user->name }}</h2>
                         <div class="flex items-center gap-1.5 text-xs text-slate-500">
                             <span class="truncate">@<span>{{ $user->username }}</span></span>
                             @if($user->school)
-                                <span class="hidden sm:inline-block text-[11px] text-[#588157] font-medium truncate">• {{ $user->school->school_name }}</span>
+                                <span class="hidden sm:inline-block text-[11px] text-[#FF4500] font-medium truncate">• {{ $user->school->school_name }}</span>
                             @endif
                         </div>
                     </div>
@@ -60,7 +60,7 @@
 
             <div class="flex items-center gap-2 shrink-0">
                 <!-- Sound Toggle -->
-                <button type="button" id="sound-toggle-btn" class="p-2 rounded-xl text-slate-400 hover:text-[#588157] hover:bg-slate-50 transition-colors" title="Suara Notifikasi Chat">
+                <button type="button" id="sound-toggle-btn" class="p-2 rounded-xl text-slate-400 hover:text-[#FF4500] hover:bg-slate-50 transition-colors" title="Suara Notifikasi Chat">
                     <svg id="sound-icon-on" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
                     </svg>
@@ -71,8 +71,8 @@
                 </button>
 
                 <!-- Live Realtime Badge -->
-                <span id="realtime-indicator" class="inline-flex items-center gap-1.5 text-[10px] sm:text-[11px] font-bold text-[#2D472C] bg-[#EAF0EA] border border-[#CDE0CD] px-2.5 py-1 rounded-full shadow-2xs">
-                    <span class="w-2 h-2 rounded-full bg-[#588157] animate-pulse"></span>
+                <span id="realtime-indicator" class="inline-flex items-center gap-1.5 text-[10px] sm:text-[11px] font-bold text-[#2D472C] bg-[#FFF0E6] border border-[#CDE0CD] px-2.5 py-1 rounded-full shadow-2xs">
+                    <span class="w-2 h-2 rounded-full bg-[#FF4500] animate-pulse"></span>
                     <span>Live</span>
                 </span>
             </div>
@@ -83,7 +83,7 @@
             @forelse($messages as $msg)
                 @if($msg->sender_id === Auth::id())
                     <div class="flex justify-end msg-animate" id="msg-{{ $msg->id }}" data-id="{{ $msg->id }}">
-                        <div class="bg-[#588157] text-white px-4 py-2.5 rounded-2xl rounded-tr-xs max-w-[85%] sm:max-w-[75%] shadow-xs">
+                        <div class="bg-[#FF4500] text-white px-4 py-2.5 rounded-2xl rounded-tr-xs max-w-[85%] sm:max-w-[75%] shadow-xs">
                             <p class="text-xs sm:text-sm whitespace-pre-wrap leading-relaxed">{{ $msg->content }}</p>
                             <div class="flex items-center justify-end gap-1.5 mt-1">
                                 <span class="device-time text-[10px] text-white/80 font-medium" data-timestamp="{{ $msg->created_at->toIso8601String() }}">
@@ -107,7 +107,7 @@
                 @endif
             @empty
                 <div class="text-center my-auto p-8" id="empty-state">
-                    <div class="w-14 h-14 rounded-2xl bg-[#EAF0EA] border border-[#CDE0CD] flex items-center justify-center mx-auto mb-3 text-[#588157]">
+                    <div class="w-14 h-14 rounded-2xl bg-[#FFF0E6] border border-[#CDE0CD] flex items-center justify-center mx-auto mb-3 text-[#FF4500]">
                         <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" /></svg>
                     </div>
                     <h3 class="text-sm font-extrabold text-slate-800 mb-1">Mulai Obrolan dengan {{ $user->name }}</h3>
@@ -117,7 +117,7 @@
         </div>
 
         <!-- Floating Scroll to Bottom / New Message Badge -->
-        <button type="button" id="scroll-bottom-btn" class="hidden absolute bottom-20 right-6 bg-[#588157] hover:bg-[#476A46] text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg flex items-center gap-1.5 transition-all duration-200 z-10">
+        <button type="button" id="scroll-bottom-btn" class="hidden absolute bottom-20 right-6 bg-[#FF4500] hover:bg-[#E03E00] text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg flex items-center gap-1.5 transition-all duration-200 z-10">
             <span>Pesan Baru</span>
             <svg class="w-3.5 h-3.5 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 14l-7 7m0 0l-7-7m7 7V3" /></svg>
         </button>
@@ -127,8 +127,8 @@
             <form id="message-form" class="flex items-center gap-2">
                 @csrf
                 <input type="text" id="message-input" placeholder="Ketik pesan..." required autocomplete="off"
-                    class="flex-1 bg-white hover:bg-slate-50/50 focus:bg-white border border-slate-200 focus:border-[#588157] focus:ring-2 focus:ring-[#588157]/20 rounded-2xl text-xs sm:text-sm px-4 py-3 outline-none transition-all duration-150 text-slate-800">
-                <button type="submit" id="send-button" class="bg-[#588157] hover:bg-[#476A46] active:scale-95 text-white rounded-2xl px-4 sm:px-5 py-3 flex items-center justify-center shadow-xs transition-all duration-150 shrink-0" title="Kirim">
+                    class="flex-1 bg-white hover:bg-slate-50/50 focus:bg-white border border-slate-200 focus:border-[#FF4500] focus:ring-2 focus:ring-[#FF4500]/20 rounded-2xl text-xs sm:text-sm px-4 py-3 outline-none transition-all duration-150 text-slate-800">
+                <button type="submit" id="send-button" class="bg-[#FF4500] hover:bg-[#E03E00] active:scale-95 text-white rounded-2xl px-4 sm:px-5 py-3 flex items-center justify-center shadow-xs transition-all duration-150 shrink-0" title="Kirim">
                     <svg class="w-4 h-4 sm:w-5 sm:h-5 -rotate-45" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" /></svg>
                 </button>
             </form>
@@ -291,7 +291,7 @@
 
         if (isSender) {
             wrapper.innerHTML = `
-                <div class="bg-[#588157] text-white px-4 py-2.5 rounded-2xl rounded-tr-xs max-w-[85%] sm:max-w-[75%] shadow-xs">
+                <div class="bg-[#FF4500] text-white px-4 py-2.5 rounded-2xl rounded-tr-xs max-w-[85%] sm:max-w-[75%] shadow-xs">
                     <p class="text-xs sm:text-sm whitespace-pre-wrap leading-relaxed">${escapeHtml(content)}</p>
                     <div class="flex items-center justify-end gap-1.5 mt-1">
                         <span class="text-[10px] text-white/80 font-medium">${timeString}</span>

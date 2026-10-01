@@ -23,16 +23,16 @@
         <div class="flex items-center gap-1.5 pt-4 mt-4 border-t border-slate-100 overflow-x-auto">
             <!-- Discover Tab -->
             <a href="{{ route('matchmaking.index', ['tab' => 'discover']) }}"
-                class="px-4 py-2 rounded-xl text-xs font-bold transition-all shrink-0 {{ $tab === 'discover' ? 'bg-[#588157] text-white shadow-xs' : 'text-slate-600 hover:bg-slate-50 hover:text-[#588157]' }}">
+                class="px-4 py-2 rounded-xl text-xs font-bold transition-all shrink-0 {{ $tab === 'discover' ? 'bg-[#FF4500] text-white shadow-xs' : 'text-slate-600 hover:bg-slate-50 hover:text-[#FF4500]' }}">
                 Jelajah Teman
             </a>
 
             <!-- Incoming Tab -->
             <a href="{{ route('matchmaking.index', ['tab' => 'incoming']) }}"
-                class="px-4 py-2 rounded-xl text-xs font-bold transition-all shrink-0 flex items-center gap-2 {{ $tab === 'incoming' ? 'bg-[#588157] text-white shadow-xs' : 'text-slate-600 hover:bg-slate-50 hover:text-[#588157]' }}">
+                class="px-4 py-2 rounded-xl text-xs font-bold transition-all shrink-0 flex items-center gap-2 {{ $tab === 'incoming' ? 'bg-[#FF4500] text-white shadow-xs' : 'text-slate-600 hover:bg-slate-50 hover:text-[#FF4500]' }}">
                 <span>Ajakan Masuk</span>
                 @if($incomingRequests->isNotEmpty())
-                    <span class="px-2 py-0.5 rounded-full text-[10px] font-black {{ $tab === 'incoming' ? 'bg-white text-[#2D472C]' : 'bg-[#588157] text-white' }}">
+                    <span class="px-2 py-0.5 rounded-full text-[10px] font-black {{ $tab === 'incoming' ? 'bg-white text-[#2D472C]' : 'bg-[#FF4500] text-white' }}">
                         {{ $incomingRequests->count() }}
                     </span>
                 @endif
@@ -40,13 +40,13 @@
 
             <!-- Outgoing Tab -->
             <a href="{{ route('matchmaking.index', ['tab' => 'outgoing']) }}"
-                class="px-4 py-2 rounded-xl text-xs font-bold transition-all shrink-0 {{ $tab === 'outgoing' ? 'bg-[#588157] text-white shadow-xs' : 'text-slate-600 hover:bg-slate-50 hover:text-[#588157]' }}">
+                class="px-4 py-2 rounded-xl text-xs font-bold transition-all shrink-0 {{ $tab === 'outgoing' ? 'bg-[#FF4500] text-white shadow-xs' : 'text-slate-600 hover:bg-slate-50 hover:text-[#FF4500]' }}">
                 Ajakan Terkirim
             </a>
 
             <!-- Friends Tab -->
             <a href="{{ route('matchmaking.index', ['tab' => 'friends']) }}"
-                class="px-4 py-2 rounded-xl text-xs font-bold transition-all shrink-0 {{ $tab === 'friends' ? 'bg-[#588157] text-white shadow-xs' : 'text-slate-600 hover:bg-slate-50 hover:text-[#588157]' }}">
+                class="px-4 py-2 rounded-xl text-xs font-bold transition-all shrink-0 {{ $tab === 'friends' ? 'bg-[#FF4500] text-white shadow-xs' : 'text-slate-600 hover:bg-slate-50 hover:text-[#FF4500]' }}">
                 Teman Terhubung ({{ $connectedFriends->count() }})
             </a>
         </div>
@@ -111,14 +111,14 @@
                     <div class="space-y-3">
                         <div class="flex items-start gap-3">
                             <a href="{{ route('profile.show', $userItem->username) }}" class="relative group">
-                                <img src="{{ $userItem->avatar_url }}" alt="{{ $userItem->name }}" class="w-12 h-12 rounded-full object-cover ring-2 ring-slate-200 group-hover:ring-[#588157] transition-all">
+                                <img src="{{ $userItem->avatar_url }}" alt="{{ $userItem->name }}" class="w-12 h-12 rounded-full object-cover ring-2 ring-slate-200 group-hover:ring-[#FF4500] transition-all">
                             </a>
                             <div class="min-w-0 flex-1">
-                                <a href="{{ route('profile.show', $userItem->username) }}" class="font-bold text-sm text-slate-800 hover:text-[#588157] truncate block transition-colors">
+                                <a href="{{ route('profile.show', $userItem->username) }}" class="font-bold text-sm text-slate-800 hover:text-[#FF4500] truncate block transition-colors">
                                     {{ $userItem->name }}
                                 </a>
                                 <p class="text-[11px] text-slate-400 font-medium">@<span>{{ $userItem->username }}</span></p>
-                                <span class="inline-block mt-1 px-2.5 py-0.5 rounded-full bg-[#EAF0EA] text-[#2D472C] text-[11px] font-semibold border border-[#CDE0CD] truncate max-w-full">
+                                <span class="inline-block mt-1 px-2.5 py-0.5 rounded-full bg-[#FFF0E6] text-[#2D472C] text-[11px] font-semibold border border-[#CDE0CD] truncate max-w-full">
                                     {{ $userItem->school ? $userItem->school->school_name : 'Pelajar' }}
                                 </span>
                             </div>
@@ -152,7 +152,7 @@
 
                     <!-- Action Button -->
                     <div class="pt-3 border-t border-slate-100 flex items-center justify-between">
-                        <a href="{{ route('profile.show', $userItem->username) }}" class="text-xs font-semibold text-slate-500 hover:text-[#588157] transition-colors">
+                        <a href="{{ route('profile.show', $userItem->username) }}" class="text-xs font-semibold text-slate-500 hover:text-[#FF4500] transition-colors">
                             Lihat Profil
                         </a>
 
@@ -170,7 +170,7 @@
                                 <img src="{{ $userItem->avatar_url }}" class="w-11 h-11 rounded-full object-cover ring-2 ring-slate-200">
                                 <div>
                                     <h3 class="text-base font-bold text-slate-800">Kirim Ajakan Main</h3>
-                                    <p class="text-xs text-slate-500">Kepada: <strong class="text-[#588157]">{{ $userItem->name }}</strong></p>
+                                    <p class="text-xs text-slate-500">Kepada: <strong class="text-[#FF4500]">{{ $userItem->name }}</strong></p>
                                 </div>
                             </div>
 
@@ -225,7 +225,7 @@
                             <p class="text-xs text-slate-500">
                                 {{ $req->sender->school ? $req->sender->school->school_name : 'Pelajar' }}
                                 @if($req->hobby)
-                                    • Hobi: <strong class="text-[#588157]">#{{ $req->hobby->name }}</strong>
+                                    • Hobi: <strong class="text-[#FF4500]">#{{ $req->hobby->name }}</strong>
                                 @endif
                             </p>
                             @if($req->note)
@@ -304,7 +304,7 @@
                             <img src="{{ $friend->avatar_url }}" alt="{{ $friend->name }}" class="w-11 h-11 rounded-full object-cover ring-2 ring-slate-200">
                         </a>
                         <div class="min-w-0">
-                            <a href="{{ route('profile.show', $friend->username) }}" class="text-sm font-bold text-slate-800 hover:text-[#588157] truncate block transition-colors">
+                            <a href="{{ route('profile.show', $friend->username) }}" class="text-sm font-bold text-slate-800 hover:text-[#FF4500] truncate block transition-colors">
                                 {{ $friend->name }}
                             </a>
                             <p class="text-[11px] text-slate-400 truncate font-medium">{{ $friend->school ? $friend->school->school_name : 'Pelajar' }}</p>

@@ -7,7 +7,7 @@
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-4">
         <div class="space-y-1">
             <h1 class="text-2xl font-extrabold text-slate-800 tracking-tight flex items-center gap-2">
-                <svg class="w-6 h-6 text-[#588157] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="w-6 h-6 text-[#FF4500] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                 </svg>
                 Direktori Satu Sirkel
@@ -76,7 +76,7 @@
             </div>
             
             <div class="text-[11px] text-slate-400 font-medium px-0.5">
-                Ditemukan <strong class="text-[#588157] font-bold">{{ $communities->total() }}</strong> komunitas
+                Ditemukan <strong class="text-[#FF4500] font-bold">{{ $communities->total() }}</strong> komunitas
             </div>
         </form>
     </div>
@@ -107,7 +107,7 @@
                     </div>
 
                     <div class="space-y-1.5 flex-1">
-                        <a href="{{ route('communities.show', $comm->slug) }}" class="font-bold text-sm text-slate-800 group-hover:text-[#588157] transition-colors line-clamp-1">
+                        <a href="{{ route('communities.show', $comm->slug) }}" class="font-bold text-sm text-slate-800 group-hover:text-[#FF4500] transition-colors line-clamp-1">
                             {{ $comm->name }}
                         </a>
                         <p class="text-xs text-slate-600 font-medium line-clamp-2 leading-relaxed min-h-[2.5rem]">
@@ -120,7 +120,7 @@
                         <span class="truncate text-[11px] text-slate-400">
                             {{ $comm->school ? $comm->school->school_name : 'Komunitas Terbuka' }}
                         </span>
-                        <a href="{{ route('communities.show', $comm->slug) }}" class="font-bold text-xs text-[#588157] hover:text-[#476A46] shrink-0">
+                        <a href="{{ route('communities.show', $comm->slug) }}" class="font-bold text-xs text-[#FF4500] hover:text-[#E03E00] shrink-0">
                             Lihat Sirkel &rarr;
                         </a>
                     </div>

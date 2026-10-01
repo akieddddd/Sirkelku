@@ -4,7 +4,7 @@
 <div class="space-y-5 max-w-2xl mx-auto" x-data="{ schoolType: '{{ $user->school_id ? 'existing' : 'custom' }}' }">
     
     <div class="flex items-center gap-2 text-xs font-bold text-slate-500">
-        <a href="{{ route('profile.show', $user->username) }}" class="hover:text-[#588157] flex items-center gap-1.5 transition-colors">
+        <a href="{{ route('profile.show', $user->username) }}" class="hover:text-[#FF4500] flex items-center gap-1.5 transition-colors">
             &larr; Kembali ke Profil Saya
         </a>
     </div>
@@ -53,7 +53,7 @@
                 <div class="flex items-center gap-3.5">
                     <img src="{{ $user->avatar_url }}" alt="{{ $user->name }}" class="w-12 h-12 rounded-full object-cover ring-2 ring-emerald-200">
                     <input type="file" name="avatar" id="avatar" accept="image/*"
-                        class="block w-full text-xs text-slate-500 file:mr-2.5 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-emerald-50 file:text-[#588157] hover:file:bg-emerald-100 cursor-pointer">
+                        class="block w-full text-xs text-slate-500 file:mr-2.5 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-emerald-50 file:text-[#FF4500] hover:file:bg-emerald-100 cursor-pointer">
                 </div>
             </div>
 
@@ -65,12 +65,12 @@
 
                 <div class="grid grid-cols-2 gap-2">
                     <button type="button" @click="schoolType = 'existing'" 
-                        :class="schoolType === 'existing' ? 'bg-[#588157] text-white shadow-sm' : 'bg-slate-100 text-slate-700 hover:bg-emerald-50 hover:text-[#588157]'"
+                        :class="schoolType === 'existing' ? 'bg-[#FF4500] text-white shadow-sm' : 'bg-slate-100 text-slate-700 hover:bg-emerald-50 hover:text-[#FF4500]'"
                         class="py-2.5 px-3 rounded-xl text-xs font-bold transition-all text-center">
                         Pilih Sekolah Terdaftar
                     </button>
                     <button type="button" @click="schoolType = 'custom'" 
-                        :class="schoolType === 'custom' ? 'bg-[#588157] text-white shadow-sm' : 'bg-slate-100 text-slate-700 hover:bg-emerald-50 hover:text-[#588157]'"
+                        :class="schoolType === 'custom' ? 'bg-[#FF4500] text-white shadow-sm' : 'bg-slate-100 text-slate-700 hover:bg-emerald-50 hover:text-[#FF4500]'"
                         class="py-2.5 px-3 rounded-xl text-xs font-bold transition-all text-center">
                         + Tambah Sekolah Baru
                     </button>
@@ -110,7 +110,7 @@
                                     <label class="cursor-pointer select-none">
                                         <input type="checkbox" name="hobby_ids[]" value="{{ $hobby->id }}" class="peer sr-only"
                                             {{ in_array($hobby->id, old('hobby_ids', $userHobbyIds)) ? 'checked' : '' }}>
-                                        <div class="px-3 py-1.5 rounded-xl text-xs font-semibold border border-slate-200 bg-slate-50 text-slate-700 transition-all peer-checked:bg-[#588157] peer-checked:border-[#588157] peer-checked:text-white peer-checked:shadow-xs">
+                                        <div class="px-3 py-1.5 rounded-xl text-xs font-semibold border border-slate-200 bg-slate-50 text-slate-700 transition-all peer-checked:bg-[#FF4500] peer-checked:border-[#FF4500] peer-checked:text-white peer-checked:shadow-xs">
                                             #{{ $hobby->name }}
                                         </div>
                                     </label>

@@ -80,6 +80,10 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
+        if (Auth::check()) {
+            Auth::user()->update(['last_seen_at' => null]);
+        }
+
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();

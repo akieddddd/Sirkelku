@@ -7,8 +7,8 @@
             <a href="{{ route('feed.index') }}" class="flex items-center gap-2.5 group">
                 <img src="{{ asset('images/logo.png') }}" alt="Sirkelku Logo" class="w-9 h-9 object-contain group-hover:scale-105 transition-transform duration-200">
                 <div class="flex items-center gap-1.5">
-                    <span class="text-xl font-black tracking-tight text-slate-800 group-hover:text-[#588157] transition-colors">Sirkelku</span>
-                    <span class="hidden sm:inline-block text-[10px] font-extrabold text-[#2D472C] bg-[#EAF0EA] border border-[#CDE0CD] px-2 py-0.5 rounded-full">Pelajar</span>
+                    <span class="text-xl font-black tracking-tight text-slate-800 group-hover:text-[#FF4500] transition-colors">Sirkelku</span>
+                    <span class="hidden sm:inline-block text-[10px] font-extrabold text-[#2D472C] bg-[#FFF0E6] border border-[#CDE0CD] px-2 py-0.5 rounded-full">Pelajar</span>
                 </div>
             </a>
         </div>
@@ -28,7 +28,7 @@
         <div class="flex items-center gap-2 sm:gap-3 shrink-0">
             
             <!-- Expandable Search Toggle for Mobile (<768px) -->
-            <button type="button" @click="searchOpen = !searchOpen" class="md:hidden p-2 rounded-xl text-slate-600 hover:text-[#588157] hover:bg-slate-50 transition-colors" title="Cari">
+            <button type="button" @click="searchOpen = !searchOpen" class="md:hidden p-2 rounded-xl text-slate-600 hover:text-[#FF4500] hover:bg-slate-50 transition-colors" title="Cari">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
             </button>
 
@@ -40,7 +40,7 @@
 
             @auth
                 <!-- Messages -->
-                <a href="{{ route('messages.index') }}" id="nav-messages-link" class="relative p-2 rounded-xl text-slate-600 hover:text-[#588157] hover:bg-slate-50 transition-colors flex items-center justify-center shrink-0" title="Pesan Pribadi">
+                <a href="{{ route('messages.index') }}" id="nav-messages-link" class="relative p-2 rounded-xl text-slate-600 hover:text-[#FF4500] hover:bg-slate-50 transition-colors flex items-center justify-center shrink-0" title="Pesan Pribadi">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
                     </svg>
@@ -50,11 +50,11 @@
                 </a>
 
                 <!-- Notification Bell -->
-                <a href="{{ route('notifications.index') }}" id="nav-notif-link" class="relative p-2 rounded-xl text-slate-600 hover:text-[#588157] hover:bg-slate-50 transition-colors flex items-center justify-center shrink-0" title="Pusat Notifikasi">
+                <a href="{{ route('notifications.index') }}" id="nav-notif-link" class="relative p-2 rounded-xl text-slate-600 hover:text-[#FF4500] hover:bg-slate-50 transition-colors flex items-center justify-center shrink-0" title="Pusat Notifikasi">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                     </svg>
-                    <span id="nav-notif-badge" class="{{ (isset($unreadCount) && $unreadCount > 0) ? '' : 'hidden' }} absolute top-1 right-1 min-w-4 h-4 px-1 bg-[#588157] text-white text-[10px] font-extrabold rounded-full flex items-center justify-center ring-2 ring-white shadow-xs">
+                    <span id="nav-notif-badge" class="{{ (isset($unreadCount) && $unreadCount > 0) ? '' : 'hidden' }} absolute top-1 right-1 min-w-4 h-4 px-1 bg-[#FF4500] text-white text-[10px] font-extrabold rounded-full flex items-center justify-center ring-2 ring-white shadow-xs">
                         {{ isset($unreadCount) && $unreadCount > 9 ? '9+' : ($unreadCount ?? 0) }}
                     </span>
                 </a>
@@ -65,7 +65,7 @@
                         <img src="{{ Auth::user()->avatar_url }}" alt="{{ Auth::user()->name }}" class="w-8 h-8 rounded-full object-cover ring-2 ring-slate-200">
                         <div class="hidden lg:block text-left">
                             <p class="text-xs font-bold text-slate-800 leading-tight max-w-[110px] truncate">{{ Auth::user()->name }}</p>
-                            <p class="text-[11px] text-[#588157] font-semibold truncate">@<span>{{ Auth::user()->username }}</span></p>
+                            <p class="text-[11px] text-[#FF4500] font-semibold truncate">@<span>{{ Auth::user()->username }}</span></p>
                         </div>
                         <svg class="w-4 h-4 text-slate-400 hidden lg:block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
                     </button>
@@ -83,21 +83,21 @@
                         <div class="px-4 py-2.5 border-b border-slate-100 bg-slate-50/80 rounded-t-2xl">
                             <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Akun Saya</p>
                             <p class="text-xs font-extrabold text-slate-800 truncate">{{ Auth::user()->name }}</p>
-                            <p class="text-[11px] text-[#588157] font-medium truncate">@<span>{{ Auth::user()->username }}</span></p>
+                            <p class="text-[11px] text-[#FF4500] font-medium truncate">@<span>{{ Auth::user()->username }}</span></p>
                         </div>
                         
                         <div class="py-1">
-                            <a href="{{ route('profile.show', Auth::user()->username) }}" class="flex items-center gap-2.5 px-4 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 hover:text-[#588157] transition-colors">
+                            <a href="{{ route('profile.show', Auth::user()->username) }}" class="flex items-center gap-2.5 px-4 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 hover:text-[#FF4500] transition-colors">
                                 <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
                                 <span>Profil Saya</span>
                             </a>
 
-                            <a href="{{ route('feed.index', ['tab' => 'my_circles']) }}" class="flex items-center gap-2.5 px-4 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 hover:text-[#588157] transition-colors">
+                            <a href="{{ route('feed.index', ['tab' => 'my_circles']) }}" class="flex items-center gap-2.5 px-4 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 hover:text-[#FF4500] transition-colors">
                                 <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
                                 <span>Sirkel Saya</span>
                             </a>
 
-                            <a href="{{ route('profile.edit') }}" class="flex items-center gap-2.5 px-4 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 hover:text-[#588157] transition-colors">
+                            <a href="{{ route('profile.edit') }}" class="flex items-center gap-2.5 px-4 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 hover:text-[#FF4500] transition-colors">
                                 <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
                                 <span>Pengaturan Akun</span>
                             </a>
@@ -115,7 +115,7 @@
                     </div>
                 </div>
             @else
-                <a href="{{ route('login') }}" class="text-xs font-bold text-slate-700 hover:text-[#588157] px-3.5 py-2 rounded-xl hover:bg-slate-50 transition-colors">Masuk</a>
+                <a href="{{ route('login') }}" class="text-xs font-bold text-slate-700 hover:text-[#FF4500] px-3.5 py-2 rounded-xl hover:bg-slate-50 transition-colors">Masuk</a>
                 <a href="{{ route('register') }}" class="sk-btn-primary text-xs py-2 px-4">Daftar</a>
             @endauth
         </div>

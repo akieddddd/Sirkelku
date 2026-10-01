@@ -3,26 +3,7 @@
 @section('content')
 <div class="space-y-5">
 
-    <!-- Flash Notifications & Errors -->
-    @if(session('success'))
-        <div class="p-3.5 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold flex items-center justify-between shadow-xs">
-            <span class="flex items-center gap-2">
-                <svg class="w-4 h-4 text-emerald-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
-                {{ session('success') }}
-            </span>
-            <button type="button" onclick="this.parentElement.remove()" class="text-emerald-500 hover:text-emerald-800 font-bold text-sm leading-none">&times;</button>
-        </div>
-    @endif
 
-    @if($errors->any())
-        <div class="p-3.5 rounded-2xl bg-rose-50 border border-rose-200 text-rose-800 text-xs font-semibold flex items-center justify-between shadow-xs">
-            <span class="flex items-center gap-2">
-                <svg class="w-4 h-4 text-rose-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                {{ $errors->first() }}
-            </span>
-            <button type="button" onclick="this.parentElement.remove()" class="text-rose-500 hover:text-rose-800 font-bold text-sm leading-none">&times;</button>
-        </div>
-    @endif
 
     <!-- Create Post Card -->
     <div class="sk-card p-4 sm:p-5" x-data="{ hasImage: false, imagePreview: null }">
@@ -33,7 +14,7 @@
                 <img src="{{ Auth::user()->avatar_url }}" alt="{{ Auth::user()->name }}" class="w-10 h-10 rounded-xl object-cover ring-2 ring-slate-200 shrink-0 mt-0.5">
                 <div class="flex-1">
                     <textarea name="content" rows="2.5" placeholder="Bagikan cerita, karya, atau kabar seru sekolah hari ini..." 
-                        class="w-full bg-[#F8FAFC] hover:bg-slate-100/50 focus:bg-white text-sm text-slate-800 placeholder:text-slate-400 p-3 rounded-xl border border-slate-200 focus:border-[#588157] focus:ring-2 focus:ring-[#588157]/20 focus:outline-none transition-all resize-none leading-relaxed font-medium">{{ old('content') }}</textarea>
+                        class="w-full bg-[#F8FAFC] hover:bg-slate-100/50 focus:bg-white text-sm text-slate-800 placeholder:text-slate-400 p-3 rounded-xl border border-slate-200 focus:border-[#FF4500] focus:ring-2 focus:ring-[#FF4500]/20 focus:outline-none transition-all resize-none leading-relaxed font-medium">{{ old('content') }}</textarea>
                 </div>
             </div>
 
@@ -50,15 +31,15 @@
             <div class="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-slate-100">
                 <div class="flex flex-wrap items-center gap-2">
                     <!-- Image Upload Trigger -->
-                    <label for="post-image-input" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 hover:text-[#588157] text-xs font-bold cursor-pointer transition-colors">
-                        <svg class="w-4 h-4 text-[#588157]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                    <label for="post-image-input" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 hover:text-[#FF4500] text-xs font-bold cursor-pointer transition-colors">
+                        <svg class="w-4 h-4 text-[#FF4500]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
                         <span>Foto / Karya</span>
                     </label>
                     <input type="file" id="post-image-input" name="image" accept="image/*" class="hidden"
                         @change="const file = $event.target.files[0]; if (file) { hasImage = true; imagePreview = URL.createObjectURL(file); }">
 
                     <!-- Hobby Selector -->
-                    <select name="hobby_id" class="px-3 py-1.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold focus:outline-none focus:border-[#588157] cursor-pointer">
+                    <select name="hobby_id" class="px-3 py-1.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold focus:outline-none focus:border-[#FF4500] cursor-pointer">
                         <option value="">Tag Hobi (Opsional)</option>
                         @foreach($hobbies as $hobby)
                             <option value="{{ $hobby->id }}" {{ old('hobby_id') == $hobby->id ? 'selected' : '' }}>#{{ $hobby->name }}</option>
@@ -67,7 +48,7 @@
 
                     <!-- Circle / Community Selector -->
                     @if($userCommunities->isNotEmpty())
-                        <select name="community_id" class="px-3 py-1.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold focus:outline-none focus:border-[#588157] cursor-pointer">
+                        <select name="community_id" class="px-3 py-1.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold focus:outline-none focus:border-[#FF4500] cursor-pointer">
                             <option value="">Publik (Semua Pelajar)</option>
                             @foreach($userCommunities as $comm)
                                 <option value="{{ $comm->id }}" {{ old('community_id') == $comm->id ? 'selected' : '' }}>Sirkel: {{ $comm->name }}</option>
@@ -87,11 +68,11 @@
     <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-white p-2.5 rounded-2xl border border-slate-200 shadow-xs">
         <div class="flex items-center gap-1.5">
             <a href="{{ route('feed.index') }}" 
-                class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all {{ !request('tab') ? 'bg-[#588157] text-white shadow-xs' : 'text-slate-600 hover:bg-slate-50 hover:text-[#588157]' }}">
+                class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all {{ !request('tab') ? 'bg-[#FF4500] text-white shadow-xs' : 'text-slate-600 hover:bg-slate-50 hover:text-[#FF4500]' }}">
                 Linimasa Utama
             </a>
             <a href="{{ route('feed.index', ['tab' => 'my_circles']) }}" 
-                class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all {{ request('tab') === 'my_circles' ? 'bg-[#588157] text-white shadow-xs' : 'text-slate-600 hover:bg-slate-50 hover:text-[#588157]' }}">
+                class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all {{ request('tab') === 'my_circles' ? 'bg-[#FF4500] text-white shadow-xs' : 'text-slate-600 hover:bg-slate-50 hover:text-[#FF4500]' }}">
                 Sirkel Saya
             </a>
         </div>
@@ -100,7 +81,7 @@
         <div class="w-full sm:w-auto">
             <form action="{{ route('feed.index') }}" method="GET" class="flex items-center gap-2">
                 @if(request('tab')) <input type="hidden" name="tab" value="{{ request('tab') }}"> @endif
-                <select name="hobby" onchange="this.form.submit()" class="w-full sm:w-auto px-3 py-1.5 text-xs font-semibold rounded-xl bg-white text-slate-700 border border-slate-200 focus:outline-none focus:border-[#588157]">
+                <select name="hobby" onchange="this.form.submit()" class="w-full sm:w-auto px-3 py-1.5 text-xs font-semibold rounded-xl bg-white text-slate-700 border border-slate-200 focus:outline-none focus:border-[#FF4500]">
                     <option value="">Semua Kategori Hobi</option>
                     @foreach($hobbies as $h)
                         <option value="{{ $h->id }}" {{ request('hobby') == $h->id ? 'selected' : '' }}>#{{ $h->name }}</option>
@@ -142,11 +123,11 @@
                 <div class="flex items-start justify-between gap-3">
                     <div class="flex items-center gap-3">
                         <a href="{{ route('profile.show', $post->user->username) }}" class="group flex items-center gap-3">
-                            <img src="{{ $post->user->avatar_url }}" alt="{{ $post->user->name }}" class="w-10 h-10 rounded-xl object-cover ring-2 ring-slate-200 group-hover:ring-[#588157] transition-all">
+                            <img src="{{ $post->user->avatar_url }}" alt="{{ $post->user->name }}" class="w-10 h-10 rounded-xl object-cover ring-2 ring-slate-200 group-hover:ring-[#FF4500] transition-all">
                             <div>
                                 <div class="flex items-center gap-1.5">
-                                    <h4 class="text-sm font-bold text-slate-800 group-hover:text-[#588157] transition-colors">{{ $post->user->name }}</h4>
-                                    <span class="text-xs text-[#588157] font-semibold">@<span>{{ $post->user->username }}</span></span>
+                                    <h4 class="text-sm font-bold text-slate-800 group-hover:text-[#FF4500] transition-colors">{{ $post->user->name }}</h4>
+                                    <span class="text-xs text-[#FF4500] font-semibold">@<span>{{ $post->user->username }}</span></span>
                                 </div>
                                 <div class="flex items-center gap-2 text-xs text-slate-400 font-medium">
                                     <span>{{ $post->user->school ? $post->user->school->school_name : 'Pelajar' }}</span>
@@ -211,7 +192,7 @@
                     <div class="flex items-center gap-3">
                         <!-- Like Button (AJAX) -->
                         <button @click="toggleLike()" class="flex items-center gap-1.5 py-1.5 px-3 rounded-xl transition-all font-bold"
-                            :class="isLiked ? 'text-rose-600 bg-rose-50 border border-rose-200' : 'text-slate-600 hover:bg-slate-50 hover:text-[#588157]'">
+                            :class="isLiked ? 'text-rose-600 bg-rose-50 border border-rose-200' : 'text-slate-600 hover:bg-slate-50 hover:text-[#FF4500]'">
                             <svg class="w-4 h-4" :fill="isLiked ? 'currentColor' : 'none'" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                             </svg>
@@ -219,7 +200,7 @@
                         </button>
 
                         <!-- Comments Toggle Button -->
-                        <button @click="showComments = !showComments" class="flex items-center gap-1.5 py-1.5 px-3 rounded-xl hover:bg-slate-50 hover:text-[#588157] transition-all text-slate-600 font-bold">
+                        <button @click="showComments = !showComments" class="flex items-center gap-1.5 py-1.5 px-3 rounded-xl hover:bg-slate-50 hover:text-[#FF4500] transition-all text-slate-600 font-bold">
                             <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                             </svg>
@@ -229,7 +210,7 @@
 
                     <!-- Share Button (Copy Link) -->
                     <button type="button" onclick="copyToClipboard('{{ url()->current() }}#post-{{ $post->id }}', 'Tautan postingan berhasil disalin!')" 
-                        class="flex items-center gap-1.5 py-1.5 px-3 rounded-xl text-slate-500 hover:text-[#588157] hover:bg-slate-50 transition-all font-bold">
+                        class="flex items-center gap-1.5 py-1.5 px-3 rounded-xl text-slate-500 hover:text-[#FF4500] hover:bg-slate-50 transition-all font-bold">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
                         </svg>
@@ -256,7 +237,7 @@
                                 <img src="{{ $comment->user->avatar_url }}" alt="{{ $comment->user->name }}" class="w-6 h-6 rounded-full object-cover shrink-0 mt-0.5">
                                 <div class="flex-1">
                                     <div class="flex items-center justify-between">
-                                        <a href="{{ route('profile.show', $comment->user->username) }}" class="font-bold text-slate-800 hover:text-[#588157] transition-colors">
+                                        <a href="{{ route('profile.show', $comment->user->username) }}" class="font-bold text-slate-800 hover:text-[#FF4500] transition-colors">
                                             {{ $comment->user->name }}
                                         </a>
                                         <span class="text-[10px] text-slate-400 font-medium">{{ $comment->created_at->diffForHumans() }}</span>
