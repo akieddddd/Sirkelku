@@ -50,7 +50,7 @@ class SirkelkuTest extends TestCase
 
     public function test_guest_is_redirected_to_login(): void
     {
-        $response = $this->get('/');
+        $response = $this->get('/feed');
         $response->assertRedirect('/login');
     }
 

@@ -25,6 +25,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        \Carbon\Carbon::setLocale('id');
         Paginator::useTailwind();
 
         View::composer('layouts.app', function ($view) {

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="space-y-5 max-w-2xl mx-auto">
+<div class="space-y-5 max-w-2xl mx-auto p-4 sm:p-5">
 
     <div class="sk-card space-y-4">
         <div class="flex items-center justify-between border-b border-slate-200 pb-3">
@@ -50,8 +50,11 @@
                     </div>
                 </a>
             @empty
-                <div class="p-10 text-center text-slate-400 text-xs font-medium">
-                    Belum ada notifikasi baru untukmu.
+                <div class="p-10 text-center space-y-2">
+                    <div class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center mx-auto text-slate-400">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+                    </div>
+                    <p class="text-xs text-slate-500 font-medium">Belum ada notifikasi baru.</p>
                 </div>
             @endforelse
         </div>

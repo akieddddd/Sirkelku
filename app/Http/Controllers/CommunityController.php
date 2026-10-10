@@ -114,7 +114,7 @@ class CommunityController extends Controller
             'joined_at' => now(),
         ]);
 
-        return redirect()->route('communities.show', $community->slug)->with('success', 'Sirkel berhasil dibuat! Kamu adalah Ketua Sirkel.');
+        return redirect()->route('communities.show', $community->slug)->with('success', 'Komunitas berhasil dibuat.');
     }
 
     public function show(Request $request, $slug)
@@ -174,7 +174,7 @@ class CommunityController extends Controller
             ]);
         }
 
-        return redirect()->back()->with('success', 'Selamat! Kamu resmi bergabung di ' . $community->name . '.');
+        return redirect()->back()->with('success', 'Berhasil bergabung dengan ' . $community->name . '.');
     }
 
     public function leave(Community $community)

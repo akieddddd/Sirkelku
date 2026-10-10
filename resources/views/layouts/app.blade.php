@@ -7,6 +7,7 @@
     <title>{{ $title ?? 'Sirkelku - Platform Komunitas & Teman Sefrekuensi Pelajar' }}</title>
     
     <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
     <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}">
     <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
 
@@ -20,257 +21,100 @@
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="min-h-full flex flex-col bg-[#F8FAFC] text-slate-800 selection:bg-[#FF4500] selection:text-white" x-data="{ mobileMenuOpen: false }">
+<body class="min-h-full md:h-screen md:overflow-hidden bg-[#F8FAFC] text-slate-800 selection:bg-[#FF4500] selection:text-white font-sans" x-data="{ mobileDrawerOpen: false }" x-init="$watch('mobileDrawerOpen', val => document.body.classList.toggle('overflow-hidden', val))">
 
-    <!-- Top Navigation Header -->
-    @include('layouts.navbar')
-
-    <!-- Flash Messages (Clean Banners) -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4 w-full">
-        @if(session('success'))
-            <div class="p-3.5 mb-4 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs sm:text-sm font-semibold flex items-center justify-between shadow-xs" x-data="{ show: true }" x-init="setTimeout(() => show = false, 2000)" x-show="show" x-transition.duration.500ms>
-                <div class="flex items-center gap-2.5">
-                    <svg class="w-4 h-4 text-emerald-600 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>
-                    <span>{{ session('success') }}</span>
-                </div>
-                <button @click="show = false" class="text-emerald-500 hover:text-emerald-700 font-bold text-lg leading-none">&times;</button>
-            </div>
-        @endif
-
-        @if(session('error'))
-            <div class="p-3.5 mb-4 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-xs sm:text-sm font-semibold flex items-center justify-between shadow-xs" x-data="{ show: true }" x-init="setTimeout(() => show = false, 2000)" x-show="show" x-transition.duration.500ms>
-                <div class="flex items-center gap-2.5">
-                    <svg class="w-4 h-4 text-rose-600 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" /></svg>
-                    <span>{{ session('error') }}</span>
-                </div>
-                <button @click="show = false" class="text-rose-500 hover:text-rose-700 font-bold text-lg leading-none">&times;</button>
-            </div>
-        @endif
-
-        @if(session('info'))
-            <div class="p-3.5 mb-4 rounded-xl bg-slate-100 border border-slate-200 text-slate-800 text-xs sm:text-sm font-semibold flex items-center justify-between shadow-xs" x-data="{ show: true }" x-init="setTimeout(() => show = false, 2000)" x-show="show" x-transition.duration.500ms>
-                <div class="flex items-center gap-2.5">
-                    <svg class="w-4 h-4 text-slate-600 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" /></svg>
-                    <span>{{ session('info') }}</span>
-                </div>
-                <button @click="show = false" class="text-slate-400 hover:text-slate-600 font-bold text-lg leading-none">&times;</button>
-            </div>
-        @endif
-    </div>
-
-    <!-- Main App Container: 3-Column Natural Sticky Layout -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 w-full flex-1">
-        <div class="dashboard-layout">
+    <!-- 3-Column Social Feed Layout Container -->
+    <div class="min-h-screen md:h-screen md:overflow-hidden bg-[#F8FAFC]">
+        <div class="max-w-7xl mx-auto flex justify-center md:h-screen">
             
-            <!-- Left Sidebar (Desktop Navigation) -->
-            <aside class="sidebar-left hidden lg:block lg:col-span-3 space-y-4">
-                <div class="sk-card-static p-4 space-y-1">
-                    <div class="px-3 py-1.5 mb-1">
-                        <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Menu Navigasi</span>
-                    </div>
+            <!-- Left Column: Fixed Navigation Sidebar -->
+            <x-sidebar-left />
 
-                    <!-- Feed: Nongkrong Yuk -->
-                    <a href="{{ route('feed.index') }}" class="sk-nav-item {{ request()->routeIs('feed.*') ? 'sk-nav-active' : 'sk-nav-inactive' }}">
-                        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
-                        </svg>
-                        <span>Nongkrong Yuk</span>
-                    </a>
+            <!-- Middle Column: Continuous Timeline & Main Workspace (Scrolls Independently) -->
+            <main class="w-full min-w-0 md:max-w-2xl md:border-x border-slate-200 bg-white min-h-screen md:h-screen md:overflow-y-auto custom-scrollbar flex-1 pb-20 md:pb-8">
+                
+                <!-- Mobile Top Header (< md) -->
+                <x-mobile-header />
 
-                    <!-- Sirkel: Satu Sirkel -->
-                    <a href="{{ route('communities.index') }}" class="sk-nav-item {{ request()->routeIs('communities.*') ? 'sk-nav-active' : 'sk-nav-inactive' }}">
-                        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                        </svg>
-                        <span>Satu Sirkel</span>
-                    </a>
-
-                    <!-- Forum: Tongkrongan.id -->
-                    <a href="{{ route('threads.index') }}" class="sk-nav-item {{ request()->routeIs('threads.*') ? 'sk-nav-active' : 'sk-nav-inactive' }}">
-                        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-                        </svg>
-                        <span>Tongkrongan.id</span>
-                    </a>
-
-                    <!-- Teman Main: Quick Matchmaking -->
-                    <a href="{{ route('matchmaking.index') }}" class="sk-nav-item {{ request()->routeIs('matchmaking.*') ? 'sk-nav-active' : 'sk-nav-inactive' }}">
-                        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                        <span>Teman Main</span>
-                    </a>
-
-                    <!-- Notifikasi -->
-                    <a href="{{ route('notifications.index') }}" class="sk-nav-item justify-between {{ request()->routeIs('notifications.*') ? 'sk-nav-active' : 'sk-nav-inactive' }}">
-                        <div class="flex items-center gap-3">
-                            <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-                            </svg>
-                            <span>Notifikasi</span>
+                <!-- Flash Messages -->
+                @if(session('success'))
+                    <div class="m-4 p-3.5 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs sm:text-sm font-semibold flex items-center justify-between shadow-xs" x-data="{ show: true }" x-init="setTimeout(() => show = false, 3000)" x-show="show" x-transition.duration.500ms>
+                        <div class="flex items-center gap-2.5">
+                            <svg class="w-4 h-4 text-emerald-600 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>
+                            <span>{{ session('success') }}</span>
                         </div>
-                        @if(isset($unreadCount) && $unreadCount > 0)
-                            <span class="px-2 py-0.5 rounded-full text-[11px] font-extrabold {{ request()->routeIs('notifications.*') ? 'bg-white text-[#2D472C]' : 'bg-[#FF4500] text-white' }}">
-                                {{ $unreadCount }}
-                            </span>
-                        @endif
-                    </a>
-                </div>
-
-                <!-- Quick Action Box -->
-                <div class="bg-slate-800 rounded-2xl p-4.5 text-white shadow-xs border border-slate-700 space-y-3">
-                    <div class="flex items-center gap-2">
-                        <span class="w-2 h-2 rounded-full bg-[#FF4500]"></span>
-                        <p class="font-extrabold text-sm leading-tight text-white">Buat Komunitas Sendiri</p>
+                        <button @click="show = false" class="text-emerald-500 hover:text-emerald-700 font-bold text-lg leading-none">&times;</button>
                     </div>
-                    <p class="text-xs text-slate-300 leading-relaxed font-medium">Kumpulkan teman satu hobi dari berbagai sekolah dalam satu sirkel.</p>
-                    <a href="{{ route('communities.create') }}" class="inline-flex items-center justify-center w-full py-2.5 px-3 bg-[#FF4500] hover:bg-[#E03E00] text-white font-bold text-xs rounded-xl shadow-xs transition-colors">
-                        + Bikin Sirkel Baru
-                    </a>
-                </div>
-            </aside>
+                @endif
 
-            <!-- Middle Workspace (Main Content) -->
-            <main class="feed-column col-span-1 lg:col-span-6 space-y-5 pb-20 lg:pb-8">
+                @if(session('error'))
+                    <div class="m-4 p-3.5 rounded-2xl bg-rose-50 border border-rose-200 text-rose-800 text-xs sm:text-sm font-semibold flex items-center justify-between shadow-xs" x-data="{ show: true }" x-init="setTimeout(() => show = false, 3000)" x-show="show" x-transition.duration.500ms>
+                        <div class="flex items-center gap-2.5">
+                            <svg class="w-4 h-4 text-rose-600 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" /></svg>
+                            <span>{{ session('error') }}</span>
+                        </div>
+                        <button @click="show = false" class="text-rose-500 hover:text-rose-700 font-bold text-lg leading-none">&times;</button>
+                    </div>
+                @endif
+
+                @if(session('info'))
+                    <div class="m-4 p-3.5 rounded-2xl bg-slate-100 border border-slate-200 text-slate-800 text-xs sm:text-sm font-semibold flex items-center justify-between shadow-xs" x-data="{ show: true }" x-init="setTimeout(() => show = false, 3000)" x-show="show" x-transition.duration.500ms>
+                        <div class="flex items-center gap-2.5">
+                            <svg class="w-4 h-4 text-slate-600 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" /></svg>
+                            <span>{{ session('info') }}</span>
+                        </div>
+                        <button @click="show = false" class="text-slate-400 hover:text-slate-600 font-bold text-lg leading-none">&times;</button>
+                    </div>
+                @endif
+
+                <!-- Page Content Slot -->
                 @yield('content')
             </main>
 
-            <!-- Right Sidebar (Widgets Rail) -->
-            <aside class="sidebar-right hidden lg:block lg:col-span-3 space-y-4">
-                
-                <!-- Widget 1: Rekomendasi Teman Main -->
-                <div class="sk-card-static p-4.5 space-y-3">
-                    <div class="flex items-center justify-between border-b border-slate-100 pb-2.5">
-                        <h3 class="font-extrabold text-xs uppercase tracking-wider text-slate-800 flex items-center gap-1.5">
-                            <svg class="w-4 h-4 text-[#FF4500]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" /></svg>
-                            Rekomendasi Teman
-                        </h3>
-                        <a href="{{ route('matchmaking.index') }}" class="text-xs font-bold text-[#FF4500] hover:text-[#E03E00]">Semua</a>
-                    </div>
+            <!-- Right Column: Fixed Widgets Rail -->
+            <x-sidebar-right />
 
-                    <div class="space-y-2.5">
-                        @forelse($suggestedFriends ?? [] as $friend)
-                            <div class="flex items-center justify-between gap-3 p-1.5 rounded-xl hover:bg-slate-50 transition-colors">
-                                <a href="{{ route('profile.show', $friend->username) }}" class="flex items-center gap-2.5 min-w-0">
-                                    <img src="{{ $friend->avatar_url }}" alt="{{ $friend->name }}" class="w-8 h-8 rounded-full object-cover ring-2 ring-slate-200">
-                                    <div class="min-w-0">
-                                        <p class="text-xs font-bold text-slate-800 truncate hover:text-[#FF4500] transition-colors">{{ $friend->name }}</p>
-                                        <p class="text-[10px] text-slate-400 font-medium truncate">
-                                            @if($friend->isOnline())
-                                                <span class="text-green-600 font-bold">Online</span>
-                                            @else
-                                                Offline
-                                            @endif
-                                            &bull; {{ $friend->school ? $friend->school->city : 'Pelajar' }}
-                                        </p>
-                                    </div>
-                                </a>
-                                <a href="{{ route('matchmaking.index', ['tab' => 'discover', 'q' => $friend->username]) }}" class="shrink-0 p-1.5 rounded-lg border border-slate-200 hover:bg-[#FF4500] hover:text-white hover:border-[#FF4500] text-[#FF4500] transition-all text-xs" title="Ajak Main">
-                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" /></svg>
-                                </a>
-                            </div>
-                        @empty
-                            <p class="text-xs text-slate-400 text-center py-2 font-medium">Belum ada rekomendasi baru.</p>
-                        @endforelse
-                    </div>
-                </div>
-
-                <!-- Widget 2: Komunitas Populer -->
-                <div class="sk-card-static p-4.5 space-y-3">
-                    <div class="flex items-center justify-between border-b border-slate-100 pb-2.5">
-                        <h3 class="font-extrabold text-xs uppercase tracking-wider text-slate-800 flex items-center gap-1.5">
-                            <svg class="w-4 h-4 text-[#FF4500]" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M12.395 2.553a1 1 0 00-1.45-.385c-.345.23-.614.558-.822.88-.527.82-1.17 2.14-1.393 3.633a6.837 6.837 0 00-1.782-.977 1 1 0 00-1.25.437A9.972 9.972 0 005 10c0 4.418 3.582 8 8 8a7.994 7.994 0 005.657-2.343A7.992 7.992 0 0020 10a9.97 9.97 0 00-.773-3.856 1 1 0 00-1.25-.437 6.83 6.83 0 00-1.782.977c-.223-1.493-.866-2.813-1.393-3.633-.208-.322-.477-.65-.822-.88a1 1 0 00-.585-.118zM12 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd" /></svg>
-                            Sirkel Terpopuler
-                        </h3>
-                        <a href="{{ route('communities.index') }}" class="text-xs font-bold text-[#FF4500] hover:text-[#E03E00]">Jelajah</a>
-                    </div>
-
-                    <div class="space-y-2.5">
-                        @forelse($trendingCommunities ?? [] as $index => $comm)
-                            <a href="{{ route('communities.show', $comm->slug) }}" class="flex items-center gap-2.5 p-1.5 rounded-xl hover:bg-slate-50 transition-colors group">
-                                <span class="sk-rank-badge {{ $index == 0 ? 'sk-rank-1' : ($index == 1 ? 'sk-rank-2' : 'sk-rank-3') }}">
-                                    {{ $index + 1 }}
-                                </span>
-                                <img src="{{ $comm->avatar_url }}" alt="{{ $comm->name }}" class="w-8 h-8 rounded-xl object-cover ring-1 ring-slate-200">
-                                <div class="min-w-0 flex-1">
-                                    <p class="text-xs font-bold text-slate-800 group-hover:text-[#FF4500] transition-colors truncate">{{ $comm->name }}</p>
-                                    <p class="text-[11px] text-slate-400 font-medium truncate">{{ $comm->members_count }} Anggota • {{ $comm->hobby ? $comm->hobby->name : 'Umum' }}</p>
-                                </div>
-                            </a>
-                        @empty
-                            <p class="text-xs text-slate-400 text-center py-2 font-medium">Belum ada sirkel terdaftar.</p>
-                        @endforelse
-                    </div>
-                </div>
-
-                <!-- Widget 3: Topik Forum Hangat -->
-                <div class="sk-card-static p-4.5 space-y-3">
-                    <div class="flex items-center justify-between border-b border-slate-100 pb-2.5">
-                        <h3 class="font-extrabold text-xs uppercase tracking-wider text-slate-800 flex items-center gap-1.5">
-                            <svg class="w-4 h-4 text-[#FF4500]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" /></svg>
-                            Topik Hangat
-                        </h3>
-                        <a href="{{ route('threads.index', ['sort' => 'trending']) }}" class="text-xs font-bold text-[#FF4500] hover:text-[#E03E00]">Forum</a>
-                    </div>
-
-                    <div class="space-y-2.5">
-                        @forelse($hotThreads ?? [] as $thread)
-                            <a href="{{ route('threads.show', $thread->id) }}" class="block p-2 rounded-xl hover:bg-slate-50 transition-colors group">
-                                <div class="flex items-center gap-1.5 mb-1">
-                                    <span class="sk-badge-sage">
-                                        #{{ $thread->hobby ? $thread->hobby->name : 'Diskusi' }}
-                                    </span>
-                                    <span class="text-[10px] text-slate-400 font-semibold">{{ $thread->comments_count }} balasan</span>
-                                </div>
-                                <p class="text-xs font-bold text-slate-800 group-hover:text-[#FF4500] line-clamp-2 transition-colors">
-                                    {{ $thread->title }}
-                                </p>
-                            </a>
-                        @empty
-                            <p class="text-xs text-slate-400 text-center py-2 font-medium">Belum ada utas aktif.</p>
-                        @endforelse
-                    </div>
-                </div>
-            </aside>
         </div>
     </div>
 
-    <!-- Mobile Bottom Navigation Bar -->
-    <nav class="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-t border-slate-200 shadow-sm px-4 py-2 flex items-center justify-around">
+    <!-- Mobile Navigation Drawer (< md) -->
+    <x-mobile-drawer />
+
+    <!-- Mobile Bottom Navigation Bar (< md) -->
+    <nav class="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-200 shadow-sm px-4 py-2 flex items-center justify-around select-none">
         <!-- Feed -->
         <a href="{{ route('feed.index') }}" class="flex flex-col items-center gap-0.5 py-1 px-3 rounded-xl {{ request()->routeIs('feed.*') ? 'text-[#FF4500] font-bold' : 'text-slate-400 font-medium' }}">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" /></svg>
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" /></svg>
             <span class="text-[10px]">Feed</span>
         </a>
 
         <!-- Sirkel -->
         <a href="{{ route('communities.index') }}" class="flex flex-col items-center gap-0.5 py-1 px-3 rounded-xl {{ request()->routeIs('communities.*') ? 'text-[#FF4500] font-bold' : 'text-slate-400 font-medium' }}">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
             <span class="text-[10px]">Sirkel</span>
         </a>
 
-        <!-- Central Action: Bikin Post / Thread -->
-        <a href="{{ route('threads.create') }}" class="w-10 h-10 -mt-4 rounded-full bg-[#FF4500] text-white flex items-center justify-center shadow-md hover:bg-[#E03E00] transition-colors" title="Buat Utas Baru">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
+        <!-- Central Action: Bikin Sirkel Baru -->
+        <a href="{{ route('communities.create') }}" class="w-11 h-11 -mt-5 rounded-full bg-[#FF4500] text-white flex items-center justify-center shadow-lg hover:bg-[#E03E00] transition-colors ring-4 ring-white" title="Sirkel Baru">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4" /></svg>
         </a>
 
         <!-- Forum -->
         <a href="{{ route('threads.index') }}" class="flex flex-col items-center gap-0.5 py-1 px-3 rounded-xl {{ request()->routeIs('threads.*') ? 'text-[#FF4500] font-bold' : 'text-slate-400 font-medium' }}">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" /></svg>
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" /></svg>
             <span class="text-[10px]">Forum</span>
         </a>
 
         <!-- Teman Main -->
         <a href="{{ route('matchmaking.index') }}" class="flex flex-col items-center gap-0.5 py-1 px-3 rounded-xl {{ request()->routeIs('matchmaking.*') ? 'text-[#FF4500] font-bold' : 'text-slate-400 font-medium' }}">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
             <span class="text-[10px]">Teman</span>
         </a>
-    </nav>
     </nav>
 
     <!-- Global In-App Notifications & Toast Container -->
     <div id="toast-container" class="fixed bottom-20 lg:bottom-6 right-6 z-50 flex flex-col gap-2 pointer-events-none"></div>
-    <div id="incoming-notification-container" class="fixed top-20 right-4 sm:right-6 z-50 flex flex-col gap-3 pointer-events-none max-w-sm w-full"></div>
+    <div id="incoming-notification-container" class="fixed top-6 right-4 sm:right-6 z-50 flex flex-col gap-3 pointer-events-none max-w-sm w-full"></div>
 
     <script>
         // Global Simple Toast
@@ -291,7 +135,7 @@
             }, 3000);
         }
 
-        function copyToClipboard(text, message = 'Tautan berhasil disalin!') {
+        function copyToClipboard(text, message = 'Tautan berhasil disalin') {
             navigator.clipboard.writeText(text).then(() => {
                 showToast(message);
             }).catch(() => {
@@ -407,27 +251,29 @@
                 }
             }
 
-            // Update badges in navigation
+            // Update badges in navigation (Sidebar & Mobile)
             function updateNavBadges(unreadMessages, unreadNotifications) {
-                const msgBadge = document.getElementById('nav-msg-badge');
-                if (msgBadge) {
+                document.querySelectorAll('.nav-msg-badge, #nav-msg-badge').forEach(badge => {
                     if (unreadMessages > 0) {
-                        msgBadge.textContent = unreadMessages > 9 ? '9+' : unreadMessages;
-                        msgBadge.classList.remove('hidden');
+                        badge.textContent = unreadMessages > 9 ? '9+' : unreadMessages;
+                        badge.style.setProperty('display', '', '');
+                        badge.classList.remove('hidden');
                     } else {
-                        msgBadge.classList.add('hidden');
+                        badge.style.setProperty('display', 'none', 'important');
+                        badge.classList.add('hidden');
                     }
-                }
+                });
 
-                const notifBadge = document.getElementById('nav-notif-badge');
-                if (notifBadge) {
+                document.querySelectorAll('.nav-notif-badge, #nav-notif-badge').forEach(badge => {
                     if (unreadNotifications > 0) {
-                        notifBadge.textContent = unreadNotifications > 9 ? '9+' : unreadNotifications;
-                        notifBadge.classList.remove('hidden');
+                        badge.textContent = unreadNotifications > 9 ? '9+' : unreadNotifications;
+                        badge.style.setProperty('display', '', '');
+                        badge.classList.remove('hidden');
                     } else {
-                        notifBadge.classList.add('hidden');
+                        badge.style.setProperty('display', 'none', 'important');
+                        badge.classList.add('hidden');
                     }
-                }
+                });
             }
 
             // Check incoming messages & notifications periodically

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="space-y-5">
+<div class="space-y-5 p-4 sm:p-5">
 
     <!-- Page Header -->
     <div class="sk-card">
@@ -206,8 +206,11 @@
 
                 </div>
             @empty
-                <div class="col-span-full sk-card p-10 text-center text-slate-400 text-xs">
-                    Tidak ada teman ditemukan dengan filter saat ini.
+                <div class="col-span-full sk-card p-10 text-center space-y-2">
+                    <div class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center mx-auto text-slate-400">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
+                    </div>
+                    <p class="text-xs text-slate-500 font-medium">Tidak ada teman ditemukan dengan filter saat ini.</p>
                 </div>
             @endforelse
         </div>
@@ -253,8 +256,11 @@
                     </div>
                 </div>
             @empty
-                <div class="sk-card p-10 text-center text-slate-400 text-xs">
-                    Tidak ada ajakan main yang masuk saat ini.
+                <div class="sk-card p-10 text-center space-y-2">
+                    <div class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center mx-auto text-slate-400">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" /></svg>
+                    </div>
+                    <p class="text-xs text-slate-500 font-medium">Tidak ada ajakan main yang masuk saat ini.</p>
                 </div>
             @endforelse
         </div>
@@ -288,8 +294,11 @@
                     </div>
                 </div>
             @empty
-                <div class="sk-card p-10 text-center text-slate-400 text-xs">
-                    Kamu belum mengirim ajakan main ke siapa pun. Cari partner di tab Jelajah Teman!
+                <div class="sk-card p-10 text-center space-y-2">
+                    <div class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center mx-auto text-slate-400">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" /></svg>
+                    </div>
+                    <p class="text-xs text-slate-500 font-medium">Belum ada ajakan main yang dikirim.</p>
                 </div>
             @endforelse
         </div>
@@ -319,8 +328,11 @@
                     </a>
                 </div>
             @empty
-                <div class="col-span-full sk-card p-10 text-center text-slate-400 text-xs">
-                    Belum ada koneksi pertemanan yang terbentuk. Kirim ajakan main ke teman-teman sefrekuensi!
+                <div class="col-span-full sk-card p-10 text-center space-y-2">
+                    <div class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center mx-auto text-slate-400">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5" /></svg>
+                    </div>
+                    <p class="text-xs text-slate-500 font-medium">Belum ada teman terhubung.</p>
                 </div>
             @endforelse
         </div>

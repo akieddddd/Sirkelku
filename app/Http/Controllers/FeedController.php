@@ -8,6 +8,7 @@ use App\Models\Hobby;
 use App\Models\Post;
 use App\Models\PostComment;
 use App\Models\PostLike;
+use App\Services\ProfanityFilter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -30,9 +31,19 @@ class FeedController extends Controller
             $query->where('hobby_id', $request->hobby);
         }
 
-        // Optional tab filter: all vs my_circles
+        // Optional tab filter: all vs my_circles vs liked vs saved
         if ($request->get('tab') === 'my_circles' && $joinedCommunityIds->isNotEmpty()) {
             $query->whereIn('community_id', $joinedCommunityIds);
+        } elseif ($request->get('tab') === 'liked' && $user) {
+            $query->whereHas('likes', function ($q) use ($user) {
+                $q->where('user_id', $user->id);
+            });
+        } elseif ($request->get('tab') === 'saved') {
+            $savedIds = [];
+            if ($request->filled('saved_ids')) {
+                $savedIds = array_filter(array_map('intval', explode(',', $request->get('saved_ids'))));
+            }
+            $query->whereIn('id', $savedIds);
         }
 
         $posts = $query->latest()->paginate(10)->withQueryString();
@@ -62,15 +73,17 @@ class FeedController extends Controller
             $imagePath = $request->file('image')->store('posts', 'public');
         }
 
+        $content = ProfanityFilter::censor($validated['content'] ?? '');
+
         $post = Post::create([
             'user_id' => Auth::id(),
             'community_id' => $validated['community_id'] ?? null,
             'hobby_id' => $validated['hobby_id'] ?? null,
-            'content' => $validated['content'] ?? '',
+            'content' => $content,
             'image_path' => $imagePath,
         ]);
 
-        return redirect()->back()->with('success', 'Postinganmu berhasil diterbitkan ke Nongkrong Yuk!');
+        return redirect()->back()->with('success', 'Postingan berhasil diterbitkan.');
     }
 
     public function update(Request $request, Post $post)
@@ -83,11 +96,13 @@ class FeedController extends Controller
             'content' => ['required', 'string', 'max:1000'],
         ]);
 
+        $content = ProfanityFilter::censor($validated['content']);
+
         $post->update([
-            'content' => $validated['content'],
+            'content' => $content,
         ]);
 
-        return redirect()->back()->with('success', 'Postingan berhasil diperbarui!');
+        return redirect()->back()->with('success', 'Postingan berhasil diperbarui.');
     }
 
     public function destroy(Post $post)
@@ -154,10 +169,12 @@ class FeedController extends Controller
             'comment_text.required' => 'Komentar tidak boleh kosong.',
         ]);
 
+        $commentText = ProfanityFilter::censor($validated['comment_text']);
+
         $comment = PostComment::create([
             'post_id' => $post->id,
             'user_id' => Auth::id(),
-            'comment_text' => $validated['comment_text'],
+            'comment_text' => $commentText,
         ]);
 
         // Notification for post author
@@ -167,11 +184,11 @@ class FeedController extends Controller
                 'actor_id' => Auth::id(),
                 'type' => 'comment',
                 'title' => 'Komentar baru pada postinganmu',
-                'message' => Auth::user()->name . ' mengomentari postinganmu: "' . \Illuminate\Support\Str::limit($validated['comment_text'], 40) . '"',
+                'message' => Auth::user()->name . ' mengomentari postinganmu: "' . \Illuminate\Support\Str::limit($commentText, 40) . '"',
                 'link_url' => route('feed.index') . '#post-' . $post->id,
             ]);
         }
 
-        return redirect()->back()->with('success', 'Komentar berhasil dikirim!');
+        return redirect()->back()->with('success', 'Komentar berhasil dikirim.');
     }
 }

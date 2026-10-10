@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Masuk ke Sirkelku - Ruang Komunitas & Teman Sefrekuensi Pelajar</title>
     <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
     <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}">
     <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
     
@@ -18,12 +19,14 @@
     <div class="max-w-md w-full space-y-6 my-8">
         
         <!-- Brand Header -->
-        <div class="text-center space-y-2">
-            <a href="{{ url('/') }}" class="inline-block group">
-                <img src="{{ asset('images/logo.png') }}" alt="Sirkelku Logo" class="w-14 h-14 object-contain mx-auto transition-transform group-hover:scale-105 duration-200">
-            </a>
-            <h1 class="text-2xl font-extrabold text-slate-900 tracking-tight">Masuk ke Sirkelku</h1>
-            <p class="text-xs text-slate-500 font-medium">Temukan teman mabar, sirkel hobi, dan tongkrongan pelajar</p>
+        <div class="text-center space-y-3">
+            <div class="flex justify-center">
+                <x-logo :href="url('/')" icon-class="w-14 h-14" :icon-only="true" />
+            </div>
+            <div>
+                <h1 class="text-2xl font-extrabold text-slate-900 tracking-tight">Masuk ke Sirkelku</h1>
+                <p class="text-xs text-slate-500 font-medium">Temukan teman mabar, sirkel hobi, dan tongkrongan pelajar</p>
+            </div>
         </div>
 
         <!-- Login Card -->
@@ -79,14 +82,14 @@
                 </div>
 
                 <button type="submit" class="sk-btn-primary w-full text-sm py-3">
-                    Masuk Sekarang
+                    Masuk
                 </button>
             </form>
 
             <div class="pt-4 border-t border-slate-200 text-center">
                 <p class="text-xs text-slate-500 font-medium">
-                    Belum punya akun pelajar? 
-                    <a href="{{ route('register') }}" class="font-bold text-[#FF4500] hover:text-[#E03E00] hover:underline ml-1">Daftar Sekarang</a>
+                    Belum punya akun? 
+                    <a href="{{ route('register') }}" class="font-bold text-[#FF4500] hover:text-[#E03E00] hover:underline ml-1">Daftar</a>
                 </p>
             </div>
         </div>

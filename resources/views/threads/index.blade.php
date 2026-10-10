@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="space-y-5">
+<div class="space-y-5 p-4 sm:p-5">
 
     <!-- Header Banner -->
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-4">
@@ -17,7 +17,7 @@
             </p>
         </div>
         <a href="{{ route('threads.create') }}" class="sk-btn-primary text-xs shrink-0">
-            + Buat Utas Baru
+            Buat Utas Baru
         </a>
     </div>
 
@@ -122,12 +122,17 @@
 
             </div>
         @empty
-            <div class="p-10 text-center space-y-2">
-                <h3 class="font-bold text-sm text-slate-800">Belum Ada Utas Diskusi</h3>
-                <p class="text-xs text-slate-500 max-w-xs mx-auto font-medium">Mulai topik diskusi pertama di kanal ini bersama teman-teman.</p>
-                <div class="pt-2">
+            <div class="p-10 text-center space-y-3">
+                <div class="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center mx-auto text-slate-400">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                    </svg>
+                </div>
+                <h3 class="font-bold text-sm text-slate-800">Belum ada utas diskusi</h3>
+                <p class="text-xs text-slate-500 max-w-xs mx-auto font-medium">Mulai topik diskusi pertama di kanal ini.</p>
+                <div class="pt-1">
                     <a href="{{ route('threads.create') }}" class="sk-btn-primary text-xs">
-                        + Buat Utas Baru
+                        Buat Utas Baru
                     </a>
                 </div>
             </div>

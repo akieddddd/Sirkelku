@@ -70,6 +70,6 @@ class OnboardingController extends Controller
         // Sync hobbies
         $user->hobbies()->sync($validated['hobby_ids']);
 
-        return redirect()->route('feed.index')->with('success', 'Profilmu sudah siap! Selamat nongkrong di Sirkelku!');
+        return redirect()->route('feed.index')->with('success', 'Profil berhasil disimpan.');
     }
 }

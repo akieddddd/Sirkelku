@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="space-y-5">
+<div class="space-y-5 p-4 sm:p-5">
 
     <!-- Community Profile Header Card -->
     <div class="sk-card overflow-hidden">
@@ -160,8 +160,11 @@
                         </div>
                     </div>
                 @empty
-                    <div class="sk-card p-8 text-center text-slate-400 text-xs font-medium">
-                        Belum ada kiriman khusus di linimasa sirkel ini.
+                    <div class="sk-card p-10 text-center space-y-2">
+                        <div class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center mx-auto text-slate-400">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" /></svg>
+                        </div>
+                        <p class="text-xs text-slate-500 font-medium">Belum ada kiriman di sirkel ini.</p>
                     </div>
                 @endforelse
             </div>
@@ -174,7 +177,7 @@
             <div class="flex items-center justify-between">
                 <h3 class="font-extrabold text-sm text-slate-800">Utas Diskusi Sirkel</h3>
                 <a href="{{ route('threads.create', ['community_id' => $community->id, 'hobby_id' => $community->hobby_id]) }}" class="sk-btn-primary text-xs">
-                    + Buat Utas Sirkel
+                    Buat Utas Baru
                 </a>
             </div>
 
@@ -189,8 +192,11 @@
                         <p class="text-xs text-slate-500 line-clamp-2 mt-1 font-medium">{{ Str::limit($thread->body, 120) }}</p>
                     </a>
                 @empty
-                    <div class="p-8 text-center text-slate-400 text-xs font-medium">
-                        Belum ada utas forum di sirkel ini.
+                    <div class="p-10 text-center space-y-2">
+                        <div class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center mx-auto text-slate-400">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" /></svg>
+                        </div>
+                        <p class="text-xs text-slate-500 font-medium">Belum ada utas forum di sirkel ini.</p>
                     </div>
                 @endforelse
             </div>

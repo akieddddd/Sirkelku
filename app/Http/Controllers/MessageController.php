@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\AppNotification;
 use App\Models\Message;
 use App\Models\User;
+use App\Services\ProfanityFilter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -87,10 +88,12 @@ class MessageController extends Controller
             'content' => 'required|string|max:1000'
         ]);
         
+        $censoredContent = ProfanityFilter::censor($request->content);
+
         $message = Message::create([
             'sender_id'   => Auth::id(),
             'receiver_id' => $user->id,
-            'content'     => $request->content
+            'content'     => $censoredContent
         ]);
 
         $message->load('sender');
@@ -101,7 +104,7 @@ class MessageController extends Controller
             'actor_id' => Auth::id(),
             'type'     => 'message',
             'title'    => Auth::user()->name . ' mengirim pesan',
-            'message'  => Str::limit($request->content, 60),
+            'message'  => Str::limit($censoredContent, 60),
             'link_url' => route('messages.show', Auth::user()->username),
             'is_read'  => false,
         ]);

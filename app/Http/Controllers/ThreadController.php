@@ -7,6 +7,7 @@ use App\Models\Community;
 use App\Models\Hobby;
 use App\Models\Thread;
 use App\Models\ThreadComment;
+use App\Services\ProfanityFilter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -71,16 +72,18 @@ class ThreadController extends Controller
             'hobby_id.required' => 'Pilih kategori hobi yang sesuai.',
         ]);
 
+        $title = ProfanityFilter::censor($validated['title']);
+        $body  = ProfanityFilter::censor($validated['body']);
+
         $thread = Thread::create([
             'user_id' => Auth::id(),
             'hobby_id' => $validated['hobby_id'],
             'community_id' => $validated['community_id'] ?? null,
-            'title' => $validated['title'],
-            'body' => $validated['body'],
-            'is_pinned' => false,
+            'title' => $title,
+            'body' => $body,
         ]);
 
-        return redirect()->route('threads.show', $thread->id)->with('success', 'Utas diskusi berhasil dibuat di Tongkrongan.id!');
+        return redirect()->route('threads.show', $thread->id)->with('success', 'Utas diskusi berhasil dibuat.');
     }
 
     public function show(Thread $thread)
@@ -113,11 +116,13 @@ class ThreadController extends Controller
             'comment_text.required' => 'Isi balasan tidak boleh kosong.',
         ]);
 
+        $commentText = ProfanityFilter::censor($validated['comment_text']);
+
         $comment = ThreadComment::create([
             'thread_id' => $thread->id,
             'user_id' => Auth::id(),
             'parent_id' => $validated['parent_id'] ?? null,
-            'comment_text' => $validated['comment_text'],
+            'comment_text' => $commentText,
         ]);
 
         // Send notification
@@ -147,7 +152,7 @@ class ThreadController extends Controller
             ]);
         }
 
-        return redirect()->route('threads.show', $thread->id . '#comment-' . $comment->id)->with('success', 'Balasan berhasil dikirim!');
+        return redirect()->route('threads.show', $thread->id . '#comment-' . $comment->id)->with('success', 'Balasan berhasil dikirim.');
     }
 
     public function togglePin(Thread $thread)

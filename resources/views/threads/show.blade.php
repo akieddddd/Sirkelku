@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="space-y-5">
+<div class="space-y-5 p-4 sm:p-5">
 
     <!-- Back to Forum -->
     <div class="flex items-center justify-between">
@@ -212,8 +212,11 @@
 
             </div>
         @empty
-            <div class="sk-card p-8 text-center text-slate-400 text-xs font-medium">
-                Belum ada tanggapan pada utas ini. Tulis balasan pertamamu di atas!
+            <div class="sk-card p-10 text-center space-y-2">
+                <div class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center mx-auto text-slate-400">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" /></svg>
+                </div>
+                <p class="text-xs text-slate-500 font-medium">Belum ada tanggapan pada utas ini.</p>
             </div>
         @endforelse
     </div>

@@ -17,7 +17,6 @@ class Thread extends Model
         'hobby_id',
         'title',
         'body',
-        'is_pinned',
     ];
 
     protected $casts = [

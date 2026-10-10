@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="space-y-5 max-w-2xl mx-auto" x-data="{ schoolType: '{{ $user->school_id ? 'existing' : 'custom' }}' }">
+<div class="space-y-5 max-w-2xl mx-auto p-4 sm:p-5" x-data="{ schoolType: '{{ $user->school_id ? 'existing' : 'custom' }}' }">
     
     <div class="flex items-center gap-2 text-xs font-bold text-slate-500">
         <a href="{{ route('profile.show', $user->username) }}" class="hover:text-[#FF4500] flex items-center gap-1.5 transition-colors">
@@ -72,7 +72,7 @@
                     <button type="button" @click="schoolType = 'custom'" 
                         :class="schoolType === 'custom' ? 'bg-[#FF4500] text-white shadow-sm' : 'bg-slate-100 text-slate-700 hover:bg-emerald-50 hover:text-[#FF4500]'"
                         class="py-2.5 px-3 rounded-xl text-xs font-bold transition-all text-center">
-                        + Tambah Sekolah Baru
+                        Tambah Sekolah Baru
                     </button>
                 </div>
 
@@ -123,7 +123,7 @@
 
             <div class="pt-3 border-t border-slate-200">
                 <button type="submit" class="sk-btn-primary w-full py-3 px-4 text-xs font-bold">
-                    Simpan Perubahan Profil &rarr;
+                    Simpan Perubahan
                 </button>
             </div>
         </form>

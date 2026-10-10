@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Onboarding Profil Pelajar - Sirkelku</title>
     <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
     <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}">
     <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
 
@@ -19,10 +20,14 @@
     <div class="max-w-2xl mx-auto space-y-6" x-data="{ schoolType: 'existing' }">
         
         <!-- Header -->
-        <div class="text-center space-y-2">
-            <img src="{{ asset('images/logo.png') }}" alt="Sirkelku Logo" class="w-14 h-14 object-contain mx-auto transition-transform hover:scale-105 duration-200">
-            <h1 class="text-2xl font-extrabold text-slate-900 tracking-tight">Selamat Datang, {{ Auth::user()->name }}</h1>
-            <p class="text-xs text-slate-500 font-medium max-w-md mx-auto leading-relaxed">Lengkapi data sekolah & hobimu agar kami bisa menghubungkanmu dengan teman dan sirkel yang sefrekuensi.</p>
+        <div class="text-center space-y-3">
+            <div class="flex justify-center">
+                <x-logo icon-class="w-12 h-12" text-size="text-2xl" />
+            </div>
+            <div>
+                <h1 class="text-2xl font-extrabold text-slate-900 tracking-tight">Selamat Datang, {{ Auth::user()->name }}</h1>
+                <p class="text-xs text-slate-500 font-medium max-w-md mx-auto leading-relaxed mt-1">Lengkapi data sekolah & hobimu agar kami bisa menghubungkanmu dengan teman dan sirkel yang sefrekuensi.</p>
+            </div>
         </div>
 
         @if($errors->any())
@@ -145,7 +150,7 @@
                 <!-- Submit Button -->
                 <div class="pt-2">
                     <button type="submit" class="sk-btn-primary w-full text-sm py-3">
-                        Simpan & Masuk ke Sirkelku &rarr;
+                        Selesai & Masuk
                     </button>
                 </div>
             </form>

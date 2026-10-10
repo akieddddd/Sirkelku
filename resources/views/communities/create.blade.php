@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="space-y-5 max-w-2xl mx-auto">
+<div class="space-y-5 max-w-2xl mx-auto p-4 sm:p-5">
     
     <!-- Breadcrumb / Back button -->
     <div class="flex items-center gap-2 text-xs font-bold text-slate-500">
@@ -100,7 +100,7 @@
 
             <div class="pt-3">
                 <button type="submit" class="sk-btn-primary w-full text-sm py-3">
-                    Terbitkan Sirkel & Jadi Ketua Sirkel &rarr;
+                    Buat Komunitas
                 </button>
             </div>
         </form>

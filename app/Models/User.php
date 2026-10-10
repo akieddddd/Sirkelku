@@ -90,6 +90,11 @@ class User extends Authenticatable
         return $this->hasMany(AppNotification::class, 'user_id')->latest();
     }
 
+    public function postReports(): HasMany
+    {
+        return $this->hasMany(PostReport::class);
+    }
+
     public function unreadNotificationsCount(): int
     {
         return $this->notifications()->where('is_read', false)->count();

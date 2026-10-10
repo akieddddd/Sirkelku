@@ -96,6 +96,6 @@ class ProfileController extends Controller
         // Hobbies
         $user->hobbies()->sync($validated['hobby_ids']);
 
-        return redirect()->route('profile.show', $user->username)->with('success', 'Profilmu berhasil diperbarui!');
+        return redirect()->route('profile.show', $user->username)->with('success', 'Profil berhasil diperbarui.');
     }
 }

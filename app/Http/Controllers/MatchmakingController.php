@@ -119,7 +119,7 @@ class MatchmakingController extends Controller
 
         if ($existing) {
             if ($existing->status === 'accepted') {
-                return redirect()->back()->with('info', 'Kamu sudah berteman dengan pengguna ini!');
+                return redirect()->back()->with('info', 'Kamu sudah berteman dengan pengguna ini.');
             }
             if ($existing->status === 'pending') {
                 return redirect()->back()->with('info', 'Permintaan ajakan main sedang menunggu respons.');
@@ -148,12 +148,12 @@ class MatchmakingController extends Controller
             'user_id' => $receiver->id,
             'actor_id' => $sender->id,
             'type' => 'match_request',
-            'title' => 'Ajakan Main Baru!',
-            'message' => $sender->name . ' mengirimkan sinyal Ajak Main ke kamu: "' . ($validated['note'] ?? 'Yuk mabar / nongkrong bareng!') . '"',
+            'title' => 'Ajakan Main Baru',
+            'message' => $sender->name . ' mengirimkan ajakan main: "' . ($validated['note'] ?? 'Ajak main bareng') . '"',
             'link_url' => route('matchmaking.index', ['tab' => 'incoming']),
         ]);
 
-        return redirect()->back()->with('success', 'Sinyal "Ajak Main" berhasil dikirim ke ' . $receiver->name . '!');
+        return redirect()->back()->with('success', 'Ajakan main berhasil dikirim ke ' . $receiver->name . '.');
     }
 
     public function respondRequest(Request $request, MatchRequest $matchRequest)
@@ -176,12 +176,12 @@ class MatchmakingController extends Controller
                 'user_id' => $matchRequest->sender_id,
                 'actor_id' => $currentUser->id,
                 'type' => 'match_accepted',
-                'title' => 'Ajakan Main Diterima!',
-                'message' => $currentUser->name . ' menerima ajakan mainmu! Kalian sekarang resmi berteman.',
+                'title' => 'Ajakan Main Diterima',
+                'message' => $currentUser->name . ' menerima ajakan mainmu. Kamu sekarang berteman dengannya.',
                 'link_url' => route('matchmaking.index', ['tab' => 'friends']),
             ]);
 
-            return redirect()->back()->with('success', 'Ajakan main diterima! Kamu dan ' . $matchRequest->sender->name . ' sekarang resmi berteman.');
+            return redirect()->back()->with('success', 'Ajakan main diterima. Kamu dan ' . $matchRequest->sender->name . ' sekarang berteman.');
         } else {
             $matchRequest->update(['status' => 'rejected']);
             return redirect()->back()->with('info', 'Ajakan main telah ditolak.');

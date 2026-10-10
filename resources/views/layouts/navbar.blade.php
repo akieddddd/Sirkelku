@@ -4,13 +4,7 @@
         
         <!-- 1. Brand Logo + Name + User Role Badge -->
         <div class="flex items-center gap-2.5 shrink-0">
-            <a href="{{ route('feed.index') }}" class="flex items-center gap-2.5 group">
-                <img src="{{ asset('images/logo.png') }}" alt="Sirkelku Logo" class="w-9 h-9 object-contain group-hover:scale-105 transition-transform duration-200">
-                <div class="flex items-center gap-1.5">
-                    <span class="text-xl font-black tracking-tight text-slate-800 group-hover:text-[#FF4500] transition-colors">Sirkelku</span>
-                    <span class="hidden sm:inline-block text-[10px] font-extrabold text-[#2D472C] bg-[#FFF0E6] border border-[#CDE0CD] px-2 py-0.5 rounded-full">Pelajar</span>
-                </div>
-            </a>
+            <x-logo :href="route('feed.index')" icon-class="w-9 h-9" show-badge="true" />
         </div>
 
         <!-- 2. Global Search Bar (Desktop: ≥768px) -->

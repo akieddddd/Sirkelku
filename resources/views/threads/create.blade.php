@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="space-y-5 max-w-2xl mx-auto">
+<div class="space-y-5 max-w-2xl mx-auto p-4 sm:p-5">
     
     <div class="flex items-center gap-2 text-xs font-bold text-slate-500">
         <a href="{{ route('threads.index') }}" class="hover:text-[#FF4500] flex items-center gap-1 transition-colors">
@@ -80,7 +80,7 @@
 
             <div class="pt-3">
                 <button type="submit" class="sk-btn-primary w-full text-sm py-3">
-                    Terbitkan Utas Sekarang &rarr;
+                    Terbitkan Utas
                 </button>
             </div>
         </form>

@@ -106,18 +106,18 @@
                     </div>
                 @endif
             @empty
-                <div class="text-center my-auto p-8" id="empty-state">
-                    <div class="w-14 h-14 rounded-2xl bg-[#FFF0E6] border border-[#CDE0CD] flex items-center justify-center mx-auto mb-3 text-[#FF4500]">
-                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" /></svg>
+                <div class="text-center my-auto p-8 space-y-2" id="empty-state">
+                    <div class="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center mx-auto text-slate-400">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" /></svg>
                     </div>
-                    <h3 class="text-sm font-extrabold text-slate-800 mb-1">Mulai Obrolan dengan {{ $user->name }}</h3>
-                    <p class="text-xs text-slate-500 max-w-xs mx-auto">Sapa, ajak mabar atau diskusi seputar sirkel kalian sekarang!</p>
+                    <h3 class="text-sm font-bold text-slate-800">Belum ada pesan</h3>
+                    <p class="text-xs text-slate-500 max-w-xs mx-auto font-medium">Kirim pesan untuk memulai obrolan dengan {{ $user->name }}.</p>
                 </div>
             @endforelse
         </div>
 
         <!-- Floating Scroll to Bottom / New Message Badge -->
-        <button type="button" id="scroll-bottom-btn" class="hidden absolute bottom-20 right-6 bg-[#FF4500] hover:bg-[#E03E00] text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg flex items-center gap-1.5 transition-all duration-200 z-10">
+        <button type="button" id="scroll-bottom-btn" class="hidden absolute bottom-20 right-6 bg-[#588157] hover:bg-[#476A46] text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg flex items-center gap-1.5 transition-all duration-200 z-10">
             <span>Pesan Baru</span>
             <svg class="w-3.5 h-3.5 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 14l-7 7m0 0l-7-7m7 7V3" /></svg>
         </button>

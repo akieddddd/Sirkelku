@@ -1,0 +1,142 @@
+<aside class="hidden md:flex flex-col justify-between h-screen overflow-y-auto no-scrollbar md:w-20 xl:w-68 shrink-0 py-4 px-2 xl:px-4 z-30 select-none">
+    <!-- Top Nav Section -->
+    <div class="space-y-1 w-full">
+        <!-- 1. Brand Logo & Role Badge -->
+        <div class="flex items-center justify-center xl:justify-start px-2 py-3 mb-3">
+            <x-logo :href="route('feed.index')" icon-class="w-9 h-9" show-badge="true" responsive="true" />
+        </div>
+
+        <!-- 2. Vertical Navigation Menu -->
+        <nav class="space-y-1">
+            <!-- Nongkrong Yuk (Feed) -->
+            <x-nav-item 
+                :href="route('feed.index')" 
+                :active="request()->routeIs('feed.*') && !in_array(request('tab'), ['saved', 'liked'])" 
+                label="Nongkrong Yuk">
+                <svg class="w-6 h-6 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+                </svg>
+            </x-nav-item>
+
+            <!-- Satu Sirkel (Direktori Komunitas) -->
+            <x-nav-item 
+                :href="route('communities.index')" 
+                :active="request()->routeIs('communities.*')" 
+                label="Satu Sirkel">
+                <svg class="w-6 h-6 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                </svg>
+            </x-nav-item>
+
+            <!-- Tongkrongan.id (Forum Diskusi) -->
+            <x-nav-item 
+                :href="route('threads.index')" 
+                :active="request()->routeIs('threads.*')" 
+                label="Tongkrongan.id">
+                <svg class="w-6 h-6 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                </svg>
+            </x-nav-item>
+
+            <!-- Teman Main (Matchmaking) -->
+            <x-nav-item 
+                :href="route('matchmaking.index')" 
+                :active="request()->routeIs('matchmaking.*')" 
+                label="Teman Main">
+                <svg class="w-6 h-6 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+            </x-nav-item>
+
+            @auth
+                <!-- Disimpan (Bookmarks) -->
+                <x-nav-item 
+                    :href="route('feed.index', ['tab' => 'saved'])" 
+                    :active="request('tab') === 'saved'" 
+                    onclick="openSavedPosts(event)"
+                    label="Disimpan">
+                    <svg class="w-6 h-6 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+                    </svg>
+                </x-nav-item>
+
+                <!-- Disukai (Liked Posts) -->
+                <x-nav-item 
+                    :href="route('feed.index', ['tab' => 'liked'])" 
+                    :active="request('tab') === 'liked'" 
+                    label="Disukai">
+                    <svg class="w-6 h-6 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                    </svg>
+                </x-nav-item>
+
+                <!-- Pesan (Direct Messages) -->
+                <x-nav-item 
+                    :href="route('messages.index')" 
+                    :active="request()->routeIs('messages.*')" 
+                    label="Pesan"
+                    :badge="$unreadMessagesCount ?? 0"
+                    badgeClass="nav-msg-badge">
+                    <svg class="w-6 h-6 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+                    </svg>
+                </x-nav-item>
+
+                <!-- Notifikasi -->
+                <x-nav-item 
+                    :href="route('notifications.index')" 
+                    :active="request()->routeIs('notifications.*')" 
+                    label="Notifikasi"
+                    :badge="$unreadCount ?? 0"
+                    badgeClass="nav-notif-badge">
+                    <svg class="w-6 h-6 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                    </svg>
+                </x-nav-item>
+
+                <!-- Profil Saya -->
+                <x-nav-item 
+                    :href="route('profile.show', Auth::user()->username)" 
+                    :active="request()->is('profile/' . Auth::user()->username)" 
+                    label="Profil Saya">
+                    <svg class="w-6 h-6 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    </svg>
+                </x-nav-item>
+            @endauth
+        </nav>
+
+        <!-- 3. Primary CTA Button: Sirkel Baru -->
+        <div class="pt-4">
+            <!-- Expanded mode (>=xl) -->
+            <a href="{{ route('communities.create') }}" 
+               class="hidden xl:flex w-full py-3 px-4 bg-[#FF4500] hover:bg-[#E03E00] text-white font-bold text-sm rounded-full shadow-sm hover:shadow-md transition-all items-center justify-center gap-2 transform hover:-translate-y-0.5">
+                <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M12 4v16m8-8H4" />
+                </svg>
+                <span>Sirkel Baru</span>
+            </a>
+
+            <!-- Collapsed mode (<xl) -->
+            <a href="{{ route('communities.create') }}" 
+               class="xl:hidden w-12 h-12 rounded-full bg-[#FF4500] hover:bg-[#E03E00] text-white shadow-sm flex items-center justify-center transition-all hover:scale-105 mx-auto"
+               title="Sirkel Baru">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M12 4v16m8-8H4" />
+                </svg>
+            </a>
+        </div>
+    </div>
+
+    <!-- 4. Mini User Card (mt-auto, menempel di bawah) -->
+    <x-user-mini-card />
+</aside>
+
+<script>
+    function openSavedPosts(e) {
+        e.preventDefault();
+        const saved = JSON.parse(localStorage.getItem('sirkelku_saved_posts') || '[]');
+        const ids = saved.join(',');
+        window.location.href = "{{ route('feed.index') }}?tab=saved" + (ids ? "&saved_ids=" + ids : "");
+    }
+</script>

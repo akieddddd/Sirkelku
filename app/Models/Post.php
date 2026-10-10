@@ -19,6 +19,14 @@ class Post extends Model
         'image_path',
     ];
 
+    protected function casts(): array
+    {
+        return [
+            'is_flagged' => 'boolean',
+            'reports_count' => 'integer',
+        ];
+    }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
@@ -42,6 +50,18 @@ class Post extends Model
     public function comments(): HasMany
     {
         return $this->hasMany(PostComment::class)->latest();
+    }
+
+    public function reports(): HasMany
+    {
+        return $this->hasMany(PostReport::class);
+    }
+
+    public function isReportedBy($user): bool
+    {
+        if (!$user) return false;
+        $userId = is_object($user) ? $user->id : $user;
+        return $this->reports()->where('user_id', $userId)->exists();
     }
 
     public function isLikedBy($user): bool

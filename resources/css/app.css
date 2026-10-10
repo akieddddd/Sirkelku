@@ -16,9 +16,38 @@
     --color-surface-card: #FFFFFF;
     --color-border-card: #E2E8F0;
     --color-bg-main: #F8FAFC;
+    --color-primary-orange: #FF4500;
 }
 
 /* Smooth scrolling behavior */
 html {
     scroll-behavior: smooth;
 }
+
+/* Hide scrollbar utility */
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+/* Disable native browser password reveal and clear buttons (Edge, IE, WebKit) */
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+    pointer-events: none;
+}
+input::-webkit-credentials-auto-fill-button {
+    visibility: hidden;
+    position: absolute;
+    right: 0;
+}
+
+[x-cloak] {
+    display: none !important;
+}
+

@@ -35,7 +35,7 @@ class AuthController extends Controller
                 return redirect()->route('onboarding.index');
             }
 
-            return redirect()->intended(route('feed.index'))->with('success', 'Selamat datang kembali di Sirkelku!');
+            return redirect()->intended(route('feed.index'))->with('success', 'Selamat datang kembali.');
         }
 
         return back()->withErrors([
@@ -75,7 +75,7 @@ class AuthController extends Controller
         Auth::login($user);
         $request->session()->regenerate();
 
-        return redirect()->route('onboarding.index')->with('success', 'Akun berhasil dibuat! Silakan lengkapi profil sekolah dan hobimu.');
+        return redirect()->route('onboarding.index')->with('success', 'Akun berhasil dibuat. Silakan lengkapi profil.');
     }
 
     public function logout(Request $request)
