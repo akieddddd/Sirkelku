@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AppNotification;
 use App\Models\Post;
 use App\Models\PostReport;
 use Illuminate\Http\Request;
@@ -62,6 +63,15 @@ class PostReportController extends Controller
         // 5. Jika reports_count >= 2, otomatis ubah is_flagged = true
         if ($post->reports_count >= 2 && !$post->is_flagged) {
             $post->forceFill(['is_flagged' => true])->save();
+
+            AppNotification::create([
+                'user_id' => $post->user_id,
+                'actor_id' => null,
+                'type' => 'flagged',
+                'title' => 'Postingan Ditandai Sensitif',
+                'message' => 'Postinganmu telah ditandai sensitif karena menerima beberapa laporan dari komunitas.',
+                'link_url' => route('feed.index') . '#post-' . $post->id,
+            ]);
         }
 
         $successMessage = 'Laporan berhasil dikirim. Terima kasih telah menjaga keamanan komunitas.';

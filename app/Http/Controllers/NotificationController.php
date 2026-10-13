@@ -11,7 +11,7 @@ class NotificationController extends Controller
     public function index()
     {
         $notifications = Auth::user()->notifications()
-            ->with('actor')
+            ->with(['actor.school'])
             ->paginate(15);
 
         // Mark them as read when viewing notification center

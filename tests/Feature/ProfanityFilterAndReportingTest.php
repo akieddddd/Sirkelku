@@ -26,6 +26,9 @@ class ProfanityFilterAndReportingTest extends TestCase
     /**
      * Test Unit ProfanityFilter service.
      */
+    /**
+     * Test Unit ProfanityFilter service.
+     */
     public function test_profanity_filter_censors_bad_words_accurately(): void
     {
         $this->assertEquals('Dasar a****g kau!', ProfanityFilter::censor('Dasar anjing kau!'));
@@ -40,10 +43,36 @@ class ProfanityFilterAndReportingTest extends TestCase
 
         // Harmless words must NOT be censored
         $this->assertEquals('liburan di pantai makan cokelat', ProfanityFilter::censor('liburan di pantai makan cokelat'));
+        $this->assertEquals('asuransi kesehatan keluarga', ProfanityFilter::censor('asuransi kesehatan keluarga'));
+        $this->assertEquals('hubungi kontak darurat kami', ProfanityFilter::censor('hubungi kontak darurat kami'));
+
+        // Elongated / dipanjangin words
+        $this->assertEquals('p*******r', ProfanityFilter::censor('pelerrrrr'));
+        $this->assertEquals('p********r', ProfanityFilter::censor('peeeleeeer'));
+        $this->assertEquals('a********g', ProfanityFilter::censor('anjiiiiing'));
+        $this->assertEquals('k*******l', ProfanityFilter::censor('kontooool'));
+
+        // Abbreviated / disingkat words
+        $this->assertEquals('a*g', ProfanityFilter::censor('ajg'));
+        $this->assertEquals('k**l', ProfanityFilter::censor('kntl'));
+        $this->assertEquals('b**t', ProfanityFilter::censor('bgst'));
+        $this->assertEquals('g**k', ProfanityFilter::censor('gblk'));
+        $this->assertEquals('t*l', ProfanityFilter::censor('tll'));
+        $this->assertEquals('m*k', ProfanityFilter::censor('mmk'));
+
+        // Leetspeak & character substitution
+        $this->assertEquals('p***r', ProfanityFilter::censor('p3l3r'));
+        $this->assertEquals('k****l', ProfanityFilter::censor('k0nt0l'));
+        $this->assertEquals('@****g', ProfanityFilter::censor('@njing'));
+        $this->assertEquals('4****g', ProfanityFilter::censor('4njing'));
+
+        // Diselipi spasi / tanda baca
+        $this->assertEquals('p*******r', ProfanityFilter::censor('p.e.l.e.r'));
+        $this->assertEquals('p*******r', ProfanityFilter::censor('p e l e r'));
     }
 
     /**
-     * Test FeedController stores censored post.
+     * Test FeedController stores censored post and generates notification.
      */
     public function test_post_creation_is_censored(): void
     {
@@ -51,7 +80,7 @@ class ProfanityFilterAndReportingTest extends TestCase
         $this->actingAs($user);
 
         $response = $this->post(route('posts.store'), [
-            'content' => 'Halo kawan anjing lu semua bangsat',
+            'content' => 'Halo kawan anjing lu semua pelerrrrr',
         ]);
 
         $response->assertSessionHasNoErrors();
@@ -59,13 +88,21 @@ class ProfanityFilterAndReportingTest extends TestCase
         $post = Post::where('user_id', $user->id)->latest('id')->first();
         $this->assertNotNull($post);
         $this->assertStringContainsString('a****g', $post->content);
-        $this->assertStringContainsString('b*****t', $post->content);
+        $this->assertStringContainsString('p*******r', $post->content);
         $this->assertStringNotContainsString('anjing', strtolower($post->content));
-        $this->assertStringNotContainsString('bangsat', strtolower($post->content));
+        $this->assertStringNotContainsString('peler', strtolower($post->content));
+
+        // Check that a moderation notification was sent to user
+        $notif = \App\Models\AppNotification::where('user_id', $user->id)
+            ->where('type', 'censored')
+            ->latest('id')
+            ->first();
+        $this->assertNotNull($notif);
+        $this->assertEquals('Konten Disensor Otomatis', $notif->title);
     }
 
     /**
-     * Test post comment is censored.
+     * Test post comment is censored and generates notification.
      */
     public function test_post_comment_is_censored(): void
     {
@@ -74,7 +111,7 @@ class ProfanityFilterAndReportingTest extends TestCase
         $this->actingAs($user);
 
         $response = $this->post(route('posts.comment', $post->id), [
-            'comment_text' => 'Komentar tolol banget kamu goblok',
+            'comment_text' => 'Komentar tolol banget kamu k0nt0l',
         ]);
 
         $response->assertSessionHasNoErrors();
@@ -82,7 +119,44 @@ class ProfanityFilterAndReportingTest extends TestCase
         $comment = PostComment::where('post_id', $post->id)->where('user_id', $user->id)->latest('id')->first();
         $this->assertNotNull($comment);
         $this->assertStringContainsString('t***l', $comment->comment_text);
-        $this->assertStringContainsString('g****k', $comment->comment_text);
+        $this->assertStringContainsString('k****l', $comment->comment_text);
+
+        // Check commenter received censored notification
+        $notif = \App\Models\AppNotification::where('user_id', $user->id)
+            ->where('type', 'censored')
+            ->latest('id')
+            ->first();
+        $this->assertNotNull($notif);
+        $this->assertEquals('Komentar Disensor Otomatis', $notif->title);
+    }
+
+    /**
+     * Test post like creates clear notification with actor identity.
+     */
+    public function test_post_like_creates_clear_notification_with_actor(): void
+    {
+        $users = User::take(2)->get();
+        $author = $users[0];
+        $liker = $users[1];
+
+        $post = Post::create([
+            'user_id' => $author->id,
+            'content' => 'Postingan uji suka dan notifikasi',
+        ]);
+
+        $this->actingAs($liker);
+        $response = $this->post(route('posts.like', $post->id));
+        $response->assertSessionHasNoErrors();
+
+        $notif = \App\Models\AppNotification::where('user_id', $author->id)
+            ->where('actor_id', $liker->id)
+            ->where('type', 'like')
+            ->latest('id')
+            ->first();
+
+        $this->assertNotNull($notif);
+        $this->assertStringContainsString($liker->name, $notif->title);
+        $this->assertStringContainsString('@' . $liker->username, $notif->message);
     }
 
     /**

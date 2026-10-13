@@ -73,7 +73,9 @@ class FeedController extends Controller
             $imagePath = $request->file('image')->store('posts', 'public');
         }
 
-        $content = ProfanityFilter::censor($validated['content'] ?? '');
+        $rawContent = $validated['content'] ?? '';
+        $hasProfanity = ProfanityFilter::contains($rawContent);
+        $content = ProfanityFilter::censor($rawContent);
 
         $post = Post::create([
             'user_id' => Auth::id(),
@@ -82,6 +84,17 @@ class FeedController extends Controller
             'content' => $content,
             'image_path' => $imagePath,
         ]);
+
+        if ($hasProfanity) {
+            AppNotification::create([
+                'user_id' => Auth::id(),
+                'actor_id' => null,
+                'type' => 'censored',
+                'title' => 'Konten Disensor Otomatis',
+                'message' => 'Postinganmu mengandung kata yang disensor otomatis oleh sistem demi kenyamanan bersama: "' . \Illuminate\Support\Str::limit($content, 50) . '". Harap gunakan bahasa yang sopan ya!',
+                'link_url' => route('feed.index') . '#post-' . $post->id,
+            ]);
+        }
 
         return redirect()->back()->with('success', 'Postingan berhasil diterbitkan.');
     }
@@ -96,11 +109,24 @@ class FeedController extends Controller
             'content' => ['required', 'string', 'max:1000'],
         ]);
 
-        $content = ProfanityFilter::censor($validated['content']);
+        $rawContent = $validated['content'];
+        $hasProfanity = ProfanityFilter::contains($rawContent);
+        $content = ProfanityFilter::censor($rawContent);
 
         $post->update([
             'content' => $content,
         ]);
+
+        if ($hasProfanity) {
+            AppNotification::create([
+                'user_id' => Auth::id(),
+                'actor_id' => null,
+                'type' => 'censored',
+                'title' => 'Konten Disensor Otomatis',
+                'message' => 'Pembaruan postinganmu mengandung kata yang disensor otomatis oleh sistem: "' . \Illuminate\Support\Str::limit($content, 50) . '". Harap gunakan bahasa yang sopan ya!',
+                'link_url' => route('feed.index') . '#post-' . $post->id,
+            ]);
+        }
 
         return redirect()->back()->with('success', 'Postingan berhasil diperbarui.');
     }
@@ -137,12 +163,15 @@ class FeedController extends Controller
 
             // Notification for post author
             if ($post->user_id !== $userId) {
+                $actor = Auth::user();
+                $postSnippet = !empty($post->content) ? '"' . \Illuminate\Support\Str::limit($post->content, 45) . '"' : 'unggahan foto';
+
                 AppNotification::create([
                     'user_id' => $post->user_id,
                     'actor_id' => $userId,
                     'type' => 'like',
-                    'title' => 'Seseorang menyukai postinganmu',
-                    'message' => Auth::user()->name . ' menyukai postinganmu di Nongkrong Yuk.',
+                    'title' => $actor->name . ' menyukai postinganmu',
+                    'message' => $actor->name . ' (@' . $actor->username . ') menyukai postinganmu: ' . $postSnippet,
                     'link_url' => route('feed.index') . '#post-' . $post->id,
                 ]);
             }
@@ -169,7 +198,9 @@ class FeedController extends Controller
             'comment_text.required' => 'Komentar tidak boleh kosong.',
         ]);
 
-        $commentText = ProfanityFilter::censor($validated['comment_text']);
+        $rawComment = $validated['comment_text'];
+        $hasProfanity = ProfanityFilter::contains($rawComment);
+        $commentText = ProfanityFilter::censor($rawComment);
 
         $comment = PostComment::create([
             'post_id' => $post->id,
@@ -177,14 +208,28 @@ class FeedController extends Controller
             'comment_text' => $commentText,
         ]);
 
+        $actor = Auth::user();
+
+        // Notification for commenter if their comment was censored
+        if ($hasProfanity) {
+            AppNotification::create([
+                'user_id' => Auth::id(),
+                'actor_id' => null,
+                'type' => 'censored',
+                'title' => 'Komentar Disensor Otomatis',
+                'message' => 'Komentarmu pada postingan mengandung kata yang disensor otomatis: "' . \Illuminate\Support\Str::limit($commentText, 50) . '". Harap gunakan bahasa yang sopan ya!',
+                'link_url' => route('feed.index') . '#post-' . $post->id,
+            ]);
+        }
+
         // Notification for post author
         if ($post->user_id !== Auth::id()) {
             AppNotification::create([
                 'user_id' => $post->user_id,
                 'actor_id' => Auth::id(),
                 'type' => 'comment',
-                'title' => 'Komentar baru pada postinganmu',
-                'message' => Auth::user()->name . ' mengomentari postinganmu: "' . \Illuminate\Support\Str::limit($commentText, 40) . '"',
+                'title' => $actor->name . ' mengomentari postinganmu',
+                'message' => $actor->name . ' (@' . $actor->username . '): "' . \Illuminate\Support\Str::limit($commentText, 50) . '"',
                 'link_url' => route('feed.index') . '#post-' . $post->id,
             ]);
         }

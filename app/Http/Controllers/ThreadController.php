@@ -72,8 +72,12 @@ class ThreadController extends Controller
             'hobby_id.required' => 'Pilih kategori hobi yang sesuai.',
         ]);
 
-        $title = ProfanityFilter::censor($validated['title']);
-        $body  = ProfanityFilter::censor($validated['body']);
+        $rawTitle = $validated['title'];
+        $rawBody  = $validated['body'];
+        $hasProfanity = ProfanityFilter::contains($rawTitle) || ProfanityFilter::contains($rawBody);
+
+        $title = ProfanityFilter::censor($rawTitle);
+        $body  = ProfanityFilter::censor($rawBody);
 
         $thread = Thread::create([
             'user_id' => Auth::id(),
@@ -82,6 +86,17 @@ class ThreadController extends Controller
             'title' => $title,
             'body' => $body,
         ]);
+
+        if ($hasProfanity) {
+            AppNotification::create([
+                'user_id' => Auth::id(),
+                'actor_id' => null,
+                'type' => 'censored',
+                'title' => 'Utas Disensor Otomatis',
+                'message' => 'Utas diskusimu mengandung kata yang disensor otomatis oleh sistem demi kenyamanan bersama. Harap gunakan bahasa yang sopan ya!',
+                'link_url' => route('threads.show', $thread->id),
+            ]);
+        }
 
         return redirect()->route('threads.show', $thread->id)->with('success', 'Utas diskusi berhasil dibuat.');
     }
@@ -116,7 +131,9 @@ class ThreadController extends Controller
             'comment_text.required' => 'Isi balasan tidak boleh kosong.',
         ]);
 
-        $commentText = ProfanityFilter::censor($validated['comment_text']);
+        $rawComment = $validated['comment_text'];
+        $hasProfanity = ProfanityFilter::contains($rawComment);
+        $commentText = ProfanityFilter::censor($rawComment);
 
         $comment = ThreadComment::create([
             'thread_id' => $thread->id,
@@ -124,6 +141,18 @@ class ThreadController extends Controller
             'parent_id' => $validated['parent_id'] ?? null,
             'comment_text' => $commentText,
         ]);
+
+        // If commenter's comment was censored, notify them
+        if ($hasProfanity) {
+            AppNotification::create([
+                'user_id' => Auth::id(),
+                'actor_id' => null,
+                'type' => 'censored',
+                'title' => 'Balasan Disensor Otomatis',
+                'message' => 'Balasan komentarmu pada utas mengandung kata yang disensor otomatis demi kenyamanan bersama.',
+                'link_url' => route('threads.show', $thread->id) . '#comment-' . $comment->id,
+            ]);
+        }
 
         // Send notification
         $sender = Auth::user();
@@ -135,8 +164,8 @@ class ThreadController extends Controller
                     'user_id' => $parentComment->user_id,
                     'actor_id' => $sender->id,
                     'type' => 'thread_reply',
-                    'title' => 'Balasan komentar di Tongkrongan.id',
-                    'message' => $sender->name . ' membalas komentarmu pada utas "' . \Illuminate\Support\Str::limit($thread->title, 40) . '"',
+                    'title' => $sender->name . ' membalas komentarmu',
+                    'message' => $sender->name . ' (@' . $sender->username . ') membalas komentarmu pada utas "' . \Illuminate\Support\Str::limit($thread->title, 40) . '"',
                     'link_url' => route('threads.show', $thread->id) . '#comment-' . $comment->id,
                 ]);
             }
@@ -146,8 +175,8 @@ class ThreadController extends Controller
                 'user_id' => $thread->user_id,
                 'actor_id' => $sender->id,
                 'type' => 'thread_reply',
-                'title' => 'Tanggapan baru di utasmu',
-                'message' => $sender->name . ' merespons utasmu "' . \Illuminate\Support\Str::limit($thread->title, 40) . '"',
+                'title' => $sender->name . ' merespons utasmu',
+                'message' => $sender->name . ' (@' . $sender->username . ') merespons utasmu "' . \Illuminate\Support\Str::limit($thread->title, 40) . '"',
                 'link_url' => route('threads.show', $thread->id) . '#comment-' . $comment->id,
             ]);
         }

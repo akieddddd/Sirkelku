@@ -51,7 +51,77 @@ class ProfanityFilter
         'jablay',
         'bencong',
         'banci',
+        'toket',
+        'ngewe',
+        'ewe',
+        'bokep',
+        'bacot',
+        'sempak',
+        'tempik',
+        'silit',
+        'pejuh',
     ];
+
+    /**
+     * Daftar singkatan umum kata kasar.
+     *
+     * @var array<string>
+     */
+    protected static array $abbreviations = [
+        'ajg',
+        'anj',
+        'anjr',
+        'kntl',
+        'ktl',
+        'mmk',
+        'bgst',
+        'bgsd',
+        'gblk',
+        'gblg',
+        'tll',
+        'bjngn',
+        'jmbt',
+        'asw',
+        'plr',
+        'pntk',
+        'ngtd',
+        'ngtot',
+        'kmpret',
+    ];
+
+    /**
+     * Peta substitusi karakter (leetspeak & variasi karakter).
+     *
+     * @var array<string, string>
+     */
+    protected static array $charMap = [
+        'a' => '[a@4]',
+        'b' => '[b8]',
+        'c' => '[c]',
+        'd' => '[d]',
+        'e' => '[e3]',
+        'g' => '[g9]',
+        'h' => '[h]',
+        'i' => '[i1!|]',
+        'j' => '[j]',
+        'k' => '[k]',
+        'l' => '[l]',
+        'm' => '[m]',
+        'n' => '[n]',
+        'o' => '[o0]',
+        'p' => '[p]',
+        'r' => '[r]',
+        's' => '[s5$]',
+        't' => '[t7+]',
+        'u' => '[uv]',
+        'w' => '[w]',
+        'y' => '[y]',
+    ];
+
+    /**
+     * Cache pola regex untuk efisiensi eksekusi.
+     */
+    protected static ?string $cachedPattern = null;
 
     /**
      * Sensor kata kasar dalam teks.
@@ -93,12 +163,13 @@ class ProfanityFilter
     /**
      * Sensor sebuah kata dengan mengganti karakter di tengahnya dengan bintang.
      * Contoh:
-     * - "anjing"  -> "a****g"
-     * - "babi"    -> "b**i"
-     * - "asu"     -> "a*u"
-     * - "tai"     -> "t*i"
-     * - "cuk"     -> "c*k"
-     * - "as"      -> "**"
+     * - "anjing"     -> "a****g"
+     * - "pelerrrrr"  -> "p*******r"
+     * - "babi"       -> "b**i"
+     * - "asu"        -> "a*u"
+     * - "tai"        -> "t*i"
+     * - "cuk"        -> "c*k"
+     * - "as"         -> "**"
      *
      * @param string $word
      * @return string
@@ -119,23 +190,53 @@ class ProfanityFilter
     }
 
     /**
-     * Membangun regex pattern yang aman dan case-insensitive dengan boundary \b.
+     * Membangun regex untuk 1 kata dengan toleransi pemanjangan karakter (+),
+     * leetspeak/substitusi karakter, dan pemisah (spasi, titik, dash, underscore).
+     *
+     * @param string $word
+     * @return string
+     */
+    public static function buildWordRegex(string $word): string
+    {
+        $chars = mb_str_split(mb_strtolower($word));
+        $patternParts = [];
+
+        foreach ($chars as $ch) {
+            $class = static::$charMap[$ch] ?? preg_quote($ch, '/');
+            $patternParts[] = $class . '+';
+        }
+
+        // Izinkan pemisah opsional antara huruf (spasi, titik, strip, garis bawah, bintang, tilde)
+        return implode('[\s\.\-_*~]*', $patternParts);
+    }
+
+    /**
+     * Membangun regex pattern yang komprehensif, case-insensitive,
+     * serta aman terhadap false positives dengan boundary Unicode letter (?<!\p{L}) dan (?!\p{L}).
      *
      * @return string
      */
-    protected static function buildRegexPattern(): string
+    public static function buildRegexPattern(): string
     {
-        // Urutkan kata dari yang paling panjang ke yang pendek agar frase/kata majemuk cocok lebih dahulu
-        $sortedWords = static::$badWords;
-        usort($sortedWords, function ($a, $b) {
+        if (static::$cachedPattern !== null) {
+            return static::$cachedPattern;
+        }
+
+        $allWords = array_merge(static::$badWords, static::$abbreviations);
+
+        // Urutkan kata dari yang paling panjang ke pendek
+        usort($allWords, function ($a, $b) {
             return mb_strlen($b) <=> mb_strlen($a);
         });
 
-        $escaped = array_map(function ($word) {
-            return preg_quote($word, '/');
-        }, $sortedWords);
+        $subPatterns = [];
+        foreach ($allWords as $word) {
+            $subPatterns[] = static::buildWordRegex($word);
+        }
 
-        return '/\b(' . implode('|', $escaped) . ')\b/iu';
+        static::$cachedPattern = '/(?<!\p{L})(' . implode('|', $subPatterns) . ')(?!\p{L})/iu';
+
+        return static::$cachedPattern;
     }
 
     /**
@@ -156,6 +257,7 @@ class ProfanityFilter
      */
     public static function addBadWords(array|string $words): void
     {
+        static::$cachedPattern = null;
         $words = is_array($words) ? $words : [$words];
         foreach ($words as $word) {
             $normalized = mb_strtolower(trim($word));
@@ -173,6 +275,35 @@ class ProfanityFilter
      */
     public static function setBadWords(array $words): void
     {
+        static::$cachedPattern = null;
         static::$badWords = array_values(array_unique(array_filter(array_map('mb_strtolower', $words))));
+    }
+
+    /**
+     * Ambil daftar singkatan terlarang.
+     *
+     * @return array<string>
+     */
+    public static function getAbbreviations(): array
+    {
+        return static::$abbreviations;
+    }
+
+    /**
+     * Tambahkan singkatan terlarang baru.
+     *
+     * @param array<string>|string $abbreviations
+     * @return void
+     */
+    public static function addAbbreviations(array|string $abbreviations): void
+    {
+        static::$cachedPattern = null;
+        $abbreviations = is_array($abbreviations) ? $abbreviations : [$abbreviations];
+        foreach ($abbreviations as $abbr) {
+            $normalized = mb_strtolower(trim($abbr));
+            if ($normalized !== '' && !in_array($normalized, static::$abbreviations, true)) {
+                static::$abbreviations[] = $normalized;
+            }
+        }
     }
 }
