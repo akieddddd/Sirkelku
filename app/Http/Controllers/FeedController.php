@@ -26,6 +26,32 @@ class FeedController extends Controller
         $query = Post::with(['user.school', 'community', 'hobby', 'likes', 'comments.user'])
             ->withCount(['likes', 'comments']);
 
+        // Account Privacy (PRD Item 3):
+        // Guest feed on GET / only retrieves posts from users with public accounts (is_private == false)
+        if (! $user) {
+            $query->whereHas('user', function ($q) {
+                $q->where('is_private', false);
+            });
+        }
+
+        // Search query across posts, authors, hobbies, and communities
+        if ($request->filled('q')) {
+            $searchTerm = '%' . trim($request->q) . '%';
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('content', 'like', $searchTerm)
+                  ->orWhereHas('user', function ($uq) use ($searchTerm) {
+                      $uq->where('name', 'like', $searchTerm)
+                         ->orWhere('username', 'like', $searchTerm);
+                  })
+                  ->orWhereHas('hobby', function ($hq) use ($searchTerm) {
+                      $hq->where('name', 'like', $searchTerm);
+                  })
+                  ->orWhereHas('community', function ($cq) use ($searchTerm) {
+                      $cq->where('name', 'like', $searchTerm);
+                  });
+            });
+        }
+
         // Optional filter by hobby
         if ($request->filled('hobby')) {
             $query->where('hobby_id', $request->hobby);
@@ -46,7 +72,9 @@ class FeedController extends Controller
             $query->whereIn('id', $savedIds);
         }
 
-        $posts = $query->latest()->paginate(10)->withQueryString();
+        // Guest feed paginates 15 (as explicitly requested in PRD Item 3); internal auth feed paginates 10
+        $perPage = ! $user ? 15 : 10;
+        $posts = $query->latest()->paginate($perPage)->withQueryString();
 
         $hobbies = Hobby::orderBy('name')->get();
         $userCommunities = $user ? $user->communities : collect();

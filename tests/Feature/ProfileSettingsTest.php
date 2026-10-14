@@ -134,6 +134,49 @@ class ProfileSettingsTest extends TestCase
         $user->delete();
     }
 
+    public function test_user_can_update_credentials_with_privacy(): void
+    {
+        $user = User::factory()->create([
+            'username' => 'testcred_' . uniqid(),
+            'password' => 'password123',
+            'school_id' => 1,
+            'is_private' => false,
+        ]);
+        $user->hobbies()->attach([1]);
+
+        $this->actingAs($user);
+
+        $newUsername = 'testuser_' . uniqid();
+        $newEmail = 'testuser_' . uniqid() . '@example.com';
+
+        $response = $this->put(route('profile.credentials.update'), [
+            'username' => $newUsername,
+            'email' => $newEmail,
+            'is_private' => '1',
+        ]);
+
+        $response->assertSessionHas('success');
+        $response->assertRedirect(route('profile.edit'));
+
+        $user->refresh();
+        $this->assertEquals($newUsername, $user->username);
+        $this->assertEquals($newEmail, $user->email);
+        $this->assertTrue($user->is_private);
+
+        // Toggle back to public
+        $response = $this->put(route('profile.credentials.update'), [
+            'username' => $newUsername,
+            'email' => $newEmail,
+            // is_private omitted/unchecked
+        ]);
+
+        $user->refresh();
+        $this->assertFalse($user->is_private);
+
+        // Clean up
+        $user->delete();
+    }
+
     public function test_user_can_delete_account_with_correct_password(): void
     {
         $user = User::factory()->create([
@@ -149,7 +192,7 @@ class ProfileSettingsTest extends TestCase
             'password' => 'password123',
         ]);
 
-        $response->assertRedirect(route('login'));
+        $response->assertRedirect('/');
         $response->assertSessionHas('info');
         $this->assertGuest();
         $this->assertDatabaseMissing('users', ['id' => $user->id]);

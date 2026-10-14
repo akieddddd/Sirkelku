@@ -121,6 +121,7 @@ class ProfileController extends Controller
                 'max:255',
                 Rule::unique('users')->ignore($user->id),
             ],
+            'is_private' => ['nullable', 'boolean'],
         ], [
             'username.required' => 'Username wajib diisi.',
             'username.alpha_dash' => 'Username hanya boleh berisi huruf, angka, tanda strip, dan garis bawah.',
@@ -133,9 +134,10 @@ class ProfileController extends Controller
         $user->update([
             'username' => $validated['username'],
             'email' => $validated['email'],
+            'is_private' => $request->boolean('is_private'),
         ]);
 
-        return redirect()->route('profile.edit')->with('success', 'Kredensial akun (username & email) berhasil diperbarui.');
+        return redirect()->route('profile.edit')->with('success', 'Kredensial dan privasi akun berhasil diperbarui.');
     }
 
     public function updatePassword(Request $request)
@@ -198,6 +200,6 @@ class ProfileController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect()->route('login')->with('info', 'Akun kamu telah berhasil dihapus secara permanen.');
+        return redirect('/')->with('info', 'Akun kamu telah berhasil dihapus secara permanen.');
     }
 }

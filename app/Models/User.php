@@ -21,6 +21,7 @@ class User extends Authenticatable
         'school_id',
         'bio',
         'avatar_path',
+        'is_private',
         'last_seen_at',
     ];
 
@@ -34,6 +35,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'is_private' => 'boolean',
             'last_seen_at' => 'datetime',
         ];
     }

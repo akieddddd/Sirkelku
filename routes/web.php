@@ -12,10 +12,8 @@ use App\Http\Controllers\ThreadController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-// Show Landing Page for all visitors
-Route::get('/', function () {
-    return view('landing');
-});
+// Reddit-Style Feed-First: Linimasa Utama langsung di rute GET /
+Route::get('/', [FeedController::class, 'index'])->name('feed.index');
 
 // Guest Authentication Routes
 Route::middleware('guest')->group(function () {
@@ -37,7 +35,7 @@ Route::middleware('auth')->group(function () {
     Route::middleware('onboarded')->group(function () {
 
         // Modul 1: Nongkrong Yuk (Social Feed)
-        Route::get('/feed', [FeedController::class, 'index'])->name('feed.index');
+        Route::get('/feed', [FeedController::class, 'index'])->name('feed.auth');
         Route::post('/posts', [FeedController::class, 'store'])->name('posts.store')->middleware('throttle:60,1');
         Route::put('/posts/{post}', [FeedController::class, 'update'])->name('posts.update');
         Route::delete('/posts/{post}', [FeedController::class, 'destroy'])->name('posts.destroy');

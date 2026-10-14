@@ -227,6 +227,7 @@ class SirkelkuSeeder extends Seeder
             'hobby_id' => $hobbies['Valorant']->id,
             'content' => 'Akhirnya nyentuh rank Diamond 2 setelah seminggu grind! Ada yang mau mabar unrated atau competitive malam ini? Gas reply ya!',
             'image_path' => 'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=800&auto=format&fit=crop&q=80',
+            'created_at' => now()->subMinutes(15),
         ]);
         PostLike::create(['post_id' => $post1->id, 'user_id' => $userRaihan->id]);
         PostLike::create(['post_id' => $post1->id, 'user_id' => $userBima->id]);
@@ -247,6 +248,7 @@ class SirkelkuSeeder extends Seeder
             'hobby_id' => $hobbies['Gitar Akustik']->id,
             'content' => 'Lagi iseng cover lagu Fourtwnty pakai petikan fingerstyle santai di taman sekolah. Siapa di sini yang suka musik akustik juga?',
             'image_path' => 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=800&auto=format&fit=crop&q=80',
+            'created_at' => now()->subMinutes(45),
         ]);
         PostLike::create(['post_id' => $post2->id, 'user_id' => $userNatasha->id]);
         PostLike::create(['post_id' => $post2->id, 'user_id' => $userKeiko->id]);
@@ -262,6 +264,7 @@ class SirkelkuSeeder extends Seeder
             'hobby_id' => $hobbies['Digital Drawing']->id,
             'content' => 'Fanart karakter kesukaan selesai digambar 5 jam nonstop pakai Clip Studio Paint. Gimana menurut kalian shading warnanya?',
             'image_path' => 'https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?w=800&auto=format&fit=crop&q=80',
+            'created_at' => now()->subHours(2),
         ]);
         PostLike::create(['post_id' => $post3->id, 'user_id' => $userDika->id]);
         PostLike::create(['post_id' => $post3->id, 'user_id' => $userClara->id]);
@@ -272,8 +275,136 @@ class SirkelkuSeeder extends Seeder
             'hobby_id' => $hobbies['Futsal']->id,
             'content' => 'Ada tim futsal SMA/SMK daerah Cimahi atau Bandung yang mau sparing sabtu sore besok di Lapangan Champion? Slot masih ada 1!',
             'image_path' => null,
+            'created_at' => now()->subHours(3),
         ]);
         PostLike::create(['post_id' => $post4->id, 'user_id' => $userDika->id]);
+
+        $post5 = Post::create([
+            'user_id' => $userRaihan->id,
+            'community_id' => $commDevs->id,
+            'hobby_id' => $hobbies['Web Development']->id,
+            'content' => 'Bikin landing page portofolio pertama buat tugas TIK sekolah pakai Tailwind CSS & Alpine.js. Menurut kalian mending tambah dark mode gak ya? Butuh feedback ges!',
+            'image_path' => 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800&auto=format&fit=crop&q=80',
+            'created_at' => now()->subHours(4),
+        ]);
+        PostLike::create(['post_id' => $post5->id, 'user_id' => $userDika->id]);
+        PostComment::create([
+            'post_id' => $post5->id,
+            'user_id' => $userDika->id,
+            'comment_text' => 'Keren banget Han! Tambah dark mode pasti auto dapat nilai 95 dari guru TIK wkwk.',
+        ]);
+
+        $post6 = Post::create([
+            'user_id' => $userNatasha->id,
+            'community_id' => null,
+            'hobby_id' => $hobbies['K-Pop Dance']->id,
+            'content' => 'Latihan cover dance NewJeans bareng squad ekskul tari sekolah tadi siang. Capek tapi seru banget! Ada sirkel dance di Surabaya yang mau join project video berikutnya?',
+            'image_path' => 'https://images.unsplash.com/photo-1535525153412-5a42439a210d?w=800&auto=format&fit=crop&q=80',
+            'created_at' => now()->subHours(6),
+        ]);
+        PostLike::create(['post_id' => $post6->id, 'user_id' => $userClara->id]);
+        PostLike::create(['post_id' => $post6->id, 'user_id' => $userKeiko->id]);
+
+        $post7 = Post::create([
+            'user_id' => $userClara->id,
+            'community_id' => null,
+            'hobby_id' => $hobbies['Fotografi']->id,
+            'content' => 'Sudut rooftop sekolah pas jam pulang sore selalu magis cahaya keemasannya (golden hour). Diambil pakai mirrorless lawas lensa 50mm f/1.8.',
+            'image_path' => 'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=800&auto=format&fit=crop&q=80',
+            'created_at' => now()->subHours(7),
+        ]);
+        PostLike::create(['post_id' => $post7->id, 'user_id' => $userRaihan->id]);
+
+        $post8 = Post::create([
+            'user_id' => $userDika->id,
+            'community_id' => $commDevs->id,
+            'hobby_id' => $hobbies['UI/UX Design']->id,
+            'content' => 'Redesain konsep kartu pelajar digital biar lebih modern & ada QR code presensi kantin. Bagian mana yang paling enak dilihat menurut teman-teman?',
+            'image_path' => 'https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?w=800&auto=format&fit=crop&q=80',
+            'created_at' => now()->subHours(9),
+        ]);
+        PostLike::create(['post_id' => $post8->id, 'user_id' => $userRaihan->id]);
+        PostLike::create(['post_id' => $post8->id, 'user_id' => $userKeiko->id]);
+
+        $post9 = Post::create([
+            'user_id' => $userBima->id,
+            'community_id' => null,
+            'hobby_id' => $hobbies['Bola Basket']->id,
+            'content' => 'Lolos ke babak semifinal DBL seri Bandung! Terima kasih buat suporter SMA 3 yang udah hadir dan nge-chant sepanjang kuarter. Next match kita habis-habisan!',
+            'image_path' => 'https://images.unsplash.com/photo-1546519638-68e109498ffc?w=800&auto=format&fit=crop&q=80',
+            'created_at' => now()->subHours(12),
+        ]);
+        PostLike::create(['post_id' => $post9->id, 'user_id' => $userClara->id]);
+
+        $post10 = Post::create([
+            'user_id' => $userKeiko->id,
+            'community_id' => $commArt->id,
+            'hobby_id' => $hobbies['Cosplay & Anime']->id,
+            'content' => 'WIP prop cosplay dari busa eva foam 5mm buat event akhir bulan. Masih tahap primer coating abu-abu. Jangan lupa amplas halus biar hasilnya rata!',
+            'image_path' => 'https://images.unsplash.com/photo-1563089145-599997674d42?w=800&auto=format&fit=crop&q=80',
+            'created_at' => now()->subHours(15),
+        ]);
+        PostLike::create(['post_id' => $post10->id, 'user_id' => $userNatasha->id]);
+
+        $post11 = Post::create([
+            'user_id' => $userRaihan->id,
+            'community_id' => $commDevs->id,
+            'hobby_id' => $hobbies['Game Development']->id,
+            'content' => 'Lagi iseng bikin prototype game 2D platformer pixel art pakai Godot Engine waktu jam istirahat. Mechanics double jump dan dash-nya udah mulus nih!',
+            'image_path' => 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=800&auto=format&fit=crop&q=80',
+            'created_at' => now()->subHours(18),
+        ]);
+        PostLike::create(['post_id' => $post11->id, 'user_id' => $userDika->id]);
+
+        $post12 = Post::create([
+            'user_id' => $userClara->id,
+            'community_id' => null,
+            'hobby_id' => $hobbies['Vocal & Menyanyi']->id,
+            'content' => 'Sharing tips pemanasan vokal sebelum perform di pensi: selalu mulai dengan lip trill dan jangan minum es manis 2 jam sebelum nyanyi. Trust me it helps a lot!',
+            'image_path' => null,
+            'created_at' => now()->subHours(20),
+        ]);
+        PostLike::create(['post_id' => $post12->id, 'user_id' => $userNatasha->id]);
+
+        $post13 = Post::create([
+            'user_id' => $userNatasha->id,
+            'community_id' => null,
+            'hobby_id' => $hobbies['Genshin Impact']->id,
+            'content' => 'Setelah nabung primogems 2 patch akhirnya dapet karakter incaran di 75 pity dan menang 50/50! Sekarang tinggal farming artifact emblem yang stat-nya gak ampas wkwk.',
+            'image_path' => 'https://images.unsplash.com/photo-1612287233202-094b8e21a8d0?w=800&auto=format&fit=crop&q=80',
+            'created_at' => now()->subHours(24),
+        ]);
+        PostLike::create(['post_id' => $post13->id, 'user_id' => $userKeiko->id]);
+
+        $post14 = Post::create([
+            'user_id' => $userDika->id,
+            'community_id' => null,
+            'hobby_id' => $hobbies['Skateboard']->id,
+            'content' => 'Akhirnya bisa konsisten landing kickflip setelah sebulan jatuh bangun di skatepark taman Suropati. Kuncinya di flick jari kaki pas pop!',
+            'image_path' => 'https://images.unsplash.com/photo-1520045892732-304bc3ac5d8e?w=800&auto=format&fit=crop&q=80',
+            'created_at' => now()->subHours(28),
+        ]);
+        PostLike::create(['post_id' => $post14->id, 'user_id' => $userBima->id]);
+
+        $post15 = Post::create([
+            'user_id' => $userBima->id,
+            'community_id' => null,
+            'hobby_id' => $hobbies['Badminton']->id,
+            'content' => 'Mencari sparring partner badminton single atau double untuk hari Minggu pagi di GOR Siliwangi. Level intermediate santai, yang penting keluar keringat bareng.',
+            'image_path' => null,
+            'created_at' => now()->subHours(32),
+        ]);
+        PostLike::create(['post_id' => $post15->id, 'user_id' => $userRaihan->id]);
+
+        $post16 = Post::create([
+            'user_id' => $userKeiko->id,
+            'community_id' => $commArt->id,
+            'hobby_id' => $hobbies['Digital Drawing']->id,
+            'content' => 'Sketsa cepat 30 menit studi gesture santai anak sekolahan. Masih sering kagok kalau sudut pandang ekstrem. Ada referensi tutorial gambar anatomi favorit kalian?',
+            'image_path' => 'https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=800&auto=format&fit=crop&q=80',
+            'created_at' => now()->subHours(36),
+        ]);
+        PostLike::create(['post_id' => $post16->id, 'user_id' => $userClara->id]);
 
         // 6. Seed Threads & Nested Comments (Tongkrongan.id)
         $thread1 = Thread::create([

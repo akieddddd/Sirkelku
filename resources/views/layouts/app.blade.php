@@ -19,19 +19,40 @@
     <!-- Alpine.js for micro-interactions -->
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.8/dist/cdn.min.js"></script>
 
+    <!-- Dark Mode Anti-Flicker Script (PRD Section 5) -->
+    <script>
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+        function toggleTheme() {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.theme = 'light';
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.theme = 'dark';
+            }
+        }
+    </script>
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="min-h-full md:h-screen md:overflow-hidden bg-[#F8FAFC] text-slate-800 selection:bg-[#FF4500] selection:text-white font-sans" x-data="{ mobileDrawerOpen: false }" x-init="$watch('mobileDrawerOpen', val => document.body.classList.toggle('overflow-hidden', val))">
+<body class="h-screen overflow-hidden bg-[#F8FAFC] dark:bg-zinc-950 text-slate-800 dark:text-zinc-100 selection:bg-[#FF4500] selection:text-white font-sans transition-colors" x-data="{ mobileDrawerOpen: false }" x-init="$watch('mobileDrawerOpen', val => document.body.classList.toggle('overflow-hidden', val))">
 
-    <!-- 3-Column Social Feed Layout Container -->
-    <div class="min-h-screen md:h-screen md:overflow-hidden bg-[#F8FAFC]">
-        <div class="max-w-7xl mx-auto flex justify-center md:h-screen">
+    <!-- Top Navbar Component (Desktop & Tablet) -->
+    <x-top-navbar />
+
+    <!-- 3-Column Social Feed Layout Container (Independent Scroll Architecture) -->
+    <div class="h-screen md:h-[calc(100vh-4rem)] max-h-screen md:max-h-[calc(100vh-4rem)] overflow-hidden bg-[#F8FAFC] dark:bg-zinc-950">
+        <div class="max-w-7xl mx-auto h-full flex justify-center overflow-hidden">
             
-            <!-- Left Column: Fixed Navigation Sidebar -->
+            <!-- Left Column: Navigation Sidebar (Independent Scroll) -->
             <x-sidebar-left />
 
-            <!-- Middle Column: Continuous Timeline & Main Workspace (Scrolls Independently) -->
-            <main class="w-full min-w-0 md:max-w-2xl md:border-x border-slate-200 bg-white min-h-screen md:h-screen md:overflow-y-auto custom-scrollbar flex-1 pb-20 md:pb-8">
+            <!-- Middle Column: Continuous Timeline & Main Workspace (Independent Scroll) -->
+            <main class="w-full min-w-0 md:max-w-2xl md:border-x border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 h-full overflow-y-auto custom-scrollbar flex-1 pb-20 md:pb-8 transition-colors">
                 
                 <!-- Mobile Top Header (< md) -->
                 <x-mobile-header />
@@ -80,10 +101,13 @@
     <!-- Mobile Navigation Drawer (< md) -->
     <x-mobile-drawer />
 
+    <!-- Auth Wall Modal for Guest Interactions -->
+    <x-auth-wall-modal />
+
     <!-- Mobile Bottom Navigation Bar (< md) -->
-    <nav class="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-200 shadow-sm px-4 py-2 flex items-center justify-around select-none">
+    <nav class="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-zinc-950/95 backdrop-blur-md border-t border-slate-200 dark:border-zinc-800 shadow-sm px-4 py-2 flex items-center justify-around select-none transition-colors">
         <!-- Feed -->
-        <a href="{{ route('feed.index') }}" class="flex flex-col items-center gap-0.5 py-1 px-3 rounded-xl {{ request()->routeIs('feed.*') ? 'text-[#FF4500] font-bold' : 'text-slate-400 font-medium' }}">
+        <a href="{{ route('feed.index') }}" class="flex flex-col items-center gap-0.5 py-1 px-3 rounded-xl {{ request()->routeIs('feed.*') ? 'text-[#FF4500] font-bold' : 'text-slate-400 dark:text-zinc-500 font-medium' }}">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" /></svg>
             <span class="text-[10px]">Feed</span>
         </a>
