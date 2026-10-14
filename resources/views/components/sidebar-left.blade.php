@@ -1,4 +1,4 @@
-<aside class="hidden md:flex flex-col justify-between h-screen overflow-y-auto no-scrollbar md:w-20 xl:w-68 shrink-0 py-4 px-2 xl:px-4 z-30 select-none">
+<aside class="hidden md:flex flex-col justify-between h-screen overflow-y-auto no-scrollbar md:w-20 xl:w-64 shrink-0 py-4 px-2 xl:px-4 z-30 select-none">
     <!-- Top Nav Section -->
     <div class="space-y-1 w-full">
         <!-- 1. Brand Logo & Role Badge -->
