@@ -127,6 +127,7 @@ class CommunityController extends Controller
         $activeTab = $request->get('tab', 'feed'); // feed, forum, members
 
         $posts = $community->posts()
+            ->visibleTo(Auth::user())
             ->with(['user.school', 'likes', 'comments.user'])
             ->withCount(['likes', 'comments'])
             ->paginate(10);

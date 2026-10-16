@@ -107,8 +107,10 @@ class MatchmakingController extends Controller
             'note' => ['nullable', 'string', 'max:255'],
         ]);
 
+        $isFriendRequest = ($request->input('type') === 'friend') || (empty($validated['hobby_id']) && empty($validated['note']));
+
         if ($validated['receiver_id'] == $sender->id) {
-            return redirect()->back()->with('error', 'Kamu tidak bisa mengajak diri sendiri bermain.');
+            return redirect()->back()->with('error', $isFriendRequest ? 'Kamu tidak bisa berteman dengan diri sendiri.' : 'Kamu tidak bisa mengajak diri sendiri bermain.');
         }
 
         $existing = MatchRequest::where(function ($q) use ($sender, $validated) {
@@ -122,7 +124,7 @@ class MatchmakingController extends Controller
                 return redirect()->back()->with('info', 'Kamu sudah berteman dengan pengguna ini.');
             }
             if ($existing->status === 'pending') {
-                return redirect()->back()->with('info', 'Permintaan ajakan main sedang menunggu respons.');
+                return redirect()->back()->with('info', $isFriendRequest ? 'Permintaan pertemanan sedang menunggu konfirmasi.' : 'Permintaan ajakan main sedang menunggu respons.');
             }
             // If rejected, update to pending
             $existing->update([
@@ -144,16 +146,29 @@ class MatchmakingController extends Controller
 
         // Send notification
         $receiver = User::find($validated['receiver_id']);
-        AppNotification::create([
-            'user_id' => $receiver->id,
-            'actor_id' => $sender->id,
-            'type' => 'match_request',
-            'title' => 'Ajakan Main Baru',
-            'message' => $sender->name . ' mengirimkan ajakan main: "' . ($validated['note'] ?? 'Ajak main bareng') . '"',
-            'link_url' => route('matchmaking.index', ['tab' => 'incoming']),
-        ]);
+        if ($isFriendRequest) {
+            AppNotification::create([
+                'user_id' => $receiver->id,
+                'actor_id' => $sender->id,
+                'type' => 'friend_request',
+                'title' => 'Permintaan Pertemanan Baru',
+                'message' => $sender->name . ' mengirimkan permintaan pertemanan kepadamu.',
+                'link_url' => route('profile.show', $sender->username),
+            ]);
 
-        return redirect()->back()->with('success', 'Ajakan main berhasil dikirim ke ' . $receiver->name . '.');
+            return redirect()->back()->with('success', 'Permintaan pertemanan berhasil dikirim ke ' . $receiver->name . '.');
+        } else {
+            AppNotification::create([
+                'user_id' => $receiver->id,
+                'actor_id' => $sender->id,
+                'type' => 'match_request',
+                'title' => 'Ajakan Main Baru',
+                'message' => $sender->name . ' mengirimkan ajakan main: "' . ($validated['note'] ?? 'Ajak main bareng') . '"',
+                'link_url' => route('matchmaking.index', ['tab' => 'incoming']),
+            ]);
+
+            return redirect()->back()->with('success', 'Ajakan main berhasil dikirim ke ' . $receiver->name . '.');
+        }
     }
 
     public function respondRequest(Request $request, MatchRequest $matchRequest)
@@ -161,30 +176,47 @@ class MatchmakingController extends Controller
         $currentUser = Auth::user();
 
         if ($matchRequest->receiver_id !== $currentUser->id) {
-            abort(403, 'Aksi ini hanya untuk penerima ajakan.');
+            abort(403, 'Aksi ini hanya untuk penerima permintaan.');
         }
 
         $validated = $request->validate([
             'action' => ['required', 'in:accept,reject'],
         ]);
 
+        $isFriendRequest = empty($matchRequest->hobby_id) && empty($matchRequest->note);
+
         if ($validated['action'] === 'accept') {
             $matchRequest->update(['status' => 'accepted']);
 
-            // Send notification to sender
-            AppNotification::create([
-                'user_id' => $matchRequest->sender_id,
-                'actor_id' => $currentUser->id,
-                'type' => 'match_accepted',
-                'title' => 'Ajakan Main Diterima',
-                'message' => $currentUser->name . ' menerima ajakan mainmu. Kamu sekarang berteman dengannya.',
-                'link_url' => route('matchmaking.index', ['tab' => 'friends']),
-            ]);
+            if ($isFriendRequest) {
+                // Send notification to sender
+                AppNotification::create([
+                    'user_id' => $matchRequest->sender_id,
+                    'actor_id' => $currentUser->id,
+                    'type' => 'friend_accepted',
+                    'title' => 'Permintaan Pertemanan Diterima',
+                    'message' => $currentUser->name . ' menerima permintaan pertemananmu. Kalian sekarang sudah berteman.',
+                    'link_url' => route('profile.show', $currentUser->username),
+                ]);
 
-            return redirect()->back()->with('success', 'Ajakan main diterima. Kamu dan ' . $matchRequest->sender->name . ' sekarang berteman.');
+                return redirect()->back()->with('success', 'Permintaan pertemanan diterima. Kamu dan ' . $matchRequest->sender->name . ' sekarang berteman.');
+            } else {
+                // Send notification to sender
+                AppNotification::create([
+                    'user_id' => $matchRequest->sender_id,
+                    'actor_id' => $currentUser->id,
+                    'type' => 'match_accepted',
+                    'title' => 'Ajakan Main Diterima',
+                    'message' => $currentUser->name . ' menerima ajakan mainmu. Kamu sekarang berteman dengannya.',
+                    'link_url' => route('matchmaking.index', ['tab' => 'friends']),
+                ]);
+
+                return redirect()->back()->with('success', 'Ajakan main diterima. Kamu dan ' . $matchRequest->sender->name . ' sekarang berteman.');
+            }
         } else {
             $matchRequest->update(['status' => 'rejected']);
-            return redirect()->back()->with('info', 'Ajakan main telah ditolak.');
+            $msg = $isFriendRequest ? 'Permintaan pertemanan telah ditolak.' : 'Ajakan main telah ditolak.';
+            return redirect()->back()->with('info', $msg);
         }
     }
 }

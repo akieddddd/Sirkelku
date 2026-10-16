@@ -23,29 +23,7 @@ class SirkelkuTest extends TestCase
     public static function tearDownAfterClass(): void
     {
         parent::tearDownAfterClass();
-        try {
-            $host = env('DB_HOST', '127.0.0.1');
-            $port = env('DB_PORT', '3306');
-            $db   = env('DB_DATABASE', 'sirkelku');
-            $user = env('DB_USERNAME', 'root');
-            $pass = env('DB_PASSWORD', '');
-            $pdo  = new \PDO("mysql:host={$host};port={$port};dbname={$db}", $user, $pass);
-            $pdo->exec('SET FOREIGN_KEY_CHECKS = 0;');
-            $tables = [
-                'app_notifications', 'messages', 'match_requests',
-                'thread_comments', 'threads', 'post_comments',
-                'post_likes', 'posts', 'community_members',
-                'communities', 'user_hobbies', 'users'
-            ];
-            foreach ($tables as $table) {
-                $pdo->exec("TRUNCATE TABLE `{$table}`;");
-            }
-            $pdo->exec('DELETE FROM `hobbies` WHERE `id` > 19;');
-            $pdo->exec('DELETE FROM `schools` WHERE `id` > 10;');
-            $pdo->exec('SET FOREIGN_KEY_CHECKS = 1;');
-        } catch (\Throwable $e) {
-            // Silently ignore if connection cannot be made statically
-        }
+        // Do NOT wipe or truncate the user's development database!
     }
 
     public function test_guest_is_redirected_to_login(): void
@@ -151,6 +129,11 @@ class SirkelkuTest extends TestCase
             'post_id' => $post->id,
             'comment_text' => 'Komentar pengujian interaktif!',
         ]);
+
+        // Clean up test post
+        $post->comments()->delete();
+        $post->likes()->delete();
+        $post->delete();
     }
 
     public function test_user_can_create_post_with_image(): void
@@ -180,6 +163,12 @@ class SirkelkuTest extends TestCase
             'image' => $file2,
         ]);
         $response2->assertSessionHas('success');
+
+        // Clean up test posts so no phantom files remain in database
+        if ($post) {
+            $post->delete();
+        }
+        \App\Models\Post::where('content', '')->orWhereNull('content')->delete();
     }
 
     public function test_user_can_create_thread_and_nested_reply(): void
@@ -217,6 +206,12 @@ class SirkelkuTest extends TestCase
             'parent_id' => $rootComment->id,
             'comment_text' => 'Ini balasan bersarang (nested reply).',
         ]);
+
+        // Clean up test thread
+        if ($thread) {
+            $thread->comments()->delete();
+            $thread->delete();
+        }
     }
 
     public function test_user_can_send_and_accept_match_request(): void

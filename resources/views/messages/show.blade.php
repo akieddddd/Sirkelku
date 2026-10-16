@@ -81,29 +81,87 @@
         <!-- Chat History -->
         <div class="flex-1 p-3 sm:p-5 overflow-y-auto bg-[#F8FAFC] flex flex-col gap-2.5 sm:gap-3" id="chat-container">
             @forelse($messages as $msg)
-                @if($msg->sender_id === Auth::id())
-                    <div class="flex justify-end msg-animate" id="msg-{{ $msg->id }}" data-id="{{ $msg->id }}">
-                        <div class="bg-[#FF4500] text-white px-4 py-2.5 rounded-2xl rounded-tr-xs max-w-[85%] sm:max-w-[75%] shadow-xs">
-                            <p class="text-xs sm:text-sm whitespace-pre-wrap leading-relaxed">{{ $msg->content }}</p>
-                            <div class="flex items-center justify-end gap-1.5 mt-1">
-                                <span class="device-time text-[10px] text-white/80 font-medium" data-timestamp="{{ $msg->created_at->toIso8601String() }}">
-                                    {{ $msg->created_at->format('H:i') }}
-                                </span>
-                                <svg class="w-3.5 h-3.5 text-white/80" fill="none" stroke="currentColor" viewBox="0 0 24 24" title="{{ $msg->read_at ? 'Dibaca' : 'Terkirim' }}">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M5 13l4 4L19 7" />
-                                </svg>
+                @if($msg->deleted_for_everyone)
+                    @if($msg->sender_id === Auth::id())
+                        <div class="flex items-center justify-end gap-1.5 group msg-row msg-animate" id="msg-{{ $msg->id }}" data-id="{{ $msg->id }}" data-sender="true" data-deleted-everyone="true">
+                            <div class="opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-opacity duration-150 shrink-0">
+                                <button type="button" class="msg-menu-btn p-1.5 rounded-full text-slate-400 hover:text-slate-600 hover:bg-slate-200/60 transition-colors" data-id="{{ $msg->id }}" data-sender="true" data-deleted-everyone="true" title="Opsi pesan">
+                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"/></svg>
+                                </button>
+                            </div>
+                            <div class="msg-bubble bg-[#FFF0E6] border border-[#FFD8BF] text-slate-500 px-4 py-2.5 rounded-2xl rounded-tr-xs max-w-[85%] sm:max-w-[75%] shadow-2xs">
+                                <div class="flex items-center gap-1.5 text-xs sm:text-sm italic text-slate-500 select-none">
+                                    <svg class="w-3.5 h-3.5 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" stroke-width="2" /><path stroke-linecap="round" stroke-width="2" d="M6 18L18 6" /></svg>
+                                    <span>Pesan ini telah dihapus</span>
+                                </div>
+                                <div class="flex items-center justify-end mt-1">
+                                    <span class="device-time text-[10px] text-slate-400 font-medium" data-timestamp="{{ $msg->created_at->toIso8601String() }}">
+                                        {{ $msg->created_at->format('H:i') }}
+                                    </span>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                @else
-                    <div class="flex justify-start msg-animate" id="msg-{{ $msg->id }}" data-id="{{ $msg->id }}">
-                        <div class="bg-[#F1F5F9] border border-slate-200 text-[#1E293B] px-4 py-2.5 rounded-2xl rounded-tl-xs max-w-[85%] sm:max-w-[75%] shadow-xs">
-                            <p class="text-xs sm:text-sm whitespace-pre-wrap leading-relaxed">{{ $msg->content }}</p>
-                            <span class="device-time text-[10px] text-slate-500 font-medium mt-1 block" data-timestamp="{{ $msg->created_at->toIso8601String() }}">
-                                {{ $msg->created_at->format('H:i') }}
-                            </span>
+                    @else
+                        <div class="flex items-center justify-start gap-1.5 group msg-row msg-animate" id="msg-{{ $msg->id }}" data-id="{{ $msg->id }}" data-sender="false" data-deleted-everyone="true">
+                            <div class="msg-bubble bg-slate-100 border border-slate-200 text-slate-500 px-4 py-2.5 rounded-2xl rounded-tl-xs max-w-[85%] sm:max-w-[75%] shadow-2xs">
+                                <div class="flex items-center gap-1.5 text-xs sm:text-sm italic text-slate-400 select-none">
+                                    <svg class="w-3.5 h-3.5 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" stroke-width="2" /><path stroke-linecap="round" stroke-width="2" d="M6 18L18 6" /></svg>
+                                    <span>Pesan ini telah dihapus</span>
+                                </div>
+                                <span class="device-time text-[10px] text-slate-400 font-medium mt-1 block" data-timestamp="{{ $msg->created_at->toIso8601String() }}">
+                                    {{ $msg->created_at->format('H:i') }}
+                                </span>
+                            </div>
+                            <div class="opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-opacity duration-150 shrink-0">
+                                <button type="button" class="msg-menu-btn p-1.5 rounded-full text-slate-400 hover:text-slate-600 hover:bg-slate-200/60 transition-colors" data-id="{{ $msg->id }}" data-sender="false" data-deleted-everyone="true" title="Opsi pesan">
+                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"/></svg>
+                                </button>
+                            </div>
                         </div>
-                    </div>
+                    @endif
+                @else
+                    @if($msg->sender_id === Auth::id())
+                        <div class="flex items-center justify-end gap-1.5 group msg-row msg-animate" id="msg-{{ $msg->id }}" data-id="{{ $msg->id }}" data-sender="true" data-deleted-everyone="false">
+                            <div class="opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-opacity duration-150 shrink-0">
+                                <button type="button" class="msg-menu-btn p-1.5 rounded-full text-slate-400 hover:text-slate-600 hover:bg-slate-200/60 transition-colors" data-id="{{ $msg->id }}" data-sender="true" data-deleted-everyone="false" title="Opsi pesan">
+                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"/></svg>
+                                </button>
+                            </div>
+                            <div class="msg-bubble bg-[#FF4500] text-white px-4 py-2.5 rounded-2xl rounded-tr-xs max-w-[85%] sm:max-w-[75%] shadow-xs">
+                                <p class="msg-text text-xs sm:text-sm whitespace-pre-wrap leading-relaxed">{{ $msg->content }}</p>
+                                <div class="flex items-center justify-end gap-1.5 mt-1">
+                                    <span class="device-time text-[10px] text-white/80 font-medium" data-timestamp="{{ $msg->created_at->toIso8601String() }}">
+                                        {{ $msg->created_at->format('H:i') }}
+                                    </span>
+                                    @if($msg->read_at)
+                                        {{-- Centang 2: Sudah Dibaca --}}
+                                        <svg class="status-check is-read w-4 h-3.5 text-sky-200 shrink-0 inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24" title="Dibaca">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.3" d="M1.5 13l4 4L14.5 8M7 13l4 4L20 8" />
+                                        </svg>
+                                    @else
+                                        {{-- Centang 1: Belum Dibaca --}}
+                                        <svg class="status-check w-3.5 h-3.5 text-white/70 shrink-0 inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24" title="Terkirim">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.3" d="M5 13l4 4L19 7" />
+                                        </svg>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    @else
+                        <div class="flex items-center justify-start gap-1.5 group msg-row msg-animate" id="msg-{{ $msg->id }}" data-id="{{ $msg->id }}" data-sender="false" data-deleted-everyone="false">
+                            <div class="msg-bubble bg-[#F1F5F9] border border-slate-200 text-[#1E293B] px-4 py-2.5 rounded-2xl rounded-tl-xs max-w-[85%] sm:max-w-[75%] shadow-xs">
+                                <p class="msg-text text-xs sm:text-sm whitespace-pre-wrap leading-relaxed">{{ $msg->content }}</p>
+                                <span class="device-time text-[10px] text-slate-500 font-medium mt-1 block" data-timestamp="{{ $msg->created_at->toIso8601String() }}">
+                                    {{ $msg->created_at->format('H:i') }}
+                                </span>
+                            </div>
+                            <div class="opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-opacity duration-150 shrink-0">
+                                <button type="button" class="msg-menu-btn p-1.5 rounded-full text-slate-400 hover:text-slate-600 hover:bg-slate-200/60 transition-colors" data-id="{{ $msg->id }}" data-sender="false" data-deleted-everyone="false" title="Opsi pesan">
+                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"/></svg>
+                                </button>
+                            </div>
+                        </div>
+                    @endif
                 @endif
             @empty
                 <div class="text-center my-auto p-8 space-y-2" id="empty-state">
@@ -136,6 +194,47 @@
     </div>
 </div>
 
+<!-- Floating Context Menu for Message Actions (Fixed, Collision-free) -->
+<div id="chat-msg-menu" class="fixed hidden z-50 bg-white border border-slate-200 shadow-xl rounded-2xl py-1 w-48 text-xs font-semibold text-slate-700 ring-1 ring-black/5">
+    <button type="button" id="menu-btn-everyone" class="w-full text-left px-3.5 py-2.5 hover:bg-rose-50 text-rose-600 flex items-center gap-2.5 transition-colors">
+        <svg class="w-4 h-4 shrink-0 text-rose-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+        </svg>
+        <span>Hapus untuk semua</span>
+    </button>
+    <button type="button" id="menu-btn-me" class="w-full text-left px-3.5 py-2.5 hover:bg-slate-100 text-slate-700 flex items-center gap-2.5 transition-colors">
+        <svg class="w-4 h-4 shrink-0 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+        </svg>
+        <span>Hapus untuk saya</span>
+    </button>
+</div>
+
+<!-- Modal Konfirmasi Hapus untuk Semua -->
+<div id="delete-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-xs hidden transition-all duration-150">
+    <div class="bg-white rounded-3xl max-w-sm w-full p-5 sm:p-6 shadow-2xl border border-slate-100 space-y-4">
+        <div class="w-12 h-12 rounded-2xl bg-rose-50 text-rose-600 flex items-center justify-center mx-auto">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+            </svg>
+        </div>
+        <div class="text-center space-y-1.5">
+            <h3 class="text-base font-extrabold text-slate-800">Hapus pesan untuk semua?</h3>
+            <p class="text-xs text-slate-500 leading-relaxed font-medium">
+                Pesan ini akan diganti dengan status <span class="italic text-slate-600 font-semibold">"Pesan ini telah dihapus"</span> untuk Anda dan lawan bicara.
+            </p>
+        </div>
+        <div class="flex items-center gap-2.5 pt-2">
+            <button type="button" id="delete-modal-cancel" class="flex-1 py-2.5 px-4 rounded-xl text-xs font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 active:scale-95 transition-all text-center">
+                Batal
+            </button>
+            <button type="button" id="delete-modal-confirm" class="flex-1 py-2.5 px-4 rounded-xl text-xs font-bold text-white bg-rose-600 hover:bg-rose-700 active:scale-95 transition-all shadow-xs text-center">
+                Hapus untuk Semua
+            </button>
+        </div>
+    </div>
+</div>
+
 <script>
     const authUserId = {{ Auth::id() }};
     const receiverUserId = {{ $user->id }};
@@ -148,6 +247,19 @@
     const soundToggleBtn = document.getElementById('sound-toggle-btn');
     const soundIconOn = document.getElementById('sound-icon-on');
     const soundIconOff = document.getElementById('sound-icon-off');
+
+    // SVGs for Read Receipts (WhatsApp style)
+    const SINGLE_CHECK_SVG = `
+        <svg class="status-check w-3.5 h-3.5 text-white/70 shrink-0 inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24" title="Terkirim">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.3" d="M5 13l4 4L19 7" />
+        </svg>
+    `;
+
+    const DOUBLE_CHECK_SVG = `
+        <svg class="status-check is-read w-4 h-3.5 text-sky-200 shrink-0 inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24" title="Dibaca">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.3" d="M1.5 13l4 4L14.5 8M7 13l4 4L20 8" />
+        </svg>
+    `;
 
     // Sound configuration stored in localStorage
     let soundEnabled = localStorage.getItem('sirkelku_chat_sound') !== 'false';
@@ -169,7 +281,7 @@
         }
     }
 
-    // Gentle crystal chime using Web Audio API (smooth & zero dependency)
+    // Gentle crystal chime using Web Audio API
     function playChatChime() {
         if (!soundEnabled) return;
         try {
@@ -181,7 +293,6 @@
             const gain = ctx.createGain();
             
             osc.type = 'sine';
-            // Smooth two-tone chord: 659.25Hz (E5) gliding to 880Hz (A5)
             osc.frequency.setValueAtTime(659.25, ctx.currentTime);
             osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.1);
             
@@ -194,13 +305,13 @@
             osc.start();
             osc.stop(ctx.currentTime + 0.3);
         } catch (e) {
-            // Audio context policy
+            // Audio policy fallback
         }
     }
 
     // Set of rendered message IDs for deduplication
     const renderedIds = new Set();
-    document.querySelectorAll('[data-id]').forEach(el => {
+    document.querySelectorAll('.msg-row[data-id]').forEach(el => {
         renderedIds.add(parseInt(el.getAttribute('data-id')));
     });
 
@@ -266,8 +377,65 @@
         scrollToBottom(true);
     });
 
+    // Check & display empty state if all messages are removed
+    function checkEmptyState() {
+        const rows = chatContainer.querySelectorAll('.msg-row');
+        if (rows.length === 0 && !document.getElementById('empty-state')) {
+            const emptyDiv = document.createElement('div');
+            emptyDiv.className = 'text-center my-auto p-8 space-y-2';
+            emptyDiv.id = 'empty-state';
+            emptyDiv.innerHTML = `
+                <div class="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center mx-auto text-slate-400">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" /></svg>
+                </div>
+                <h3 class="text-sm font-bold text-slate-800">Belum ada pesan</h3>
+                <p class="text-xs text-slate-500 max-w-xs mx-auto font-medium">Kirim pesan untuk memulai obrolan dengan {{ $user->name }}.</p>
+            `;
+            chatContainer.appendChild(emptyDiv);
+        }
+    }
+
+    // Transform a message row into WhatsApp-style retracted bubble
+    function markMessageAsDeletedForEveryone(row) {
+        if (!row) return;
+        row.setAttribute('data-deleted-everyone', 'true');
+        const isSender = row.getAttribute('data-sender') === 'true';
+        const timeEl = row.querySelector('.device-time');
+        const timeString = timeEl ? timeEl.textContent : formatDeviceTime();
+
+        const bubble = row.querySelector('.msg-bubble');
+        if (bubble) {
+            if (isSender) {
+                bubble.className = 'msg-bubble bg-[#FFF0E6] border border-[#FFD8BF] text-slate-500 px-4 py-2.5 rounded-2xl rounded-tr-xs max-w-[85%] sm:max-w-[75%] shadow-2xs';
+                bubble.innerHTML = `
+                    <div class="flex items-center gap-1.5 text-xs sm:text-sm italic text-slate-500 select-none">
+                        <svg class="w-3.5 h-3.5 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" stroke-width="2" /><path stroke-linecap="round" stroke-width="2" d="M6 18L18 6" /></svg>
+                        <span>Pesan ini telah dihapus</span>
+                    </div>
+                    <div class="flex items-center justify-end mt-1">
+                        <span class="device-time text-[10px] text-slate-400 font-medium">${timeString}</span>
+                    </div>
+                `;
+            } else {
+                bubble.className = 'msg-bubble bg-slate-100 border border-slate-200 text-slate-500 px-4 py-2.5 rounded-2xl rounded-tl-xs max-w-[85%] sm:max-w-[75%] shadow-2xs';
+                bubble.innerHTML = `
+                    <div class="flex items-center gap-1.5 text-xs sm:text-sm italic text-slate-400 select-none">
+                        <svg class="w-3.5 h-3.5 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" stroke-width="2" /><path stroke-linecap="round" stroke-width="2" d="M6 18L18 6" /></svg>
+                        <span>Pesan ini telah dihapus</span>
+                    </div>
+                    <span class="device-time text-[10px] text-slate-400 font-medium mt-1 block">${timeString}</span>
+                `;
+            }
+        }
+
+        const menuBtn = row.querySelector('.msg-menu-btn');
+        if (menuBtn) {
+            menuBtn.setAttribute('data-deleted-everyone', 'true');
+        }
+    }
+
     // Render a message bubble smoothly
-    function renderMessage(content, isSender, timestampIso, id = null, isOptimistic = false) {
+    function renderMessage(content, isSender, timestampIso, id = null, isOptimistic = false, isRead = false, isDeletedEveryone = false) {
         if (id && renderedIds.has(id)) {
             return;
         }
@@ -281,31 +449,69 @@
 
         const timeString = formatDeviceTime(timestampIso);
         const wrapper = document.createElement('div');
-        wrapper.className = (isSender ? 'flex justify-end' : 'flex justify-start') + ' msg-animate';
+        wrapper.className = `flex items-center ${isSender ? 'justify-end' : 'justify-start'} gap-1.5 group msg-row msg-animate`;
         if (id) {
             wrapper.id = 'msg-' + id;
             wrapper.setAttribute('data-id', id);
         } else if (isOptimistic) {
             wrapper.id = 'msg-optimistic-' + Date.now();
         }
+        wrapper.setAttribute('data-sender', isSender ? 'true' : 'false');
+        wrapper.setAttribute('data-deleted-everyone', isDeletedEveryone ? 'true' : 'false');
 
-        if (isSender) {
-            wrapper.innerHTML = `
-                <div class="bg-[#FF4500] text-white px-4 py-2.5 rounded-2xl rounded-tr-xs max-w-[85%] sm:max-w-[75%] shadow-xs">
-                    <p class="text-xs sm:text-sm whitespace-pre-wrap leading-relaxed">${escapeHtml(content)}</p>
-                    <div class="flex items-center justify-end gap-1.5 mt-1">
-                        <span class="text-[10px] text-white/80 font-medium">${timeString}</span>
-                        <svg class="w-3.5 h-3.5 text-white/80 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M5 13l4 4L19 7" />
-                        </svg>
+        const menuButtonHtml = `
+            <div class="opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-opacity duration-150 shrink-0">
+                <button type="button" class="msg-menu-btn p-1.5 rounded-full text-slate-400 hover:text-slate-600 hover:bg-slate-200/60 transition-colors" data-id="${id || ''}" data-sender="${isSender ? 'true' : 'false'}" data-deleted-everyone="${isDeletedEveryone ? 'true' : 'false'}" title="Opsi pesan">
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"/></svg>
+                </button>
+            </div>
+        `;
+
+        if (isDeletedEveryone) {
+            if (isSender) {
+                wrapper.innerHTML = `
+                    ${menuButtonHtml}
+                    <div class="msg-bubble bg-[#FFF0E6] border border-[#FFD8BF] text-slate-500 px-4 py-2.5 rounded-2xl rounded-tr-xs max-w-[85%] sm:max-w-[75%] shadow-2xs">
+                        <div class="flex items-center gap-1.5 text-xs sm:text-sm italic text-slate-500 select-none">
+                            <svg class="w-3.5 h-3.5 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" stroke-width="2" /><path stroke-linecap="round" stroke-width="2" d="M6 18L18 6" /></svg>
+                            <span>Pesan ini telah dihapus</span>
+                        </div>
+                        <div class="flex items-center justify-end mt-1">
+                            <span class="device-time text-[10px] text-slate-400 font-medium">${timeString}</span>
+                        </div>
                     </div>
-                </div>`;
+                `;
+            } else {
+                wrapper.innerHTML = `
+                    <div class="msg-bubble bg-slate-100 border border-slate-200 text-slate-500 px-4 py-2.5 rounded-2xl rounded-tl-xs max-w-[85%] sm:max-w-[75%] shadow-2xs">
+                        <div class="flex items-center gap-1.5 text-xs sm:text-sm italic text-slate-400 select-none">
+                            <svg class="w-3.5 h-3.5 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" stroke-width="2" /><path stroke-linecap="round" stroke-width="2" d="M6 18L18 6" /></svg>
+                            <span>Pesan ini telah dihapus</span>
+                        </div>
+                        <span class="device-time text-[10px] text-slate-400 font-medium mt-1 block">${timeString}</span>
+                    </div>
+                    ${menuButtonHtml}
+                `;
+            }
+        } else if (isSender) {
+            wrapper.innerHTML = `
+                ${menuButtonHtml}
+                <div class="msg-bubble bg-[#FF4500] text-white px-4 py-2.5 rounded-2xl rounded-tr-xs max-w-[85%] sm:max-w-[75%] shadow-xs">
+                    <p class="msg-text text-xs sm:text-sm whitespace-pre-wrap leading-relaxed">${escapeHtml(content)}</p>
+                    <div class="flex items-center justify-end gap-1.5 mt-1">
+                        <span class="device-time text-[10px] text-white/80 font-medium" data-timestamp="${timestampIso || ''}">${timeString}</span>
+                        ${isRead ? DOUBLE_CHECK_SVG : SINGLE_CHECK_SVG}
+                    </div>
+                </div>
+            `;
         } else {
             wrapper.innerHTML = `
-                <div class="bg-[#F1F5F9] border border-slate-200 text-[#1E293B] px-4 py-2.5 rounded-2xl rounded-tl-xs max-w-[85%] sm:max-w-[75%] shadow-xs">
-                    <p class="text-xs sm:text-sm whitespace-pre-wrap leading-relaxed">${escapeHtml(content)}</p>
-                    <span class="text-[10px] text-slate-500 font-medium mt-1 block">${timeString}</span>
-                </div>`;
+                <div class="msg-bubble bg-[#F1F5F9] border border-slate-200 text-[#1E293B] px-4 py-2.5 rounded-2xl rounded-tl-xs max-w-[85%] sm:max-w-[75%] shadow-xs">
+                    <p class="msg-text text-xs sm:text-sm whitespace-pre-wrap leading-relaxed">${escapeHtml(content)}</p>
+                    <span class="device-time text-[10px] text-slate-500 font-medium mt-1 block" data-timestamp="${timestampIso || ''}">${timeString}</span>
+                </div>
+                ${menuButtonHtml}
+            `;
         }
 
         const wasNear = isNearBottom();
@@ -317,7 +523,7 @@
             scrollBottomBtn.classList.remove('hidden');
         }
 
-        if (!isSender) {
+        if (!isSender && !isDeletedEveryone) {
             playChatChime();
         }
 
@@ -330,6 +536,147 @@
         return div.innerHTML;
     }
 
+    // --- Floating Message Action Menu & Modals ---
+    const msgMenu = document.getElementById('chat-msg-menu');
+    const menuBtnEveryone = document.getElementById('menu-btn-everyone');
+    const menuBtnMe = document.getElementById('menu-btn-me');
+    const deleteModal = document.getElementById('delete-modal');
+    const deleteModalCancel = document.getElementById('delete-modal-cancel');
+    const deleteModalConfirm = document.getElementById('delete-modal-confirm');
+
+    let activeMenuMsgId = null;
+    let pendingEveryoneMsgId = null;
+
+    function openMsgMenu(btn, msgId, isSender, isDeleted) {
+        activeMenuMsgId = msgId;
+        const btnRect = btn.getBoundingClientRect();
+
+        // Only sender of an active message can delete for everyone
+        if (isSender && !isDeleted) {
+            menuBtnEveryone.classList.remove('hidden');
+        } else {
+            menuBtnEveryone.classList.add('hidden');
+        }
+
+        msgMenu.classList.remove('hidden');
+
+        // Dynamic positioning with collision prevention
+        const menuWidth = 192; // 12rem
+        const menuHeight = msgMenu.offsetHeight || 90;
+
+        let left = isSender ? (btnRect.left - menuWidth + 24) : btnRect.left;
+        if (left < 10) left = 10;
+        if (left + menuWidth > window.innerWidth - 10) {
+            left = window.innerWidth - menuWidth - 10;
+        }
+
+        let top = btnRect.bottom + 6;
+        if (top + menuHeight > window.innerHeight - 20) {
+            top = btnRect.top - menuHeight - 6;
+        }
+
+        msgMenu.style.left = `${left}px`;
+        msgMenu.style.top = `${top}px`;
+    }
+
+    function closeMsgMenu() {
+        if (msgMenu) msgMenu.classList.add('hidden');
+        activeMenuMsgId = null;
+    }
+
+    // Event delegation for 3-dots buttons inside chat container
+    chatContainer.addEventListener('click', (e) => {
+        const btn = e.target.closest('.msg-menu-btn');
+        if (btn) {
+            e.stopPropagation();
+            const msgId = btn.getAttribute('data-id');
+            if (!msgId) return;
+            const isSender = btn.getAttribute('data-sender') === 'true';
+            const isDeleted = btn.getAttribute('data-deleted-everyone') === 'true';
+            openMsgMenu(btn, msgId, isSender, isDeleted);
+        }
+    });
+
+    // Close menu when clicking outside or scrolling
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('#chat-msg-menu') && !e.target.closest('.msg-menu-btn')) {
+            closeMsgMenu();
+        }
+    });
+
+    chatContainer.addEventListener('scroll', () => {
+        closeMsgMenu();
+    });
+
+    // Handle "Hapus untuk semua"
+    menuBtnEveryone.addEventListener('click', () => {
+        if (!activeMenuMsgId) return;
+        pendingEveryoneMsgId = activeMenuMsgId;
+        closeMsgMenu();
+        deleteModal.classList.remove('hidden');
+    });
+
+    deleteModalCancel.addEventListener('click', () => {
+        deleteModal.classList.add('hidden');
+        pendingEveryoneMsgId = null;
+    });
+
+    deleteModalConfirm.addEventListener('click', async () => {
+        if (!pendingEveryoneMsgId) return;
+        const msgId = pendingEveryoneMsgId;
+        deleteModal.classList.add('hidden');
+        pendingEveryoneMsgId = null;
+        await executeDelete(msgId, 'for_everyone');
+    });
+
+    // Handle "Hapus untuk saya"
+    menuBtnMe.addEventListener('click', async () => {
+        if (!activeMenuMsgId) return;
+        const msgId = activeMenuMsgId;
+        closeMsgMenu();
+        await executeDelete(msgId, 'for_me');
+    });
+
+    // Execute message deletion request
+    async function executeDelete(msgId, deleteType) {
+        try {
+            const response = await fetch(`/messages/${msgId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken
+                },
+                body: JSON.stringify({ delete_type: deleteType })
+            });
+
+            if (response.ok) {
+                const result = await response.json();
+                if (result.status === 'success') {
+                    const row = document.getElementById('msg-' + msgId);
+                    if (deleteType === 'for_me') {
+                        if (row) {
+                            row.style.transition = 'all 0.25s cubic-bezier(0.16, 1, 0.3, 1)';
+                            row.style.opacity = '0';
+                            row.style.transform = 'scale(0.95)';
+                            setTimeout(() => {
+                                row.remove();
+                                renderedIds.delete(parseInt(msgId));
+                                checkEmptyState();
+                            }, 250);
+                        }
+                    } else if (deleteType === 'for_everyone') {
+                        if (row) {
+                            markMessageAsDeletedForEveryone(row);
+                        }
+                    }
+                }
+            }
+        } catch (err) {
+            console.error('Gagal menghapus pesan:', err);
+        }
+    }
+
     // Handle sending message via AJAX
     const messageForm = document.getElementById('message-form');
     const messageInput = document.getElementById('message-input');
@@ -340,8 +687,8 @@
         const content = messageInput.value.trim();
         if (!content) return;
 
-        // Optimistic UI rendering immediately
-        const optWrapper = renderMessage(content, true, new Date().toISOString(), null, true);
+        // Optimistic UI rendering immediately (starts as unread single check ✓)
+        const optWrapper = renderMessage(content, true, new Date().toISOString(), null, true, false, false);
         messageInput.value = '';
         messageInput.focus();
 
@@ -364,6 +711,8 @@
                     if (optWrapper) {
                         optWrapper.id = 'msg-' + data.id;
                         optWrapper.setAttribute('data-id', data.id);
+                        const btn = optWrapper.querySelector('.msg-menu-btn');
+                        if (btn) btn.setAttribute('data-id', data.id);
                     }
                 }
             }
@@ -385,6 +734,8 @@
 
             if (response.ok) {
                 const result = await response.json();
+
+                // 1. Process new incoming/outgoing messages
                 if (result.status === 'success' && Array.isArray(result.messages)) {
                     result.messages.forEach(msg => {
                         if (!renderedIds.has(msg.id)) {
@@ -392,14 +743,40 @@
                                 msg.content,
                                 msg.is_sender,
                                 msg.created_at_iso,
-                                msg.id
+                                msg.id,
+                                false,
+                                msg.is_read,
+                                msg.deleted_for_everyone
                             );
+                        }
+                    });
+                }
+
+                // 2. Upgrade checkmarks from single (✓) to double (✓✓) when read
+                if (Array.isArray(result.read_ids)) {
+                    result.read_ids.forEach(id => {
+                        const row = document.getElementById('msg-' + id);
+                        if (row) {
+                            const checkIcon = row.querySelector('.status-check');
+                            if (checkIcon && !checkIcon.classList.contains('is-read')) {
+                                checkIcon.outerHTML = DOUBLE_CHECK_SVG;
+                            }
+                        }
+                    });
+                }
+
+                // 3. Update messages that got deleted for everyone (WhatsApp style)
+                if (Array.isArray(result.deleted_for_everyone_ids)) {
+                    result.deleted_for_everyone_ids.forEach(id => {
+                        const row = document.getElementById('msg-' + id);
+                        if (row && row.getAttribute('data-deleted-everyone') !== 'true') {
+                            markMessageAsDeletedForEveryone(row);
                         }
                     });
                 }
             }
         } catch (err) {
-            // Network issue, continue next tick
+            // Polling error handling
         }
     }
 

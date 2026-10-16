@@ -231,6 +231,7 @@ class ProfanityFilterAndReportingTest extends TestCase
         $hobby = \App\Models\Hobby::first() ?? \App\Models\Hobby::create(['name' => 'Gaming', 'category' => 'Gaming']);
 
         $author = User::first();
+        $author->is_private = false;
         $author->school_id = $school->id;
         $author->save();
         if (!$author->hobbies()->exists()) {

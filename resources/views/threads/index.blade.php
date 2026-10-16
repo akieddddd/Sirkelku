@@ -4,15 +4,15 @@
 <div class="space-y-5 p-4 sm:p-5">
 
     <!-- Header Banner -->
-    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-4">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 dark:border-zinc-800 pb-4">
         <div class="space-y-1">
-            <h1 class="text-2xl font-extrabold text-slate-800 tracking-tight flex items-center gap-2">
+            <h1 class="text-2xl font-extrabold text-slate-800 dark:text-zinc-100 tracking-tight flex items-center gap-2">
                 <svg class="w-6 h-6 text-[#FF4500] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                 </svg>
                 Forum Diskusi (Tongkrongan.id)
             </h1>
-            <p class="text-xs sm:text-sm text-slate-500 font-medium">
+            <p class="text-xs sm:text-sm text-slate-500 dark:text-zinc-400 font-medium">
                 Tanya-jawab masalah hobi, minta saran gear/settingan, atau obrolan santai antar pelajar.
             </p>
         </div>
@@ -25,17 +25,17 @@
     <div class="sk-card p-4 space-y-3">
         <!-- Sorting Tabs & Search -->
         <div class="flex flex-wrap items-center justify-between gap-3">
-            <div class="flex items-center gap-1 bg-slate-100/80 p-1 rounded-xl border border-slate-200">
+            <div class="flex items-center gap-1 bg-slate-100/80 dark:bg-zinc-800/80 p-1 rounded-xl border border-slate-200 dark:border-zinc-700">
                 <a href="{{ route('threads.index', array_merge(request()->query(), ['sort' => 'latest'])) }}" 
-                    class="px-3 py-1.5 rounded-lg text-xs transition-all {{ (!request('sort') || request('sort') === 'latest') ? 'bg-[#FF4500] text-white font-bold shadow-xs' : 'text-slate-600 hover:text-[#FF4500] font-semibold' }}">
+                    class="px-3 py-1.5 rounded-lg text-xs transition-all {{ (!request('sort') || request('sort') === 'latest') ? 'bg-[#FF4500] text-white font-bold shadow-xs' : 'text-slate-600 dark:text-zinc-300 hover:text-[#FF4500] dark:hover:text-[#FF4500] font-semibold' }}">
                     Terbaru
                 </a>
                 <a href="{{ route('threads.index', array_merge(request()->query(), ['sort' => 'trending'])) }}" 
-                    class="px-3 py-1.5 rounded-lg text-xs transition-all {{ request('sort') === 'trending' ? 'bg-[#FF4500] text-white font-bold shadow-xs' : 'text-slate-600 hover:text-[#FF4500] font-semibold' }}">
+                    class="px-3 py-1.5 rounded-lg text-xs transition-all {{ request('sort') === 'trending' ? 'bg-[#FF4500] text-white font-bold shadow-xs' : 'text-slate-600 dark:text-zinc-300 hover:text-[#FF4500] dark:hover:text-[#FF4500] font-semibold' }}">
                     Paling Ramai
                 </a>
                 <a href="{{ route('threads.index', array_merge(request()->query(), ['sort' => 'unanswered'])) }}" 
-                    class="px-3 py-1.5 rounded-lg text-xs transition-all {{ request('sort') === 'unanswered' ? 'bg-[#FF4500] text-white font-bold shadow-xs' : 'text-slate-600 hover:text-[#FF4500] font-semibold' }}">
+                    class="px-3 py-1.5 rounded-lg text-xs transition-all {{ request('sort') === 'unanswered' ? 'bg-[#FF4500] text-white font-bold shadow-xs' : 'text-slate-600 dark:text-zinc-300 hover:text-[#FF4500] dark:hover:text-[#FF4500] font-semibold' }}">
                     Belum Terjawab
                 </a>
             </div>
@@ -53,14 +53,14 @@
         </div>
 
         <!-- Hobby Channels Pills Bar -->
-        <div class="pt-2.5 border-t border-slate-100 flex items-center gap-1.5 overflow-x-auto pb-0.5 no-scrollbar">
+        <div class="pt-2.5 border-t border-slate-100 dark:border-zinc-800 flex items-center gap-1.5 overflow-x-auto pb-0.5 no-scrollbar">
             <a href="{{ route('threads.index', array_merge(request()->except('hobby'))) }}"
-                class="px-3 py-1 rounded-full text-xs font-bold shrink-0 transition-all {{ !request('hobby') ? 'bg-[#FF4500] text-white shadow-xs' : 'bg-[#F8FAFC] border border-slate-200 text-slate-700 hover:bg-slate-100' }}">
+                class="px-3 py-1 rounded-full text-xs font-bold shrink-0 transition-all {{ !request('hobby') ? 'bg-[#FF4500] text-white shadow-xs' : 'bg-[#F8FAFC] dark:bg-zinc-800 border border-slate-200 dark:border-zinc-700 text-slate-700 dark:text-zinc-300 hover:bg-slate-100 dark:hover:bg-zinc-700' }}">
                 Semua Hobi
             </a>
             @foreach($hobbies as $h)
                 <a href="{{ route('threads.index', array_merge(request()->query(), ['hobby' => $h->id])) }}"
-                    class="px-3 py-1 rounded-full text-xs font-bold shrink-0 transition-all {{ request('hobby') == $h->id ? 'bg-[#FF4500] text-white shadow-xs' : 'bg-[#F8FAFC] border border-slate-200 text-slate-700 hover:bg-slate-100' }}">
+                    class="px-3 py-1 rounded-full text-xs font-bold shrink-0 transition-all {{ request('hobby') == $h->id ? 'bg-[#FF4500] text-white shadow-xs' : 'bg-[#F8FAFC] dark:bg-zinc-800 border border-slate-200 dark:border-zinc-700 text-slate-700 dark:text-zinc-300 hover:bg-slate-100 dark:hover:bg-zinc-700' }}">
                     #{{ $h->name }}
                 </a>
             @endforeach
@@ -68,16 +68,16 @@
     </div>
 
     <!-- Threads List -->
-    <div class="sk-card divide-y divide-slate-100 overflow-hidden">
+    <div class="sk-card divide-y divide-slate-100 dark:divide-zinc-800 overflow-hidden">
         @forelse($threads as $thread)
-            <div class="p-4 sm:p-5 transition-colors hover:bg-slate-50 flex flex-col sm:flex-row items-start justify-between gap-4 group {{ $thread->is_pinned ? 'bg-[#FFF0E6]/30' : '' }}">
+            <div class="p-4 sm:p-5 transition-colors hover:bg-slate-50 dark:hover:bg-zinc-800/50 flex flex-col sm:flex-row items-start justify-between gap-4 group {{ $thread->is_pinned ? 'bg-[#FFF0E6]/30 dark:bg-[#FF4500]/10' : '' }}">
                 
                 <div class="space-y-2 flex-1">
                     <!-- Badges -->
                     <div class="flex items-center gap-2 flex-wrap">
                         @if($thread->is_pinned)
                             <span class="sk-badge-sage flex items-center gap-1">
-                                <svg class="w-3 h-3 text-[#2D472C]" fill="currentColor" viewBox="0 0 24 24"><path d="M16 12V4h1V2H7v2h1v8l-2 2v2h5.2v6h1.6v-6H18v-2l-2-2z"/></svg>
+                                <svg class="w-3.5 h-3.5 text-[#2D472C]" fill="currentColor" viewBox="0 0 24 24"><path d="M16 12V4h1V2H7v2h1v8l-2 2v2h5.2v6h1.6v-6H18v-2l-2-2z"/></svg>
                                 Disematkan
                             </span>
                         @endif
@@ -94,19 +94,19 @@
                     </div>
 
                     <!-- Title -->
-                    <a href="{{ route('threads.show', $thread->id) }}" class="block text-base font-bold text-slate-800 group-hover:text-[#FF4500] transition-colors leading-snug">
+                    <a href="{{ route('threads.show', $thread->id) }}" class="block text-base font-bold text-slate-800 dark:text-zinc-100 group-hover:text-[#FF4500] dark:group-hover:text-[#FF4500] transition-colors leading-snug">
                         {{ $thread->title }}
                     </a>
 
                     <!-- Excerpt -->
-                    <p class="text-xs text-slate-600 line-clamp-2 leading-relaxed font-medium">
+                    <p class="text-xs text-slate-600 dark:text-zinc-400 line-clamp-2 leading-relaxed font-medium">
                         {{ Str::limit($thread->body, 140) }}
                     </p>
 
                     <!-- Author Info -->
-                    <div class="flex items-center gap-2 pt-1 text-xs text-slate-400 font-medium">
+                    <div class="flex items-center gap-2 pt-1 text-xs text-slate-500 dark:text-zinc-400 font-medium">
                         <img src="{{ $thread->user->avatar_url }}" alt="{{ $thread->user->name }}" class="w-4 h-4 rounded-full object-cover">
-                        <span class="font-bold text-slate-700 hover:text-[#FF4500] transition-colors">{{ $thread->user->name }}</span>
+                        <span class="font-bold text-slate-700 dark:text-zinc-300 hover:text-[#FF4500] transition-colors">{{ $thread->user->name }}</span>
                         <span>•</span>
                         <span>{{ $thread->user->school ? $thread->user->school->school_name : 'Pelajar' }}</span>
                         <span>•</span>
@@ -115,21 +115,21 @@
                 </div>
 
                 <!-- Comments Counter Pill -->
-                <div class="shrink-0 flex sm:flex-col items-center justify-center py-2 px-3.5 rounded-xl bg-[#FFF0E6] border border-[#CDE0CD] text-center min-w-[70px]">
-                    <span class="text-base font-extrabold text-[#2D472C]">{{ $thread->comments_count }}</span>
-                    <span class="text-[10px] font-bold text-[#3D5A3C]">balasan</span>
+                <div class="shrink-0 flex sm:flex-col items-center justify-center py-2 px-3.5 rounded-xl bg-[#FFF0E6] dark:bg-[#FF4500]/15 border border-[#CDE0CD] dark:border-[#FF4500]/30 text-center min-w-[70px]">
+                    <span class="text-base font-extrabold text-[#2D472C] dark:text-[#FF4500]">{{ $thread->comments_count }}</span>
+                    <span class="text-[10px] font-bold text-[#3D5A3C] dark:text-[#FF4500]">balasan</span>
                 </div>
 
             </div>
         @empty
             <div class="p-10 text-center space-y-3">
-                <div class="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center mx-auto text-slate-400">
+                <div class="w-12 h-12 rounded-full bg-slate-100 dark:bg-zinc-800 flex items-center justify-center mx-auto text-slate-400 dark:text-zinc-500">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                     </svg>
                 </div>
-                <h3 class="font-bold text-sm text-slate-800">Belum ada utas diskusi</h3>
-                <p class="text-xs text-slate-500 max-w-xs mx-auto font-medium">Mulai topik diskusi pertama di kanal ini.</p>
+                <h3 class="font-bold text-sm text-slate-800 dark:text-zinc-100">Belum ada utas diskusi</h3>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 max-w-xs mx-auto font-medium">Mulai topik diskusi pertama di kanal ini.</p>
                 <div class="pt-1">
                     <a href="{{ route('threads.create') }}" class="sk-btn-primary text-xs">
                         Buat Utas Baru

@@ -136,6 +136,44 @@ class User extends Authenticatable
         return 'https://api.dicebear.com/7.x/bottts/svg?seed=' . urlencode($this->username ?? $this->name ?? 'user');
     }
 
+    public function friendIds(): array
+    {
+        $sent = MatchRequest::where('sender_id', $this->id)
+            ->where('status', 'accepted')
+            ->pluck('receiver_id')
+            ->all();
+
+        $received = MatchRequest::where('receiver_id', $this->id)
+            ->where('status', 'accepted')
+            ->pluck('sender_id')
+            ->all();
+
+        return array_values(array_unique(array_merge($sent, $received)));
+    }
+
+    public function isFriendsWith($userId): bool
+    {
+        $targetId = $userId instanceof User ? $userId->id : (int) $userId;
+
+        if (!$targetId) {
+            return false;
+        }
+
+        if ($this->id === $targetId) {
+            return true;
+        }
+
+        return MatchRequest::where('status', 'accepted')
+            ->where(function ($q) use ($targetId) {
+                $q->where(function ($sub) use ($targetId) {
+                    $sub->where('sender_id', $this->id)->where('receiver_id', $targetId);
+                })->orWhere(function ($sub) use ($targetId) {
+                    $sub->where('sender_id', $targetId)->where('receiver_id', $this->id);
+                });
+            })
+            ->exists();
+    }
+
     public function sentMessages()
     {
         return $this->hasMany(Message::class, 'sender_id');

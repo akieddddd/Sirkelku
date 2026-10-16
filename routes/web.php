@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 
 // Reddit-Style Feed-First: Linimasa Utama langsung di rute GET /
 Route::get('/', [FeedController::class, 'index'])->name('feed.index');
+Route::get('/posts/{post}', [FeedController::class, 'show'])->name('posts.show');
 
 // Guest Authentication Routes
 Route::middleware('guest')->group(function () {
@@ -70,7 +71,6 @@ Route::middleware('auth')->group(function () {
         Route::put('/profile/credentials', [ProfileController::class, 'updateCredentials'])->name('profile.credentials.update');
         Route::put('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password.update');
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-        Route::get('/profile/{username?}', [ProfileController::class, 'show'])->name('profile.show');
 
         // Modul 6: Pusat Notifikasi
         Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
@@ -82,5 +82,10 @@ Route::middleware('auth')->group(function () {
         Route::get('/messages/{user:username}/sync', [\App\Http\Controllers\MessageController::class, 'sync'])->name('messages.sync');
         Route::get('/messages/{user:username}', [\App\Http\Controllers\MessageController::class, 'show'])->name('messages.show');
         Route::post('/messages/{user:username}', [\App\Http\Controllers\MessageController::class, 'store'])->name('messages.store')->middleware('throttle:60,1');
+        Route::delete('/messages/{message}', [\App\Http\Controllers\MessageController::class, 'destroy'])->name('messages.destroy');
     });
 });
+
+// Profile View Route (Accessible by guests & authenticated users; locked view for private non-friends)
+Route::get('/profile/{username?}', [ProfileController::class, 'show'])->name('profile.show');
+

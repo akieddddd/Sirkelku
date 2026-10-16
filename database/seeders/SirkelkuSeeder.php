@@ -21,6 +21,25 @@ class SirkelkuSeeder extends Seeder
 {
     public function run(): void
     {
+        // 0. Reset data existing untuk mencegah error duplikasi saat db:seed dijalankan ulang
+        \Illuminate\Support\Facades\Schema::disableForeignKeyConstraints();
+        AppNotification::truncate();
+        \App\Models\Message::truncate();
+        MatchRequest::truncate();
+        ThreadComment::truncate();
+        Thread::truncate();
+        PostComment::truncate();
+        PostLike::truncate();
+        \App\Models\PostReport::truncate();
+        Post::truncate();
+        CommunityMember::truncate();
+        Community::truncate();
+        \Illuminate\Support\Facades\DB::table('user_hobbies')->truncate();
+        User::truncate();
+        Hobby::truncate();
+        School::truncate();
+        \Illuminate\Support\Facades\Schema::enableForeignKeyConstraints();
+
         // 1. Seed Schools
         $schoolsData = [
             ['school_name' => 'SMA Negeri 1 Jakarta', 'city' => 'Jakarta'],

@@ -71,16 +71,29 @@
             </div>
 
             <!-- Authentic Student Hobby Tags -->
-            <div class="p-3.5 rounded-2xl bg-slate-50 dark:bg-zinc-800/60 border border-slate-100 dark:border-zinc-800 space-y-2">
-                <p class="text-[11px] font-bold text-slate-400 dark:text-zinc-500 uppercase tracking-wider">
-                    Sirkel ramai yang bisa kamu ikuti:
-                </p>
-                <div class="flex flex-wrap gap-1.5">
-                    <span class="px-2.5 py-1 rounded-xl text-[11px] font-bold bg-white dark:bg-zinc-800 text-slate-700 dark:text-zinc-300 border border-slate-200 dark:border-zinc-700 shadow-2xs">#Valorant</span>
-                    <span class="px-2.5 py-1 rounded-xl text-[11px] font-bold bg-white dark:bg-zinc-800 text-slate-700 dark:text-zinc-300 border border-slate-200 dark:border-zinc-700 shadow-2xs">#GitarAkustik</span>
-                    <span class="px-2.5 py-1 rounded-xl text-[11px] font-bold bg-white dark:bg-zinc-800 text-slate-700 dark:text-zinc-300 border border-slate-200 dark:border-zinc-700 shadow-2xs">#WebDev</span>
-                    <span class="px-2.5 py-1 rounded-xl text-[11px] font-bold bg-white dark:bg-zinc-800 text-slate-700 dark:text-zinc-300 border border-slate-200 dark:border-zinc-700 shadow-2xs">#DigitalArt</span>
-                    <span class="px-2.5 py-1 rounded-xl text-[11px] font-bold bg-white dark:bg-zinc-800 text-slate-700 dark:text-zinc-300 border border-slate-200 dark:border-zinc-700 shadow-2xs">#Futsal</span>
+            <div class="p-4 rounded-2xl bg-slate-100/80 dark:bg-zinc-950/70 border border-slate-200/90 dark:border-zinc-800/90 space-y-2.5">
+                <div class="flex items-center gap-1.5 text-[10.5px] font-extrabold text-slate-500 dark:text-zinc-400 uppercase tracking-wider">
+                    <svg class="w-3.5 h-3.5 text-[#FF4500] shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M12.395 2.553a1 1 0 00-1.45-.385c-.345.23-.614.558-.822.88-.527.82-1.17 2.14-1.393 3.633a6.837 6.837 0 00-1.782-.977 1 1 0 00-1.25.437A9.972 9.972 0 005 10c0 4.418 3.582 8 8 8a7.994 7.994 0 005.657-2.343A7.992 7.992 0 0020 10a9.97 9.97 0 00-.773-3.856 1 1 0 00-1.25-.437 6.83 6.83 0 00-1.782.977c-.223-1.493-.866-2.813-1.393-3.633-.208-.322-.477-.65-.822-.88a1 1 0 00-.585-.118zM12 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd"/>
+                    </svg>
+                    <span>Sirkel ramai yang bisa kamu ikuti:</span>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                    <span class="inline-flex items-center gap-0.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-white dark:bg-zinc-900 text-slate-800 dark:text-zinc-100 border border-slate-200 dark:border-zinc-700/80 shadow-xs hover:border-[#FF4500]/60 dark:hover:border-[#FF4500]/60 hover:text-[#FF4500] dark:hover:text-[#FF4500] hover:scale-105 transition-all duration-150 cursor-default select-none">
+                        <span class="text-[#FF4500] font-black mr-0.5">#</span>Valorant
+                    </span>
+                    <span class="inline-flex items-center gap-0.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-white dark:bg-zinc-900 text-slate-800 dark:text-zinc-100 border border-slate-200 dark:border-zinc-700/80 shadow-xs hover:border-[#FF4500]/60 dark:hover:border-[#FF4500]/60 hover:text-[#FF4500] dark:hover:text-[#FF4500] hover:scale-105 transition-all duration-150 cursor-default select-none">
+                        <span class="text-[#FF4500] font-black mr-0.5">#</span>GitarAkustik
+                    </span>
+                    <span class="inline-flex items-center gap-0.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-white dark:bg-zinc-900 text-slate-800 dark:text-zinc-100 border border-slate-200 dark:border-zinc-700/80 shadow-xs hover:border-[#FF4500]/60 dark:hover:border-[#FF4500]/60 hover:text-[#FF4500] dark:hover:text-[#FF4500] hover:scale-105 transition-all duration-150 cursor-default select-none">
+                        <span class="text-[#FF4500] font-black mr-0.5">#</span>WebDev
+                    </span>
+                    <span class="inline-flex items-center gap-0.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-white dark:bg-zinc-900 text-slate-800 dark:text-zinc-100 border border-slate-200 dark:border-zinc-700/80 shadow-xs hover:border-[#FF4500]/60 dark:hover:border-[#FF4500]/60 hover:text-[#FF4500] dark:hover:text-[#FF4500] hover:scale-105 transition-all duration-150 cursor-default select-none">
+                        <span class="text-[#FF4500] font-black mr-0.5">#</span>DigitalArt
+                    </span>
+                    <span class="inline-flex items-center gap-0.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-white dark:bg-zinc-900 text-slate-800 dark:text-zinc-100 border border-slate-200 dark:border-zinc-700/80 shadow-xs hover:border-[#FF4500]/60 dark:hover:border-[#FF4500]/60 hover:text-[#FF4500] dark:hover:text-[#FF4500] hover:scale-105 transition-all duration-150 cursor-default select-none">
+                        <span class="text-[#FF4500] font-black mr-0.5">#</span>Futsal
+                    </span>
                 </div>
             </div>
 

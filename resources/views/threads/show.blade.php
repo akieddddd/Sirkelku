@@ -31,12 +31,12 @@
                 </a>
                 <div>
                     <div class="flex items-center gap-1.5">
-                        <a href="{{ route('profile.show', $thread->user->username) }}" class="text-sm font-bold text-slate-800 hover:text-[#FF4500] transition-colors">
+                        <a href="{{ route('profile.show', $thread->user->username) }}" class="text-sm font-bold text-slate-800 dark:text-zinc-100 hover:text-[#FF4500] transition-colors">
                             {{ $thread->user->name }}
                         </a>
                         <span class="text-xs text-[#FF4500] font-semibold">@<span>{{ $thread->user->username }}</span></span>
                     </div>
-                    <p class="text-xs text-slate-400 font-medium">
+                    <p class="text-xs text-slate-500 dark:text-zinc-400 font-medium">
                         {{ $thread->user->school ? $thread->user->school->school_name : 'Pelajar' }} • {{ $thread->created_at->diffForHumans() }}
                     </p>
                 </div>
@@ -61,17 +61,17 @@
         </div>
 
         <!-- Thread Title -->
-        <h1 class="text-lg sm:text-xl font-extrabold text-slate-800 leading-tight">
+        <h1 class="text-lg sm:text-xl font-extrabold text-slate-800 dark:text-zinc-100 leading-tight">
             {{ $thread->title }}
         </h1>
 
         <!-- Thread Body -->
-        <div class="text-xs sm:text-sm text-slate-800 leading-relaxed whitespace-pre-line font-medium border-t border-slate-100 pt-3">
+        <div class="text-xs sm:text-sm text-slate-800 dark:text-zinc-200 leading-relaxed whitespace-pre-line font-medium border-t border-slate-100 dark:border-zinc-800 pt-3">
             {{ $thread->body }}
         </div>
 
         <!-- Meta bar -->
-        <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 font-semibold">
+        <div class="pt-3 border-t border-slate-100 dark:border-zinc-800 flex items-center justify-between text-xs text-slate-500 dark:text-zinc-400 font-semibold">
             <span>{{ $thread->comments_count }} Balasan Diskusi</span>
             <button type="button" onclick="copyToClipboard(window.location.href, 'Tautan utas berhasil disalin!')" class="hover:text-[#FF4500] flex items-center gap-1 font-bold">
                 Salin Tautan
@@ -81,7 +81,7 @@
 
     <!-- Add Root Comment Form -->
     <div class="sk-card p-4 sm:p-5 space-y-3">
-        <h3 class="font-extrabold text-xs text-slate-800 uppercase tracking-wider">
+        <h3 class="font-extrabold text-xs text-slate-800 dark:text-zinc-100 uppercase tracking-wider">
             Tulis Tanggapan
         </h3>
         <form action="{{ route('threads.comment', $thread->id) }}" method="POST" class="space-y-3">
@@ -98,7 +98,7 @@
 
     <!-- Comments List -->
     <div class="space-y-3">
-        <h3 class="font-extrabold text-sm text-slate-800">
+        <h3 class="font-extrabold text-sm text-slate-800 dark:text-zinc-100">
             Balasan & Diskusi ({{ $thread->comments_count }})
         </h3>
 
@@ -109,18 +109,18 @@
                 <div class="flex items-center justify-between">
                     <div class="flex items-center gap-2.5">
                         <a href="{{ route('profile.show', $comment->user->username) }}">
-                            <img src="{{ $comment->user->avatar_url }}" alt="{{ $comment->user->name }}" class="w-8 h-8 rounded-full object-cover ring-2 ring-slate-200">
+                            <img src="{{ $comment->user->avatar_url }}" alt="{{ $comment->user->name }}" class="w-8 h-8 rounded-full object-cover ring-2 ring-slate-200 dark:ring-zinc-700">
                         </a>
                         <div>
                             <div class="flex items-center gap-2">
-                                <a href="{{ route('profile.show', $comment->user->username) }}" class="text-xs font-bold text-slate-800 hover:text-[#FF4500] transition-colors">
+                                <a href="{{ route('profile.show', $comment->user->username) }}" class="text-xs font-bold text-slate-800 dark:text-zinc-100 hover:text-[#FF4500] transition-colors">
                                     {{ $comment->user->name }}
                                 </a>
                                 @if($comment->user_id === $thread->user_id)
                                     <span class="sk-badge-sage text-[9px] py-0">Pembuat Utas</span>
                                 @endif
                             </div>
-                            <p class="text-[10px] text-slate-400 font-medium">
+                            <p class="text-[10px] text-slate-500 dark:text-zinc-400 font-medium">
                                 {{ $comment->user->school ? $comment->user->school->school_name : 'Pelajar' }} • {{ $comment->created_at->diffForHumans() }}
                             </p>
                         </div>
@@ -133,7 +133,7 @@
                 </div>
 
                 <!-- Comment Content -->
-                <p class="text-xs sm:text-sm text-slate-800 leading-relaxed pl-10 font-medium">
+                <p class="text-xs sm:text-sm text-slate-800 dark:text-zinc-200 leading-relaxed pl-10 font-medium">
                     {{ $comment->comment_text }}
                 </p>
 
@@ -155,20 +155,20 @@
                 @if($comment->replies->isNotEmpty())
                     <div class="pl-6 sm:pl-10 space-y-2.5 pt-2 border-l-2 border-[#FF4500]/30 ml-4">
                         @foreach($comment->replies as $reply)
-                            <div id="comment-{{ $reply->id }}" class="bg-[#F8FAFC] p-3 rounded-xl border border-slate-200 space-y-1.5" x-data="{ subReplyOpen: false }">
+                            <div id="comment-{{ $reply->id }}" class="bg-[#F8FAFC] dark:bg-zinc-800/60 p-3 rounded-xl border border-slate-200 dark:border-zinc-700 space-y-1.5" x-data="{ subReplyOpen: false }">
                                 <div class="flex items-center justify-between">
                                     <div class="flex items-center gap-2">
                                         <a href="{{ route('profile.show', $reply->user->username) }}">
-                                            <img src="{{ $reply->user->avatar_url }}" alt="{{ $reply->user->name }}" class="w-6 h-6 rounded-full object-cover ring-1 ring-slate-200">
+                                            <img src="{{ $reply->user->avatar_url }}" alt="{{ $reply->user->name }}" class="w-6 h-6 rounded-full object-cover ring-1 ring-slate-200 dark:ring-zinc-700">
                                         </a>
                                         <div class="flex items-center gap-1.5">
-                                            <a href="{{ route('profile.show', $reply->user->username) }}" class="text-xs font-bold text-slate-800 hover:text-[#FF4500] transition-colors">
+                                            <a href="{{ route('profile.show', $reply->user->username) }}" class="text-xs font-bold text-slate-800 dark:text-zinc-100 hover:text-[#FF4500] transition-colors">
                                                 {{ $reply->user->name }}
                                             </a>
                                             @if($reply->user_id === $thread->user_id)
                                                 <span class="sk-badge-sage text-[8px] py-0">Author</span>
                                             @endif
-                                            <span class="text-[10px] text-slate-400 font-medium">• {{ $reply->created_at->diffForHumans() }}</span>
+                                            <span class="text-[10px] text-slate-500 dark:text-zinc-400 font-medium">• {{ $reply->created_at->diffForHumans() }}</span>
                                         </div>
                                     </div>
                                     <button @click="subReplyOpen = !subReplyOpen" class="text-xs font-bold text-[#FF4500] hover:text-[#E03E00]">
@@ -176,7 +176,7 @@
                                     </button>
                                 </div>
 
-                                <p class="text-xs text-slate-800 leading-relaxed pl-8 font-medium">
+                                <p class="text-xs text-slate-800 dark:text-zinc-200 leading-relaxed pl-8 font-medium">
                                     {{ $reply->comment_text }}
                                 </p>
 
@@ -196,11 +196,11 @@
 
                                 <!-- Deepest 3rd level replies if any -->
                                 @if($reply->replies->isNotEmpty())
-                                    <div class="pl-6 space-y-1.5 border-l border-slate-200">
+                                    <div class="pl-6 space-y-1.5 border-l border-slate-200 dark:border-zinc-700">
                                         @foreach($reply->replies as $deepReply)
-                                            <div class="p-2 bg-white rounded-lg border border-slate-200 text-xs">
-                                                <span class="font-bold text-slate-800">{{ $deepReply->user->name }}</span>: 
-                                                <span class="text-slate-700 font-medium">{{ $deepReply->comment_text }}</span>
+                                            <div class="p-2 bg-white dark:bg-zinc-800 rounded-lg border border-slate-200 dark:border-zinc-700 text-xs">
+                                                <span class="font-bold text-slate-800 dark:text-zinc-100">{{ $deepReply->user->name }}</span>: 
+                                                <span class="text-slate-700 dark:text-zinc-300 font-medium">{{ $deepReply->comment_text }}</span>
                                             </div>
                                         @endforeach
                                     </div>
@@ -213,10 +213,10 @@
             </div>
         @empty
             <div class="sk-card p-10 text-center space-y-2">
-                <div class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center mx-auto text-slate-400">
+                <div class="w-10 h-10 rounded-full bg-slate-100 dark:bg-zinc-800 flex items-center justify-center mx-auto text-slate-400 dark:text-zinc-500">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" /></svg>
                 </div>
-                <p class="text-xs text-slate-500 font-medium">Belum ada tanggapan pada utas ini.</p>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 font-medium">Belum ada tanggapan pada utas ini.</p>
             </div>
         @endforelse
     </div>

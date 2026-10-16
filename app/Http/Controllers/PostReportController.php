@@ -20,6 +20,11 @@ class PostReportController extends Controller
     public function store(Request $request, $id)
     {
         $post = Post::findOrFail($id);
+
+        if (! $post->isVisibleTo(Auth::user())) {
+            abort(403, 'Postingan ini bersifat privat.');
+        }
+
         $userId = Auth::id();
 
         // 1. Cek apakah user sudah pernah melaporkan postingan ini

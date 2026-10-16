@@ -11,10 +11,16 @@ class Message extends Model
         'receiver_id',
         'content',
         'read_at',
+        'deleted_for_everyone',
+        'deleted_by_sender',
+        'deleted_by_receiver',
     ];
 
     protected $casts = [
         'read_at' => 'datetime',
+        'deleted_for_everyone' => 'boolean',
+        'deleted_by_sender' => 'boolean',
+        'deleted_by_receiver' => 'boolean',
     ];
 
     public function sender()

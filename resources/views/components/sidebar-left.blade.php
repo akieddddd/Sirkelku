@@ -228,8 +228,16 @@
 <script>
     function openSavedPosts(e) {
         e.preventDefault();
-        const saved = JSON.parse(localStorage.getItem('sirkelku_saved_posts') || '[]');
-        const ids = saved.join(',');
+        @guest
+            if (typeof window.dispatchEvent === 'function') {
+                window.dispatchEvent(new CustomEvent('open-auth-modal', { detail: { message: 'Masuk ke Sirkelku dulu yuk buat melihat postingan yang kamu simpan!' } }));
+            }
+            return;
+        @endguest
+        const userId = '{{ Auth::id() }}';
+        const key = 'sirkelku_saved_posts_' + userId;
+        const saved = JSON.parse(localStorage.getItem(key) || localStorage.getItem('sirkelku_saved_posts') || '[]');
+        const ids = Array.isArray(saved) ? saved.join(',') : '';
         window.location.href = "{{ route('feed.index') }}?tab=saved" + (ids ? "&saved_ids=" + ids : "");
     }
 </script>

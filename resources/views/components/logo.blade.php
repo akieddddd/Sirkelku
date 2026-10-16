@@ -21,7 +21,7 @@
     
     @if(!$isIconOnly)
         <div class="{{ $responsive ? 'hidden xl:inline-flex' : 'inline-flex' }} flex-row items-center gap-1.5 flex-nowrap shrink-0" style="display: inline-flex; flex-direction: row; align-items: center; gap: 6px; flex-shrink: 0; white-space: nowrap;">
-            <span class="{{ $textSize }} font-black tracking-tight {{ $textColor }} transition-colors whitespace-nowrap" style="white-space: nowrap !important; font-weight: 900 !important; line-height: 1 !important; display: inline-block !important;">
+            <span class="{{ $textSize }} font-black tracking-tight {{ $textColor }} dark:text-white sk-logo-text transition-colors whitespace-nowrap" style="white-space: nowrap !important; font-weight: 900 !important; line-height: 1 !important; display: inline-block !important;">
                 sirkelku<span style="color: {{ $accent }};">.</span>
             </span>
             @if($showBadge)

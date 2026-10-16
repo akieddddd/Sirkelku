@@ -30,10 +30,15 @@ class MessageController extends Controller
         // Attach latest message and unread count for each conversation partner
         $users = $users->map(function($user) use ($userId) {
             $latestMessage = Message::where(function($q) use ($userId, $user) {
-                    $q->where('sender_id', $userId)->where('receiver_id', $user->id);
-                })
-                ->orWhere(function($q) use ($userId, $user) {
-                    $q->where('sender_id', $user->id)->where('receiver_id', $userId);
+                    $q->where(function($sub) use ($userId, $user) {
+                        $sub->where('sender_id', $userId)
+                            ->where('receiver_id', $user->id)
+                            ->where('deleted_by_sender', false);
+                    })->orWhere(function($sub) use ($userId, $user) {
+                        $sub->where('sender_id', $user->id)
+                            ->where('receiver_id', $userId)
+                            ->where('deleted_by_receiver', false);
+                    });
                 })
                 ->latest()
                 ->first();
@@ -71,10 +76,16 @@ class MessageController extends Controller
             ->update(['is_read' => true]);
             
         $messages = Message::where(function($q) use ($authId, $user) {
-                $q->where('sender_id', $authId)->where('receiver_id', $user->id);
-            })
-            ->orWhere(function($q) use ($authId, $user) {
-                $q->where('sender_id', $user->id)->where('receiver_id', $authId);
+                $q->where(function($sub) use ($authId, $user) {
+                    $sub->where('sender_id', $authId)
+                        ->where('receiver_id', $user->id)
+                        ->where('deleted_by_sender', false);
+                })
+                ->orWhere(function($sub) use ($authId, $user) {
+                    $sub->where('sender_id', $user->id)
+                        ->where('receiver_id', $authId)
+                        ->where('deleted_by_receiver', false);
+                });
             })
             ->orderBy('id', 'asc')
             ->get();
@@ -126,6 +137,7 @@ class MessageController extends Controller
                 'sender_id'      => $message->sender_id,
                 'created_at_iso' => $message->created_at->toIso8601String(),
                 'created_at'     => $message->created_at->format('H:i'),
+                'is_read'        => false,
             ]);
         }
 
@@ -153,28 +165,106 @@ class MessageController extends Controller
             ->where('is_read', false)
             ->update(['is_read' => true]);
 
-        $messages = Message::where(function($q) use ($authId, $user) {
-                $q->where('sender_id', $authId)->where('receiver_id', $user->id);
-            })
-            ->orWhere(function($q) use ($authId, $user) {
-                $q->where('sender_id', $user->id)->where('receiver_id', $authId);
+        // Fetch new messages not deleted for auth user
+        $newMessages = Message::where(function($q) use ($authId, $user) {
+                $q->where(function($sub) use ($authId, $user) {
+                    $sub->where('sender_id', $authId)
+                        ->where('receiver_id', $user->id)
+                        ->where('deleted_by_sender', false);
+                })->orWhere(function($sub) use ($authId, $user) {
+                    $sub->where('sender_id', $user->id)
+                        ->where('receiver_id', $authId)
+                        ->where('deleted_by_receiver', false);
+                });
             })
             ->where('id', '>', $afterId)
             ->orderBy('id', 'asc')
             ->get();
 
+        // All message IDs sent by me in this conversation that are now read
+        $readIds = Message::where('sender_id', $authId)
+            ->where('receiver_id', $user->id)
+            ->whereNotNull('read_at')
+            ->where('deleted_by_sender', false)
+            ->pluck('id');
+
+        // All message IDs in this conversation deleted for everyone
+        $deletedForEveryoneIds = Message::where(function($outer) use ($authId, $user) {
+                $outer->where(function($q) use ($authId, $user) {
+                    $q->where('sender_id', $authId)->where('receiver_id', $user->id);
+                })->orWhere(function($q) use ($authId, $user) {
+                    $q->where('sender_id', $user->id)->where('receiver_id', $authId);
+                });
+            })
+            ->where('deleted_for_everyone', true)
+            ->pluck('id');
+
         return response()->json([
-            'status'   => 'success',
-            'messages' => $messages->map(fn($m) => [
-                'id'             => $m->id,
-                'content'        => $m->content,
-                'sender_id'      => $m->sender_id,
-                'is_sender'      => $m->sender_id === $authId,
-                'created_at_iso' => $m->created_at->toIso8601String(),
-                'time'           => $m->created_at->format('H:i'),
-                'read_at'        => $m->read_at ? ($m->read_at instanceof \Carbon\CarbonInterface ? $m->read_at->toIso8601String() : (string)$m->read_at) : null,
+            'status'                   => 'success',
+            'messages'                 => $newMessages->map(fn($m) => [
+                'id'                   => $m->id,
+                'content'              => $m->deleted_for_everyone ? 'Pesan ini telah dihapus' : $m->content,
+                'sender_id'            => $m->sender_id,
+                'is_sender'            => $m->sender_id === $authId,
+                'created_at_iso'       => $m->created_at->toIso8601String(),
+                'time'                 => $m->created_at->format('H:i'),
+                'is_read'              => !is_null($m->read_at),
+                'deleted_for_everyone' => (bool) $m->deleted_for_everyone,
             ]),
+            'read_ids'                 => $readIds,
+            'deleted_for_everyone_ids' => $deletedForEveryoneIds,
         ]);
+    }
+
+    /**
+     * Delete message: 'for_me' or 'for_everyone'
+     */
+    public function destroy(Request $request, Message $message)
+    {
+        $authId = Auth::id();
+
+        if ($message->sender_id !== $authId && $message->receiver_id !== $authId) {
+            abort(403, 'Anda tidak memiliki akses ke pesan ini.');
+        }
+
+        $validated = $request->validate([
+            'delete_type' => ['required', 'in:for_me,for_everyone'],
+        ]);
+
+        if ($validated['delete_type'] === 'for_everyone') {
+            if ($message->sender_id !== $authId) {
+                return response()->json([
+                    'status'  => 'error',
+                    'message' => 'Hanya pengirim yang dapat menghapus pesan untuk semua orang.',
+                ], 403);
+            }
+
+            $message->update([
+                'deleted_for_everyone' => true,
+                'content'              => 'Pesan ini telah dihapus',
+            ]);
+
+            return response()->json([
+                'status'      => 'success',
+                'message'     => 'Pesan berhasil dihapus untuk semua orang.',
+                'delete_type' => 'for_everyone',
+                'id'          => $message->id,
+            ]);
+        } else {
+            // Delete for me
+            if ($message->sender_id === $authId) {
+                $message->update(['deleted_by_sender' => true]);
+            } else {
+                $message->update(['deleted_by_receiver' => true]);
+            }
+
+            return response()->json([
+                'status'      => 'success',
+                'message'     => 'Pesan dihapus untuk Anda.',
+                'delete_type' => 'for_me',
+                'id'          => $message->id,
+            ]);
+        }
     }
 
     /**

@@ -131,19 +131,19 @@
                     <label class="block text-xs font-bold text-slate-700 dark:text-zinc-300">
                         Pilihan Minat & Hobi
                     </label>
-                    <span class="text-[11px] text-slate-400 dark:text-zinc-500 font-medium">Pilih minimal 1</span>
+                    <span class="text-[11px] text-slate-500 dark:text-zinc-400 font-medium">Pilih minimal 1</span>
                 </div>
                 @php $userHobbyIds = $user->hobbies->pluck('id')->toArray(); @endphp
                 <div class="space-y-3">
                     @foreach($hobbiesByCategory as $category => $hobbies)
                         <div>
-                            <h4 class="text-[10px] font-black text-slate-400 dark:text-zinc-500 uppercase tracking-wider mb-1.5">{{ $category }}</h4>
+                            <h4 class="text-[10px] font-black text-slate-500 dark:text-zinc-400 uppercase tracking-wider mb-1.5">{{ $category }}</h4>
                             <div class="flex flex-wrap gap-1.5">
                                 @foreach($hobbies as $hobby)
                                     <label class="cursor-pointer select-none">
                                         <input type="checkbox" name="hobby_ids[]" value="{{ $hobby->id }}" class="peer sr-only"
                                             {{ in_array($hobby->id, old('hobby_ids', $userHobbyIds)) ? 'checked' : '' }}>
-                                        <div class="px-2.5 py-1 rounded-xl text-xs font-semibold border border-slate-200 dark:border-zinc-700 bg-slate-50 dark:bg-zinc-800 text-slate-700 dark:text-zinc-300 transition-all peer-checked:bg-[#FF4500] peer-checked:border-[#FF4500] peer-checked:text-white peer-checked:shadow-xs">
+                                        <div class="px-3 py-1.5 rounded-xl text-xs font-bold border border-slate-200/90 dark:border-zinc-700 bg-slate-50 hover:bg-orange-50/60 dark:bg-zinc-800 dark:hover:bg-zinc-700/60 text-slate-700 dark:text-zinc-300 transition-all peer-checked:bg-[#FF4500] peer-checked:border-[#FF4500] peer-checked:text-white peer-checked:shadow-xs hover:scale-[1.03]">
                                             #{{ $hobby->name }}
                                         </div>
                                     </label>
@@ -185,7 +185,7 @@
                     Username <span class="text-rose-500">*</span>
                 </label>
                 <div class="relative">
-                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400 dark:text-zinc-500 font-bold text-xs select-none">@</span>
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-500 dark:text-zinc-400 font-bold text-xs select-none">@</span>
                     <input type="text" name="username" id="username" value="{{ old('username', auth()->user()->username) }}" required
                         class="sk-input pl-7">
                 </div>
@@ -217,19 +217,22 @@
                             <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-black transition-colors"
                                 :class="isPrivate ? 'bg-amber-100 text-amber-800 dark:bg-amber-950/80 dark:text-amber-400 border border-amber-200 dark:border-amber-800' : 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950/80 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800'"
                                 x-text="isPrivate ? 'Privat' : 'Publik'">
-                                {{ $user->is_private ? 'Privat' : 'Publik' }}
+                                {{ old('is_private', $user->is_private) ? 'Privat' : 'Publik' }}
                             </span>
                         </div>
                         <p class="text-xs text-slate-500 dark:text-zinc-400 leading-relaxed font-normal">
-                            Jika akun diatur privat, postinganmu tidak akan muncul di linimasa publik pengguna yang belum login.
+                            Saat akun privat aktif, hanya teman yang disetujui yang dapat melihat cerita dan kirimanmu. Linimasa tamu dan orang yang belum berteman tidak dapat melihat postinganmu.
                         </p>
                     </div>
 
                     <!-- Toggle Switch Element -->
                     <label class="relative inline-flex items-center cursor-pointer shrink-0 mt-1">
+                        <input type="hidden" name="is_private" value="0">
                         <input type="checkbox" name="is_private" id="is_private" value="1"
                             class="sr-only peer"
-                            x-model="isPrivate">
+                            {{ old('is_private', $user->is_private) ? 'checked' : '' }}
+                            :checked="isPrivate"
+                            @change="isPrivate = $event.target.checked">
                         <div class="w-11 h-6 bg-slate-300 dark:bg-zinc-700 rounded-full peer peer-focus:outline-hidden peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-zinc-600 peer-checked:bg-[#FF4500]"></div>
                     </label>
                 </div>

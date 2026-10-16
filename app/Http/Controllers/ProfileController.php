@@ -16,31 +16,60 @@ class ProfileController extends Controller
 {
     public function show(Request $request, $username = null)
     {
-        $user = $username ? User::where('username', $username)->firstOrFail() : Auth::user();
+        if (! $username) {
+            if (! Auth::check()) {
+                return redirect()->route('login');
+            }
+            if (! Auth::user()->isOnboarded()) {
+                return redirect()->route('onboarding.index');
+            }
+            $user = Auth::user();
+        } else {
+            $user = User::where('username', $username)->firstOrFail();
+        }
+
         $user->load(['school', 'hobbies', 'communities']);
+
+        $viewer = Auth::user();
+        $isOwnProfile = $viewer && $viewer->id === $user->id;
+        $isFriend = $viewer && ! $isOwnProfile ? $viewer->isFriendsWith($user->id) : false;
+        $isLocked = $user->is_private && ! $isOwnProfile && ! $isFriend;
+
+        $matchRequest = null;
+        if ($viewer && ! $isOwnProfile) {
+            $matchRequest = \App\Models\MatchRequest::where(function ($q) use ($viewer, $user) {
+                $q->where('sender_id', $viewer->id)->where('receiver_id', $user->id);
+            })->orWhere(function ($q) use ($viewer, $user) {
+                $q->where('sender_id', $user->id)->where('receiver_id', $viewer->id);
+            })->first();
+        }
 
         $tab = $request->get('tab', 'posts'); // posts, circles, threads
 
-        $posts = $user->posts()
-            ->with(['community', 'hobby', 'likes', 'comments.user'])
-            ->withCount(['likes', 'comments'])
-            ->latest()
-            ->paginate(10);
+        if ($isLocked) {
+            $posts = new \Illuminate\Pagination\LengthAwarePaginator([], 0, 10);
+            $communities = collect();
+            $threads = collect();
+        } else {
+            $posts = $user->posts()
+                ->with(['community', 'hobby', 'likes', 'comments.user'])
+                ->withCount(['likes', 'comments'])
+                ->latest()
+                ->paginate(10);
 
-        $communities = $user->communities()
-            ->with(['school', 'hobby'])
-            ->withCount('members')
-            ->paginate(12);
+            $communities = $user->communities()
+                ->with(['school', 'hobby'])
+                ->withCount('members')
+                ->paginate(12);
 
-        $threads = $user->threads()
-            ->with(['hobby', 'community'])
-            ->withCount('comments')
-            ->latest()
-            ->paginate(10);
+            $threads = $user->threads()
+                ->with(['hobby', 'community'])
+                ->withCount('comments')
+                ->latest()
+                ->paginate(10);
+        }
 
-        $isOwnProfile = Auth::check() && Auth::id() === $user->id;
-
-        return view('profile.show', compact('user', 'tab', 'posts', 'communities', 'threads', 'isOwnProfile'));
+        return view('profile.show', compact('user', 'tab', 'posts', 'communities', 'threads', 'isOwnProfile', 'isFriend', 'isLocked', 'matchRequest'));
     }
 
     public function edit()

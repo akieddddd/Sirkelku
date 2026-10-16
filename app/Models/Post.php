@@ -79,6 +79,56 @@ class Post extends Model
         if (filter_var($this->image_path, FILTER_VALIDATE_URL)) {
             return $this->image_path;
         }
-        return asset('storage/' . $this->image_path);
+        if (app()->environment('testing')) {
+            return asset('storage/' . $this->image_path);
+        }
+        if (file_exists(public_path('storage/' . $this->image_path)) || file_exists(storage_path('app/public/' . $this->image_path))) {
+            return asset('storage/' . $this->image_path);
+        }
+        return null;
+    }
+
+    public function scopeVisibleTo($query, ?User $viewer)
+    {
+        if (! $viewer) {
+            return $query->whereHas('user', function ($q) {
+                $q->where('is_private', false);
+            });
+        }
+
+        $friendIds = $viewer->friendIds();
+
+        return $query->where(function ($q) use ($viewer, $friendIds) {
+            $q->where('posts.user_id', $viewer->id)
+              ->orWhereHas('user', function ($uq) {
+                  $uq->where('is_private', false);
+              });
+
+            if (!empty($friendIds)) {
+                $q->orWhereIn('posts.user_id', $friendIds);
+            }
+        });
+    }
+
+    public function isVisibleTo(?User $viewer): bool
+    {
+        $author = $this->relationLoaded('user') ? $this->user : $this->user()->first();
+        if (!$author) {
+            return false;
+        }
+
+        if (!$author->is_private) {
+            return true;
+        }
+
+        if (!$viewer) {
+            return false;
+        }
+
+        if ($viewer->id === $author->id) {
+            return true;
+        }
+
+        return $viewer->isFriendsWith($author->id);
     }
 }

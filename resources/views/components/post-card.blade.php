@@ -19,18 +19,37 @@
         isReporting: false,
         hasReported: {{ Auth::check() && $post->isReportedBy(Auth::id()) ? 'true' : 'false' }},
         init() {
+            @guest
+                this.isSaved = false;
+                try {
+                    localStorage.removeItem('sirkelku_saved_posts');
+                } catch(e) {}
+                return;
+            @endguest
             try {
-                const saved = JSON.parse(localStorage.getItem('sirkelku_saved_posts') || '[]');
-                this.isSaved = saved.includes({{ $post->id }});
+                const userId = '{{ Auth::id() }}';
+                const key = 'sirkelku_saved_posts_' + userId;
+                let saved = JSON.parse(localStorage.getItem(key) || 'null');
+                if (saved === null) {
+                    const legacy = JSON.parse(localStorage.getItem('sirkelku_saved_posts') || '[]');
+                    saved = legacy;
+                    localStorage.setItem(key, JSON.stringify(saved));
+                    localStorage.removeItem('sirkelku_saved_posts');
+                }
+                this.isSaved = Array.isArray(saved) && saved.includes({{ $post->id }});
             } catch(e) {}
         },
         toggleBookmark() {
             @guest
+                this.isSaved = false;
                 $dispatch('open-auth-modal', { message: 'Masuk ke Sirkelku dulu yuk buat like, komentar, atau simpan postingan ini!' });
                 return;
             @endguest
             try {
-                let saved = JSON.parse(localStorage.getItem('sirkelku_saved_posts') || '[]');
+                const userId = '{{ Auth::id() }}';
+                const key = 'sirkelku_saved_posts_' + userId;
+                let saved = JSON.parse(localStorage.getItem(key) || '[]');
+                if (!Array.isArray(saved)) saved = [];
                 if (saved.includes({{ $post->id }})) {
                     saved = saved.filter(id => id !== {{ $post->id }});
                     this.isSaved = false;
@@ -40,7 +59,7 @@
                     this.isSaved = true;
                     if (typeof showToast === 'function') showToast('Postingan disimpan ke bookmark!');
                 }
-                localStorage.setItem('sirkelku_saved_posts', JSON.stringify(saved));
+                localStorage.setItem(key, JSON.stringify(saved));
             } catch(e) {}
         },
         toggleLike() {
@@ -133,7 +152,7 @@
                 @endif
 
                 <!-- Username -->
-                <span class="text-xs text-slate-400 dark:text-zinc-500 font-medium truncate max-w-[100px]">
+                <span class="text-xs text-slate-500 dark:text-zinc-400 font-medium truncate max-w-[100px]">
                     @<span>{{ $post->user->username }}</span>
                 </span>
 
@@ -141,7 +160,7 @@
                 <span class="text-slate-300 dark:text-zinc-600 text-xs shrink-0">•</span>
 
                 <!-- Indonesian Relative Timestamp -->
-                <span class="text-xs text-slate-400 dark:text-zinc-500 font-medium shrink-0">
+                <span class="text-xs text-slate-500 dark:text-zinc-400 font-medium shrink-0">
                     {{ $post->created_at->diffForHumans() }}
                 </span>
             </div>
@@ -358,13 +377,13 @@
                                     class="font-bold text-slate-800 dark:text-zinc-100 hover:text-[#FF4500] dark:hover:text-[#FF4500] transition-colors truncate">
                                     {{ $comment->user->name }}
                                 </a>
-                                <span class="text-[10px] text-slate-400 dark:text-zinc-500 font-medium shrink-0">{{ $comment->created_at->diffForHumans() }}</span>
+                                <span class="text-[10px] text-slate-500 dark:text-zinc-400 font-medium shrink-0">{{ $comment->created_at->diffForHumans() }}</span>
                             </div>
                             <p class="text-slate-700 dark:text-zinc-300 mt-0.5 leading-relaxed font-normal break-words">{{ $comment->comment_text }}</p>
                         </div>
                     </div>
                 @empty
-                    <p class="text-[11px] text-slate-400 dark:text-zinc-500 text-center py-2 font-medium">Belum ada komentar.</p>
+                    <p class="text-[11px] text-slate-500 dark:text-zinc-400 text-center py-2 font-medium">Belum ada komentar.</p>
                 @endforelse
             </div>
         </div>

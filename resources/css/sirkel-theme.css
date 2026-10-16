@@ -96,6 +96,15 @@
   color: #f4f4f5;
 }
 
+/* Logo Dark Mode Styling */
+.dark .sk-logo-circle {
+  stroke: #FFFFFF !important;
+}
+.dark .sk-logo-text {
+  color: #FFFFFF !important;
+}
+
+
 /* Core Layout & Reset Defaults */
 html, body {
   min-height: 100vh;

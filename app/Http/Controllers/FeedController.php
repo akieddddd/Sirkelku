@@ -26,13 +26,9 @@ class FeedController extends Controller
         $query = Post::with(['user.school', 'community', 'hobby', 'likes', 'comments.user'])
             ->withCount(['likes', 'comments']);
 
-        // Account Privacy (PRD Item 3):
-        // Guest feed on GET / only retrieves posts from users with public accounts (is_private == false)
-        if (! $user) {
-            $query->whereHas('user', function ($q) {
-                $q->where('is_private', false);
-            });
-        }
+        // Account Privacy (Instagram-style):
+        // Guests only see public posts; logged-in users only see public posts, own posts, or posts from accepted friends
+        $query->visibleTo($user);
 
         // Search query across posts, authors, hobbies, and communities
         if ($request->filled('q')) {
@@ -174,8 +170,23 @@ class FeedController extends Controller
         return redirect()->back()->with('success', 'Postingan berhasil dihapus.');
     }
 
+    public function show(Request $request, Post $post)
+    {
+        $user = Auth::user();
+
+        if (! $post->isVisibleTo($user)) {
+            return redirect()->route('feed.index')->with('error', 'Postingan ini bersifat privat. Bertemanlah terlebih dahulu untuk melihat kiriman ini.');
+        }
+
+        return redirect()->to(route('feed.index') . '#post-' . $post->id);
+    }
+
     public function toggleLike(Request $request, Post $post)
     {
+        if (! $post->isVisibleTo(Auth::user())) {
+            abort(403, 'Postingan ini bersifat privat.');
+        }
+
         $userId = Auth::id();
         $existing = PostLike::where('post_id', $post->id)->where('user_id', $userId)->first();
 
@@ -220,6 +231,10 @@ class FeedController extends Controller
 
     public function storeComment(Request $request, Post $post)
     {
+        if (! $post->isVisibleTo(Auth::user())) {
+            abort(403, 'Postingan ini bersifat privat.');
+        }
+
         $validated = $request->validate([
             'comment_text' => ['required', 'string', 'max:500'],
         ], [
